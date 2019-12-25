@@ -1,6 +1,6 @@
 # master-thesis-template
 
-VS Code Remote Developmentの機能を用いて、片山研の修士論文執筆環境を容易に構築するテンプレートです。
+俺の修論です。
 
 ## build
 
