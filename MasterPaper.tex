@@ -59,8 +59,8 @@
 %%
 % マクロの定義
 %
-\newcommand{\tool}{TOOL}
-\newcommand{\toolFullName}{TOOL: Optimize Operation Language}
+\newcommand{\tool}{BWDM}
+\newcommand{\toolFullName}{Verification tool for Vieena Development Method}
 
 \renewcommand{\lstlistingname}{コード}
 \lstset{
@@ -99,9 +99,9 @@
 \degree{m} % Graduateのg or Masterのm
 \figurenumbering{f} % 図目次を付ける場合はt (真) を持つ真偽値を引数に取る関数
 \tablenumbering{f} % 表目次を付ける場合はt (真) を持つ真偽値を引数に取る関数
-\title{長ったらしいタイトルを \\ リアルタイムに描画するツール \\ \tool{}の実装と評価}
-\author{執筆者ネーム}
-\nendo{30} % 年度
+\title{VDM++仕様を対象としたテストケース \\ 自動生成ツールBWDMにおける \\ ペアワイズ法とドメイン分析テストの \\ 適用のための機能拡張}
+\author{平木場 風太}
+\nendo{1} % 年度
 \advisor{片山 徹郎 教授} % 修論では無視する
 \major{工学専攻 機械・情報系コース 情報システム工学分野}
 
@@ -127,11 +127,9 @@
 
 第\ref{cha:Preparation}章では、\tool{}を実装するために必要となる前提知識について説明する。
 
-第\ref{cha:Appearance}章では、\tool{}の外観について説明する。
+第\ref{cha:Exist}章では、\tool{}の外観について説明する。
 
-第\ref{cha:Function}章では、\tool{}の機能について説明する。
-
-第\ref{cha:Implementation}章では、\tool{}の実装について説明する。
+第\ref{cha:Extended}章では、\tool{}の機能について説明する。
 
 第\ref{cha:Indication}章では、試作した\tool{}を用いてUMLとソースコードを記述し、\tool{}が正しく動作することを検証する。
 
@@ -148,16 +146,16 @@
 
 
 
-% 外観
-\chapter{\tool{}の外観}\label{cha:Appearance}
+% 既存
+\chapter{既存の\tool{}}\label{cha:Exist}
 
 本章では、本研究で実装したツール\tool{} (\toolFullName{})の外観について説明する。
 
 \tool{}の外観を、図hogehogeに示す。
 
 
-% 機能
-\chapter{\tool{}の機能}\label{cha:Function}
+% 拡張
+\chapter{拡張した\tool{}}\label{cha:Extended}
 
 本章では、\tool{}の機能について説明する。
 \tool{}は、大きく分けて以下の3つの機能を持つ。
@@ -172,29 +170,23 @@
 
 
 
-\section{機能1}
+\section{ペアワイズ法の適用によるテストケース数削減}
+\subsection{PICTラッパーについて}
+\subsection{PICTラッパーの組込み}
 
-\section{機能2}
-\section{機能3}
-
-% 実装
-\chapter{\tool{}の実装}\label{cha:Implementation}
-
-本章では、\tool{}の実装について説明する。
-\tool{}の構造とデータ遷移を、図\ref{fig:toolStructure}に示す。
-
-\begin{figure}[tp]
-	\centering
-	\includegraphics[keepaspectratio, width=160mm]{figs/retussStructure}
-	\caption{\tool{}の構造とデータ遷移}
-	\label{fig:toolStructure}
-\end{figure}
+\section{メイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
+\section{対応構文の拡張}
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
+\section{因子と水準の組合せ数が大きい仕様}
+\section{複数変数を含む条件式を用いた仕様}
+\section{class構文とoparation構文を用いた仕様}
 
 % 考察
 \chapter{考察}\label{cha:Evaluation}
+\section{評価}
+\section{拡張した\tool{}の問題点}
 
 % おわりに
 \chapter{おわりに} \label{cha:Conclusion}
