@@ -157,44 +157,44 @@
 TBの定義を以下に示す．
 $exp$を条件式，$left$を左辺，$int$を右辺とする．
 \begin{itemize}
-	\item $exp$が$left = int$のとき，$TB = int$とする．
-	\item $exp$が$left < int$のとき，$TB = int - 1$とする．
-	\item $exp$が$left > int$のとき，$TB = int + 1$とする．
-	\item $exp$が$left <= int$のとき，$TB = int$とする．
-	\item $exp$が$left >= int$のとき，$TB = int$とする．
+  \item $exp$が$left = int$のとき，$TB = int$とする．
+  \item $exp$が$left < int$のとき，$TB = int - 1$とする．
+  \item $exp$が$left > int$のとき，$TB = int + 1$とする．
+  \item $exp$が$left <= int$のとき，$TB = int$とする．
+  \item $exp$が$left >= int$のとき，$TB = int$とする．
 \end{itemize}
 それぞれのポイントの定義を，以下に示す．
 \begin{itemize}
-	\item onポイント：着目条件式のTBである．ドメインを決定づける条件式に付き1つ生成する．他のonポイントと重複してはならない．$targetExp$を着目条件式とすると，onポイントは，$targetExp = True$かつ$left = TB$となる値でなければならない．
-	\item offポイント：着目するonポイントに隣接し，TBでない値である．onポイントに付き複数（着目条件式に含まれる変数 $*$ 2）個存在する．$targetVar$を着目変数とすると，offポイントは，$targetVar + 1$となる値または$targetVar - 1$となる値でなければならない．
-	\item inポイント：ドメインを決定づける全ての条件式を満たす値である．ドメインに付き1つ生成する．onポイントやoffポイントと重複してはならない．$onPoints$をonポイントの集合とし，$offPoints$をoffポイントの集合，$inPoint$をinポイントとすると，inポイントは， $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない．
-	\item outポイント：着目条件式のみを満たさない値である．ドメインを決定づける条件式に付き1つ生成する．offポイントと重複してはならない．$outPoint$をoutポイントとすると，outポイントは，$ (\lnot targetExp \land exp1 \land exp2 \land ... \land expN) = True$かつ$outPoint \notin offPoints$となる値でなければならない．
+  \item onポイント：着目条件式のTBである．ドメインを決定づける条件式に付き1つ生成する．他のonポイントと重複してはならない．$targetExp$を着目条件式とすると，onポイントは，$targetExp = True$かつ$left = TB$となる値でなければならない．
+  \item offポイント：着目するonポイントに隣接し，TBでない値である．onポイントに付き複数（着目条件式に含まれる変数 $*$ 2）個存在する．$targetVar$を着目変数とすると，offポイントは，$targetVar + 1$となる値または$targetVar - 1$となる値でなければならない．
+  \item inポイント：ドメインを決定づける全ての条件式を満たす値である．ドメインに付き1つ生成する．onポイントやoffポイントと重複してはならない．$onPoints$をonポイントの集合とし，$offPoints$をoffポイントの集合，$inPoint$をinポイントとすると，inポイントは， $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない．
+  \item outポイント：着目条件式のみを満たさない値である．ドメインを決定づける条件式に付き1つ生成する．offポイントと重複してはならない．$outPoint$をoutポイントとすると，outポイントは，$ (\lnot targetExp \land exp1 \land exp2 \land ... \land expN) = True$かつ$outPoint \notin offPoints$となる値でなければならない．
 \end{itemize}
 また，それぞれのポイントは，以下のパラメータを持つ．
 \begin{itemize}
-	\item 正常系判定値
-	\begin{itemize}
-		\item “正常系”とは，ポイントの期待出力がドメインの期待出力と一致する状態のことを言う．
-		\item “非正常系”とは，ポイントの期待出力がドメインの期待出力と一致しない状態のことを言う．
-		\item "正常系判定値"とは，正常系であるかどうかを保持する値である．正常系と非正常系の2つの状態を持つ．
-	\end{itemize}
-	\item 着目条件式\\
-			onポイント，offポイント，outポイントのみが持つ．どの条件式に着目してポイントを生成したかの情報である．
-	\item 着目変数\\
-			offポイントのみが持つ．どの変数に着目して，onポイントに隣接するポイントを生成したかの情報である．
+  \item 正常系判定値
+        \begin{itemize}
+          \item “正常系”とは，ポイントの期待出力がドメインの期待出力と一致する状態のことを言う．
+          \item “非正常系”とは，ポイントの期待出力がドメインの期待出力と一致しない状態のことを言う．
+          \item "正常系判定値"とは，正常系であるかどうかを保持する値である．正常系と非正常系の2つの状態を持つ．
+        \end{itemize}
+  \item 着目条件式\\
+        onポイント，offポイント，outポイントのみが持つ．どの条件式に着目してポイントを生成したかの情報である．
+  \item 着目変数\\
+        offポイントのみが持つ．どの変数に着目して，onポイントに隣接するポイントを生成したかの情報である．
 \end{itemize}
 
 \subsection{例}
 ドメイン分析テストが必要となる仕様の例として，遊園地チケット割引機能をテストすることを考える．遊園地チケット割引機能は，夫婦である夫と妻それぞれの年齢を入力とし，割引価格が適用されるかどうかを判定する関数であり，以下の様なルールを持つ．
 \begin{enumerate}
-	\renewcommand{\labelenumi}{\Alph{enumi})}
-	\item\label{enu:yuenchi} 以下の条件をすべて満たすとき，遊園地チケットは割引価格となる．
-	\begin{itemize}
-		\item 夫の年齢と妻の年齢の合計が50歳以下である．
-		\item 夫の年齢は18歳以上である．
-		\item 妻の年齢は16歳以上である．
-	\end{itemize}
-	\item A) でない場合，遊園地チケットは割引価格とならない．
+  \renewcommand{\labelenumi}{\Alph{enumi})}
+  \item\label{enu:yuenchi} 以下の条件をすべて満たすとき，遊園地チケットは割引価格となる．
+        \begin{itemize}
+          \item 夫の年齢と妻の年齢の合計が50歳以下である．
+          \item 夫の年齢は18歳以上である．
+          \item 妻の年齢は16歳以上である．
+        \end{itemize}
+  \item A) でない場合，遊園地チケットは割引価格とならない．
 \end{enumerate}
 この仕様をVDM++で記述した仕様を，図\ref{fig:vdm_park}に示す．
 7行目に，複数の変数を左辺に含む条件式があるため，既存のBWDMではテストケース生成ができない．
@@ -207,29 +207,29 @@ inポイントは，“In”の1つであり，“割引価格となる”ドメ
 outポイントは，“Out1”〜“Out3”の3つであり，着目条件式のみを満たさない値を持つ．
 
 \begin{figure}[tb]
-	\setbox0\vbox{
-		\hbox{ 1 class 遊園地チケット}
-		\hbox{ 2}
-		\hbox{ 3 functions}
-		\hbox{ 4}
-		\hbox{ 5 static public 割引判定 : int * int -$>$ seq of char}
-		\hbox{ 6 \ \ 割引判定(夫の年齢, 妻の年齢) ==}
-		\hbox{ 7 \ \ \ \ if(夫の年齢 + 妻の年齢 $<=$ 50) then}
-		\hbox{ 8 \ \ \ \ \ \ if(夫の年齢 $>=$ 18) then}
-		\hbox{ 9 \ \ \ \ \ \ \ \ if(妻の年齢 $>=$ 16) then}
-		\hbox{10 \ \ \ \ \ \ \ \ \ \ ``割引価格となる''}
-		\hbox{11 \ \ \ \ \ \ \ else}
-		\hbox{12 \ \ \ \ \ \ \ \ \ \ ``割引価格とならない(妻の年齢 $<$ 16)''}
-		\hbox{13 \ \ \ \ \ \ else}
-		\hbox{14 \ \ \ \ \ \ \ \ ``割引価格とならない(夫の年齢 $<$ 18)''}
-		\hbox{15 \ \ \ \ else}
-		\hbox{16 \ \ \ \ \ \  \  ``割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)'';}
-		\hbox{17}
-		\hbox{18 end 遊園地チケット}
-	}
-	\centerline{\fbox{\box0}}
-	\caption{ドメインテストが必要となる仕様（遊園地チケット割引機能）}
-	\label{fig:vdm_park}
+  \setbox0\vbox{
+    \hbox{ 1 class 遊園地チケット}
+    \hbox{ 2}
+    \hbox{ 3 functions}
+    \hbox{ 4}
+    \hbox{ 5 static public 割引判定 : int * int -$>$ seq of char}
+    \hbox{ 6 \ \ 割引判定(夫の年齢, 妻の年齢) ==}
+    \hbox{ 7 \ \ \ \ if(夫の年齢 + 妻の年齢 $<=$ 50) then}
+    \hbox{ 8 \ \ \ \ \ \ if(夫の年齢 $>=$ 18) then}
+    \hbox{ 9 \ \ \ \ \ \ \ \ if(妻の年齢 $>=$ 16) then}
+    \hbox{10 \ \ \ \ \ \ \ \ \ \ ``割引価格となる''}
+    \hbox{11 \ \ \ \ \ \ \ else}
+    \hbox{12 \ \ \ \ \ \ \ \ \ \ ``割引価格とならない(妻の年齢 $<$ 16)''}
+    \hbox{13 \ \ \ \ \ \ else}
+    \hbox{14 \ \ \ \ \ \ \ \ ``割引価格とならない(夫の年齢 $<$ 18)''}
+    \hbox{15 \ \ \ \ else}
+    \hbox{16 \ \ \ \ \ \  \  ``割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)'';}
+    \hbox{17}
+    \hbox{18 end 遊園地チケット}
+  }
+  \centerline{\fbox{\box0}}
+  \caption{ドメインテストが必要となる仕様（遊園地チケット割引機能）}
+  \label{fig:vdm_park}
 \end{figure}
 
 \begin{figure}[tp]
@@ -267,52 +267,52 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
 \subsection{組合せ爆発に関する問題点}
 \subsubsection{入出力例}
 \begin{figure}[tb]
-	\setbox0\vbox{
-		\hbox{ 1 class SampleClass}
-		\hbox{ 2 }
-		\hbox{ 3 functions}
-		\hbox{ 4 }
-		\hbox{ 5 sampleFunction : int*nat*nat $->$ seq of char}
-		\hbox{ 6 \ \ sampleFunction(a, b, c) == }
-		\hbox{ 7 \ \ \ if(a $<$ 100) then}
-		\hbox{ 8 \ \ \ \ if(b $>$ 2018) then}
-		\hbox{ 9 \ \ \ \ \ "aは100未満かつbは2018より大きい"}
-		\hbox{10 \ \ \ \ else}
-		\hbox{11 \ \ \ \ \ "aは100未満かつbは2018以下"}
-		\hbox{12 \ \ \ elseif(c $<$ 12) then}
-		\hbox{13 \ \ \ \ \ "aは100以上かつcは12未満"}
-		\hbox{14 \ \ \ else}
-		\hbox{15 \ \ \ \ \ "aは100以上かつcは12以上";}
-		\hbox{16 }
-		\hbox{17 end SampleClass}
-	}
-	\centerline{\fbox{\box0}}
-	\caption{入力例：VDM++仕様}
-	\label{fig:input_sample}
+  \setbox0\vbox{
+    \hbox{ 1 class SampleClass}
+    \hbox{ 2 }
+    \hbox{ 3 functions}
+    \hbox{ 4 }
+    \hbox{ 5 sampleFunction : int*nat*nat $->$ seq of char}
+    \hbox{ 6 \ \ sampleFunction(a, b, c) == }
+    \hbox{ 7 \ \ \ if(a $<$ 100) then}
+    \hbox{ 8 \ \ \ \ if(b $>$ 2018) then}
+    \hbox{ 9 \ \ \ \ \ "aは100未満かつbは2018より大きい"}
+    \hbox{10 \ \ \ \ else}
+    \hbox{11 \ \ \ \ \ "aは100未満かつbは2018以下"}
+    \hbox{12 \ \ \ elseif(c $<$ 12) then}
+    \hbox{13 \ \ \ \ \ "aは100以上かつcは12未満"}
+    \hbox{14 \ \ \ else}
+    \hbox{15 \ \ \ \ \ "aは100以上かつcは12以上";}
+    \hbox{16 }
+    \hbox{17 end SampleClass}
+  }
+  \centerline{\fbox{\box0}}
+  \caption{入力例：VDM++仕様}
+  \label{fig:input_sample}
 \end{figure}
 
 \begin{figure}[t]
-	\begin{center}
-		\includegraphics[keepaspectratio, width=160mm]{figs/sample_testcase.png}
-		\caption{出力例：テストケース}
-		\label{fig:testcase_sample}
-	\end{center}
+  \begin{center}
+    \includegraphics[keepaspectratio, width=160mm]{figs/sample_testcase.png}
+    \caption{出力例：テストケース}
+    \label{fig:testcase_sample}
+  \end{center}
 \end{figure}
 
 \begin{figure}[t]
-	\begin{center}
-		\includegraphics[keepaspectratio, width=160mm]{figs/bwdm_format.png}
-		\caption{既存のBWDMのテストケースの出力フォーマット}
-		\label{fig:bwdm_format}
-	\end{center}
+  \begin{center}
+    \includegraphics[keepaspectratio, width=160mm]{figs/bwdm_format.png}
+    \caption{既存のBWDMのテストケースの出力フォーマット}
+    \label{fig:bwdm_format}
+  \end{center}
 \end{figure}
 
 \begin{figure*}[t]
-	\begin{center}
-		\includegraphics[keepaspectratio, width=160mm]{figs/DomainAnalyzer.png}
-		\caption{ドメイン分析部のクラス図}
-		\label{fig:class_DomainAnalyzer}
-	\end{center}
+  \begin{center}
+    \includegraphics[keepaspectratio, width=160mm]{figs/DomainAnalyzer.png}
+    \caption{ドメイン分析部のクラス図}
+    \label{fig:class_DomainAnalyzer}
+  \end{center}
 \end{figure*}
 
 VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
@@ -329,8 +329,8 @@ VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
 この理由を，既存のBWDMに図\ref{fig:vdm_park}の仕様を入力した場合を例に，以下で説明する．
 
 \begin{itemize}
-	\item 図\ref{fig:vdm_park}の6行目にて，入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している．7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが，既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する．“夫の年齢+妻の年齢”という引数は仕様に定義されていないため，既存のBWDMはエラーを出力し，動作を停止してしまう．
-	\item 図\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには，「制約を満たす入力があるかどうか」という，充足可能性問題（Satisfiable Problem，SAT）を解かなければならない．しかし，既存のBWDMは，充足可能性問題を解くことができない．
+  \item 図\ref{fig:vdm_park}の6行目にて，入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している．7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが，既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する．“夫の年齢+妻の年齢”という引数は仕様に定義されていないため，既存のBWDMはエラーを出力し，動作を停止してしまう．
+  \item 図\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには，「制約を満たす入力があるかどうか」という，充足可能性問題（Satisfiable Problem，SAT）を解かなければならない．しかし，既存のBWDMは，充足可能性問題を解くことができない．
 \end{itemize}
 
 本研究では，上記の問題を解決するために，ドメイン分析テストのためのテストケース生成手法を提案し，既存のBWDMに適用することで，BWDMを拡張する．
@@ -460,11 +460,11 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
 さらに，ドメインテストに必要な，正常系判定値，着目条件式，そして着目変数の情報をテストケースに含めるために，テストケース生成部において，ドメインテストによるテストケースを出力する際は，正常系判定値，着目条件式，着目変数の情報も出力する処理を追加した．
 
 \begin{figure*}[t]
-	\begin{center}
-		\includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
-		\caption{拡張したBWDMの処理の流れ}
-		\label{fig:bwdm_structure}
-	\end{center}
+  \begin{center}
+    \includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
+    \caption{拡張したBWDMの処理の流れ}
+    \label{fig:bwdm_structure}
+  \end{center}
 \end{figure*}
 
 \subsection{構文解析部}
@@ -481,15 +481,15 @@ BWDMの構文解析は，Nickらの開発したVDM構文解析ツールVDMJを�
 各クラスの詳細を，以下に示す．
 
 \begin{itemize}
-	\item
-	Factorクラスは，引数の情報を持つクラスである．変数名（name）と値（value）を保持する．
-	\item
-	Pointクラスは，テストケースの入力データの情報を持つクラスである．テストケース名（name），そのポイントが着目条件式（forcusedConditionalExpression），そのポイントの着目変数（forcusedVariable），そして複数のFactor（factors）を保持する．
-	\item
-	DomainPointsクラスは，ドメインの情報を持つクラスである．期待出力（name），onポイントの集合（onPoints），offポイントの集合（offPoints），inポイント（inPoints），outポイントの集合（outPoints）を保持する．
-	\item
-	DomainAnalyzerクラスは，ドメイン分析を行うクラスである．ドメインの集合（domains）を保持している．
-	また，onポイント，offポイント，inポイント，outポイントを生成する機能(generateXXPointsメソッド)，および，各ドメインの各ポイントを，期待出力生成部に入力できるデータ構造として抽出する機能(getAllTestCaseByDomainAnalyzerメソッド)を持つ．
+  \item
+        Factorクラスは，引数の情報を持つクラスである．変数名（name）と値（value）を保持する．
+  \item
+        Pointクラスは，テストケースの入力データの情報を持つクラスである．テストケース名（name），そのポイントが着目条件式（forcusedConditionalExpression），そのポイントの着目変数（forcusedVariable），そして複数のFactor（factors）を保持する．
+  \item
+        DomainPointsクラスは，ドメインの情報を持つクラスである．期待出力（name），onポイントの集合（onPoints），offポイントの集合（offPoints），inポイント（inPoints），outポイントの集合（outPoints）を保持する．
+  \item
+        DomainAnalyzerクラスは，ドメイン分析を行うクラスである．ドメインの集合（domains）を保持している．
+        また，onポイント，offポイント，inポイント，outポイントを生成する機能(generateXXPointsメソッド)，および，各ドメインの各ポイントを，期待出力生成部に入力できるデータ構造として抽出する機能(getAllTestCaseByDomainAnalyzerメソッド)を持つ．
 
 \end{itemize}
 
@@ -506,57 +506,57 @@ BWDMの構文解析は，Nickらの開発したVDM構文解析ツールVDMJを�
 onポイントは，着目条件式のTBである．ドメインを決定づける条件式に付き1つ生成し，他のonポイントと重複してはならない．
 ドメインに関わる条件式の数だけ以下の手順を繰り返し，各条件式に着目したonポイントを生成する．
 \begin{enumerate}
-	\item\label{enu:onpoint_2} もし，着目条件式の比較演算子が，“$>=$”または“$<=$”である場合，“=”に置き換える．“$>$”である場合，“=”で置き換え，右辺を“+1”する．“$<$”である場合，“=”で置き換え，左辺を“+1”する．
-	\item\label{enu:onpoint_1} (\ref{enu:onpoint_2})で修正した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるonポイントが存在しないため，生成を行わずに次の着目条件式のonポイントの生成を行う．
-	\item 配列onPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイントと値が重なるかどうかを判定する．
-	      \begin{enumerate}
-	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:onpoint_1}）に戻る．
-	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列onPointsに格納する．
-	      \end{enumerate}
+  \item\label{enu:onpoint_2} もし，着目条件式の比較演算子が，“$>=$”または“$<=$”である場合，“=”に置き換える．“$>$”である場合，“=”で置き換え，右辺を“+1”する．“$<$”である場合，“=”で置き換え，左辺を“+1”する．
+  \item\label{enu:onpoint_1} (\ref{enu:onpoint_2})で修正した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるonポイントが存在しないため，生成を行わずに次の着目条件式のonポイントの生成を行う．
+  \item 配列onPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイントと値が重なるかどうかを判定する．
+        \begin{enumerate}
+          \item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:onpoint_1}）に戻る．
+          \item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列onPointsに格納する．
+        \end{enumerate}
 \end{enumerate}
 
 \subsubsection{offポイント}
 offポイントは，着目するonポイントに隣接し，TBでない値である．onポイントに付き複数（着目条件式に含まれる変数 $*$ 2）個存在する．
 配列onPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，onポイントの数だけ以下の手順を繰り返し，onポイントに着目したoffポイントを生成する．
 \begin{enumerate}
-	\item\label{enu:offpoint_2} 着目するonポイントのメンバforcusedConditionalExpressionを参照し，着目するonポイントがどの条件式に着目していたかを保持する．
-	\item (\ref{enu:offpoint_2})の条件式から，引数を抽出する．抽出した引数の数だけ以下を繰り返す．
-	\begin{enumerate}
-		\item 以下の処理を2回繰り返す．1回目は“N=$-$1”と定義し，2回目は“N=1”と定義する．
-		      \begin{enumerate}
-		      	\item\label{enu:offpoint_3} 着目するonポイントインスタンスをコピーする．
-		      	\item\label{enu:offpoint_1} (i)でコピーしたPointインスタンスのメンバ配列factorsから，“Factor.name == 引数名”となるFactorインスタンスを検索する．
-		      	\item (ii)で検索して見つかったFactorインスタンスのメンバvalueを“+N”する．
-		      	\item PointインスタンスのメンバforcusedVariableに引数名を格納する．
-		      	\item Pointインスタンスを配列offPoints（\ref{cha:DomainAnalyzer}節参照）に格納する．
-		      \end{enumerate}
-	\end{enumerate}
+  \item\label{enu:offpoint_2} 着目するonポイントのメンバforcusedConditionalExpressionを参照し，着目するonポイントがどの条件式に着目していたかを保持する．
+  \item (\ref{enu:offpoint_2})の条件式から，引数を抽出する．抽出した引数の数だけ以下を繰り返す．
+        \begin{enumerate}
+          \item 以下の処理を2回繰り返す．1回目は“N=$-$1”と定義し，2回目は“N=1”と定義する．
+                \begin{enumerate}
+                  \item\label{enu:offpoint_3} 着目するonポイントインスタンスをコピーする．
+                  \item\label{enu:offpoint_1} (i)でコピーしたPointインスタンスのメンバ配列factorsから，“Factor.name == 引数名”となるFactorインスタンスを検索する．
+                  \item (ii)で検索して見つかったFactorインスタンスのメンバvalueを“+N”する．
+                  \item PointインスタンスのメンバforcusedVariableに引数名を格納する．
+                  \item Pointインスタンスを配列offPoints（\ref{cha:DomainAnalyzer}節参照）に格納する．
+                \end{enumerate}
+        \end{enumerate}
 \end{enumerate}
 
 \subsubsection{inポイント}
 in ポイントは，ドメインを決定づける全ての条件式を満たす値である．ドメインに付き1つ生成し，他のonポイント，offポイントと重複してはならない．
 以下の手順を行い，inポイントを生成する．
 \begin{enumerate}
-	\item\label{enu:inpoint_2} もし，条件式の比較演算子が，“$>=$”である場合，“$>$”で置き換える．“$<=$”である場合，“$<$”で置き換える．これを，すべての条件式に対して行う．
-	\item\label{enu:inpoint_1} (\ref{enu:inpoint_2})で修正した条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，inポイントが存在しないため，生成を行わない．
-	\item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
-	      \begin{enumerate}
-	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:inpoint_1}）に戻る．
-	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），配列inPointsに格納する．
-	      \end{enumerate}
+  \item\label{enu:inpoint_2} もし，条件式の比較演算子が，“$>=$”である場合，“$>$”で置き換える．“$<=$”である場合，“$<$”で置き換える．これを，すべての条件式に対して行う．
+  \item\label{enu:inpoint_1} (\ref{enu:inpoint_2})で修正した条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，inポイントが存在しないため，生成を行わない．
+  \item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
+        \begin{enumerate}
+          \item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:inpoint_1}）に戻る．
+          \item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），配列inPointsに格納する．
+        \end{enumerate}
 \end{enumerate}
 
 \subsubsection{outポイント}
 outポイントは，着目条件式のみを満たさない値である．ドメインを決定づける条件式に付き1つ生成し，他のoffポイントと重複してはならない，
 ドメインに関わる条件式の数だけ以下の手順を繰り返し，各条件式に着目したoutポイントを生成する．
 \begin{enumerate}
-	\item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え，否定する．
-	\item\label{enu:outpoint_1} (\ref{enu:outpoint_2})で否定した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるoutポイントが存在しないため，生成を行わずに次の着目条件式のoutポイントの生成を行う．
-	\item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
-	      \begin{enumerate}
-	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:outpoint_1}）に戻る．
-	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列outPointsに格納する．
-	      \end{enumerate}
+  \item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え，否定する．
+  \item\label{enu:outpoint_1} (\ref{enu:outpoint_2})で否定した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるoutポイントが存在しないため，生成を行わずに次の着目条件式のoutポイントの生成を行う．
+  \item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
+        \begin{enumerate}
+          \item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:outpoint_1}）に戻る．
+          \item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列outPointsに格納する．
+        \end{enumerate}
 \end{enumerate}
 
 \subsection{テストケースの生成}
@@ -591,16 +591,16 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
     \caption{適用結果}
     \label{tab:pict4javaTekiyourei}
     \begin{tabular}{c|c|c|c|c}
-      No & \multicolumn{3}{|c|}{入力} & 期待出力                                 \\
+      No & \multicolumn{3}{|c|}{入力} & 期待出力                                             \\
       \hline
       \hline
-      1  & 100                        & -1       & 11         & Undefined Action \\
-      2  & 100                        & 2,018     & 12         & "aは100以上かつcは12以上" \\
-      3  & 2,147,483,647                 & 0        & 4,294,967,295 & Undefined Action \\
-      〜 & 〜                         & 〜       & 〜         & 〜 \\
-      38 & 2,147,483,647                 & -1       & -1         & Undefined Action \\
-      39 & 2,147,483,647                 & -1       & 4,294,967,294 & Undefined Action \\
-      40 & 2,147,483,647                 & 2,018     & 4,294,967,295 & Undefined Action \\
+      1  & 100                        & -1       & 11            & Undefined Action          \\
+      2  & 100                        & 2,018    & 12            & "aは100以上かつcは12以上" \\
+      3  & 2,147,483,647              & 0        & 4,294,967,295 & Undefined Action          \\
+      〜 & 〜                         & 〜       & 〜            & 〜                        \\
+      38 & 2,147,483,647              & -1       & -1            & Undefined Action          \\
+      39 & 2,147,483,647              & -1       & 4,294,967,294 & Undefined Action          \\
+      40 & 2,147,483,647              & 2,018    & 4,294,967,295 & Undefined Action          \\
       \hline
     \end{tabular}
   \end{center}
@@ -726,10 +726,10 @@ end ProblemClass
 “割引価格となる”を期待出力に持つドメインに対するドメイン分析テストのためのテストケースを作成する時間を計測した．
 生成するテストケースとしては，以下を基準とした．
 \begin{enumerate}
- \item onポイント，offポイント，inポイント，outポイントを記述する
- \item onポイント，offポイント，outポイントには，着目条件式も記述する
- \item offポイントには，着目変数も記述する
- \item 各ポイントには，期待出力と正常系であるかどうかも記述する．
+  \item onポイント，offポイント，inポイント，outポイントを記述する
+  \item onポイント，offポイント，outポイントには，着目条件式も記述する
+  \item offポイントには，着目変数も記述する
+  \item 各ポイントには，期待出力と正常系であるかどうかも記述する．
 \end{enumerate}
 
 検証に参加したメンバーは本研究室の大学院生3人と学部4年生1人であり，
@@ -764,32 +764,32 @@ VDM++に対する慣れなどの影響は無視できるものと思われる．
 
 \begin{table}[t]
   \begin{center}
-   \caption{テストケース作成に要した時間の比較}
-  \label{tab:time}
-  \begin{tabular}{c|c}
-   被験者 or 拡張したBWDM & 時間\\
-   \hline
-   \hline
-   被験者A & 8m 16s \\
-   被験者B & 10m 23s \\
-   被験者C & 30m \\
-   被験者D & 24m 04s \\
-   被験者（平均）& 18m 10s \\ 
-   BWDM & 15s \\
-   \hline
-  \end{tabular}
+    \caption{テストケース作成に要した時間の比較}
+    \label{tab:time}
+    \begin{tabular}{c|c}
+      被験者 or 拡張したBWDM & 時間    \\
+      \hline
+      \hline
+      被験者A                & 8m 16s  \\
+      被験者B                & 10m 23s \\
+      被験者C                & 30m     \\
+      被験者D                & 24m 04s \\
+      被験者（平均）         & 18m 10s \\
+      BWDM                   & 15s     \\
+      \hline
+    \end{tabular}
   \end{center}
-  \end{table}
+\end{table}
 
 \subsection{関連研究}
 \begin{comment}
 \begin{figure}[t]
-	\begin{center}
-		\includegraphics[width=8cm]{image/model_park.png}
-		\caption{設計モデルの例（遊園地チケット購入機能）}
-		\ecaption{Example of design model (amusement park ticket discount function)}
-		\label{fig:model_park}
-	\end{center}
+  \begin{center}
+    \includegraphics[width=8cm]{image/model_park.png}
+    \caption{設計モデルの例（遊園地チケット購入機能）}
+    \ecaption{Example of design model (amusement park ticket discount function)}
+    \label{fig:model_park}
+  \end{center}
 \end{figure}
 \end{comment}
 
