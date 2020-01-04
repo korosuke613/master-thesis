@@ -309,13 +309,6 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
 
 \begin{figure*}[t]
 	\begin{center}
-		\includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
-		\caption{拡張したBWDMの処理の流れ}
-		\label{fig:bwdm_structure}
-	\end{center}
-\end{figure*}
-\begin{figure*}[t]
-	\begin{center}
 		\includegraphics[keepaspectratio, width=160mm]{figs/DomainAnalyzer.png}
 		\caption{ドメイン分析部のクラス図}
 		\label{fig:class_DomainAnalyzer}
@@ -457,6 +450,22 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
 \end{enumerate}
 
 \section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
+
+本研究で拡張したBWDMの処理の流れを，図\ref{fig:bwdm_structure}に示す．
+既存のBWDMでは，入力したVDM++仕様を構文解析し，その結果を，境界値分析部と記号実行部に渡し，テストケースにおける入力データを生成する．
+
+拡張したBWDMでは，境界値分析部，記号実行部に加えて，ドメイン分析部を追加した．
+ドメイン分析部では，\ref{sec:define}節で記述した，inポイント，outポイント，onポイント，offポイントを生成する．
+また，複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように，構文解析部を一部修正した．
+さらに，ドメインテストに必要な，正常系判定値，着目条件式，そして着目変数の情報をテストケースに含めるために，テストケース生成部において，ドメインテストによるテストケースを出力する際は，正常系判定値，着目条件式，着目変数の情報も出力する処理を追加した．
+
+\begin{figure*}[t]
+	\begin{center}
+		\includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
+		\caption{拡張したBWDMの処理の流れ}
+		\label{fig:bwdm_structure}
+	\end{center}
+\end{figure*}
 
 \subsection{構文解析部}
 BWDMの構文解析は，Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}．
