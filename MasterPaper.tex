@@ -144,6 +144,101 @@
 
 本章では、\tool{}を実装するにあたり、必要となる前提知識を説明する。
 
+\section{ドメイン分析テスト}\label{cha:domain}
+本研究における，ドメイン分析テストの定義と，ドメインテストが必要となる仕様の例を，以下で示す．
+
+\subsection{定義}\label{sec:define}
+本研究におけるドメイン分析テストとは，関係性がある複数の変数を同時にテストする方法である\cite{izon}\cite{jstqb}．
+ドメインとは，入力するデータの定義域である．
+ドメイン分析とは，入力する変数と条件式を分析し，ドメインを抽出することである．
+ドメイン分析テストでは，ドメイン毎にonポイント，offポイント，inポイント，outポイントと呼ばれる入力値，および，それを基にしたテストケースを作成し，テストする．
+境界値とは，同値分割した領域の端，あるいは端のどちらか側で最小の増加的距離にある入力値又は出力値である\cite{jstqb}．
+本研究では，境界値の中でも，条件式を満たす境界値を利用する．これを，TB(True Boundary)と命名する．
+TBの定義を以下に示す．
+$exp$を条件式，$left$を左辺，$int$を右辺とする．
+\begin{itemize}
+	\item $exp$が$left = int$のとき，$TB = int$とする．
+	\item $exp$が$left < int$のとき，$TB = int - 1$とする．
+	\item $exp$が$left > int$のとき，$TB = int + 1$とする．
+	\item $exp$が$left <= int$のとき，$TB = int$とする．
+	\item $exp$が$left >= int$のとき，$TB = int$とする．
+\end{itemize}
+それぞれのポイントの定義を，以下に示す．
+\begin{itemize}
+	\item onポイント：着目条件式のTBである．ドメインを決定づける条件式に付き1つ生成する．他のonポイントと重複してはならない．$targetExp$を着目条件式とすると，onポイントは，$targetExp = True$かつ$left = TB$となる値でなければならない．
+	\item offポイント：着目するonポイントに隣接し，TBでない値である．onポイントに付き複数（着目条件式に含まれる変数 $*$ 2）個存在する．$targetVar$を着目変数とすると，offポイントは，$targetVar + 1$となる値または$targetVar - 1$となる値でなければならない．
+	\item inポイント：ドメインを決定づける全ての条件式を満たす値である．ドメインに付き1つ生成する．onポイントやoffポイントと重複してはならない．$onPoints$をonポイントの集合とし，$offPoints$をoffポイントの集合，$inPoint$をinポイントとすると，inポイントは， $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない．
+	\item outポイント：着目条件式のみを満たさない値である．ドメインを決定づける条件式に付き1つ生成する．offポイントと重複してはならない．$outPoint$をoutポイントとすると，outポイントは，$ (\lnot targetExp \land exp1 \land exp2 \land ... \land expN) = True$かつ$outPoint \notin offPoints$となる値でなければならない．
+\end{itemize}
+また，それぞれのポイントは，以下のパラメータを持つ．
+\begin{itemize}
+	\item 正常系判定値
+	\begin{itemize}
+		\item “正常系”とは，ポイントの期待出力がドメインの期待出力と一致する状態のことを言う．
+		\item “非正常系”とは，ポイントの期待出力がドメインの期待出力と一致しない状態のことを言う．
+		\item "正常系判定値"とは，正常系であるかどうかを保持する値である．正常系と非正常系の2つの状態を持つ．
+	\end{itemize}
+	\item 着目条件式\\
+			onポイント，offポイント，outポイントのみが持つ．どの条件式に着目してポイントを生成したかの情報である．
+	\item 着目変数\\
+			offポイントのみが持つ．どの変数に着目して，onポイントに隣接するポイントを生成したかの情報である．
+\end{itemize}
+
+\subsection{例}
+ドメイン分析テストが必要となる仕様の例として，遊園地チケット割引機能をテストすることを考える．遊園地チケット割引機能は，夫婦である夫と妻それぞれの年齢を入力とし，割引価格が適用されるかどうかを判定する関数であり，以下の様なルールを持つ．
+\begin{enumerate}
+	\renewcommand{\labelenumi}{\Alph{enumi})}
+	\item\label{enu:yuenchi} 以下の条件をすべて満たすとき，遊園地チケットは割引価格となる．
+	\begin{itemize}
+		\item 夫の年齢と妻の年齢の合計が50歳以下である．
+		\item 夫の年齢は18歳以上である．
+		\item 妻の年齢は16歳以上である．
+	\end{itemize}
+	\item A) でない場合，遊園地チケットは割引価格とならない．
+\end{enumerate}
+この仕様をVDM++で記述した仕様を，図\ref{fig:vdm_park}に示す．
+7行目に，複数の変数を左辺に含む条件式があるため，既存のBWDMではテストケース生成ができない．
+また，“割引価格となる”というドメインの各ポイントを生成した例を，図\ref{fig:domain_points}に示す．
+ドメインを決定づける3つの条件式は，“夫の年齢 + 妻の年齢 $<=$ 50”，“夫の年齢 $>=$ 18”，“妻の年齢 $>=$ 16”である．
+onポイントは，“On1”〜“On3”の3つであり，それぞれ，条件式の境界線上に存在する．
+offポイントは，“Off11”〜“Off32”の8つである．“Off11”〜“Off14”は“夫の年齢 + 妻の年齢 $<=$ 50”という条件式に着目した“On1”に隣接するoffポイントであり，4つ存在する．これは，“夫の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在し，同じように，“妻の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在するためである．
+しかし，“On2”のoffポイントは“Off21”， “Off22”の2つのみである．これは，“夫の年齢”をずらしたoffポイントが“妻の年齢 $>=$ 16”となり，TBとなるからである．
+inポイントは，“In”の1つであり，“割引価格となる”ドメインの全ての条件式を満たす値を持つ．
+outポイントは，“Out1”〜“Out3”の3つであり，着目条件式のみを満たさない値を持つ．
+
+\begin{figure}[tb]
+	\setbox0\vbox{
+		\hbox{ 1 class 遊園地チケット}
+		\hbox{ 2}
+		\hbox{ 3 functions}
+		\hbox{ 4}
+		\hbox{ 5 static public 割引判定 : int * int -$>$ seq of char}
+		\hbox{ 6 \ \ 割引判定(夫の年齢, 妻の年齢) ==}
+		\hbox{ 7 \ \ \ \ if(夫の年齢 + 妻の年齢 $<=$ 50) then}
+		\hbox{ 8 \ \ \ \ \ \ if(夫の年齢 $>=$ 18) then}
+		\hbox{ 9 \ \ \ \ \ \ \ \ if(妻の年齢 $>=$ 16) then}
+		\hbox{10 \ \ \ \ \ \ \ \ \ \ ``割引価格となる''}
+		\hbox{11 \ \ \ \ \ \ \ else}
+		\hbox{12 \ \ \ \ \ \ \ \ \ \ ``割引価格とならない(妻の年齢 $<$ 16)''}
+		\hbox{13 \ \ \ \ \ \ else}
+		\hbox{14 \ \ \ \ \ \ \ \ ``割引価格とならない(夫の年齢 $<$ 18)''}
+		\hbox{15 \ \ \ \ else}
+		\hbox{16 \ \ \ \ \ \  \  ``割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)'';}
+		\hbox{17}
+		\hbox{18 end 遊園地チケット}
+	}
+	\centerline{\fbox{\box0}}
+	\caption{ドメインテストが必要となる仕様（遊園地チケット割引機能）}
+	\label{fig:vdm_park}
+\end{figure}
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/domain_points}
+  \caption{遊園地チケット割引機能（図\ref{fig:vdm_park}）の割引になる条件にドメイン分析を適用した例}
+  \label{fig:domain_points}
+\end{figure}
+
 
 
 % 既存
@@ -280,7 +375,121 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
   \item C)で生成したリストを、pict4javaの出力データとする。
 \end{enumerate}
 
-\section{メイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
+\section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
+
+\subsection{構文解析部}
+BWDMの構文解析は，Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}．
+既存のBWDMは，各条件式の左辺または右辺に複数の変数を含む場合，エラーを出力してしまう（\ref{sec:bwdm_problem}節参照）．
+したがって，if条件式の左辺と右辺の式を構文解析し，条件式内の変数を抽出することによって，左辺または右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とした．
+
+\subsection{ドメイン分析部}\label{cha:DomainAnalyzer}
+拡張したBWDMはドメイン分析テストにおける，onポイント，offポイント，inポイント，outポイントを生成するために，ドメイン分析部を持つ．
+各ポイントは，テストケースの入力データであり，引数名と値のタプルの配列を保持している．
+各ポイントの生成については，\ref{cha:create_point}節にて説明する．
+
+作成したドメイン分析部のクラス図を，図\ref{fig:class_DomainAnalyzer}に示す．
+各クラスの詳細を，以下に示す．
+
+\begin{itemize}
+	\item
+	Factorクラスは，引数の情報を持つクラスである．変数名（name）と値（value）を保持する．
+	\item
+	Pointクラスは，テストケースの入力データの情報を持つクラスである．テストケース名（name），そのポイントが着目条件式（forcusedConditionalExpression），そのポイントの着目変数（forcusedVariable），そして複数のFactor（factors）を保持する．
+	\item
+	DomainPointsクラスは，ドメインの情報を持つクラスである．期待出力（name），onポイントの集合（onPoints），offポイントの集合（offPoints），inポイント（inPoints），outポイントの集合（outPoints）を保持する．
+	\item
+	DomainAnalyzerクラスは，ドメイン分析を行うクラスである．ドメインの集合（domains）を保持している．
+	また，onポイント，offポイント，inポイント，outポイントを生成する機能(generateXXPointsメソッド)，および，各ドメインの各ポイントを，期待出力生成部に入力できるデータ構造として抽出する機能(getAllTestCaseByDomainAnalyzerメソッド)を持つ．
+
+\end{itemize}
+
+\subsection{各ポイントの生成手法の提案と適用}\label{cha:create_point}
+拡張したBWDMは，入力する仕様のドメイン毎に，onポイント，offポイント，inポイント，outポイントを生成する．
+
+各ポイントを満たす変数の値を求めるために，SMTソルバ（Satisfiable Modulo Theories）\cite{sat}を利用する．
+充足可能性問題（SAT）を解くアルゴリズムを実装したソフトウェアをSATソルバと呼び，SATソルバを算術演算に対応させたソフトウェアをSMTソルバと呼ぶ．
+幅広く知られているSMTソルバの1つに，Microsoft Researchが開発を進めているZ3\cite{z3}がある．Z3は，C，C++，Java，Pythonなどのプログラミング言語から利用できるAPIを提供する．拡張したBWDMは，このZ3を利用し，条件式を満たす入力値を生成する．
+
+各ポイントの生成方法の提案手法を，以下に示す．
+
+\subsubsection{onポイント}
+onポイントは，着目条件式のTBである．ドメインを決定づける条件式に付き1つ生成し，他のonポイントと重複してはならない．
+ドメインに関わる条件式の数だけ以下の手順を繰り返し，各条件式に着目したonポイントを生成する．
+\begin{enumerate}
+	\item\label{enu:onpoint_2} もし，着目条件式の比較演算子が，“$>=$”または“$<=$”である場合，“=”に置き換える．“$>$”である場合，“=”で置き換え，右辺を“+1”する．“$<$”である場合，“=”で置き換え，左辺を“+1”する．
+	\item\label{enu:onpoint_1} (\ref{enu:onpoint_2})で修正した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるonポイントが存在しないため，生成を行わずに次の着目条件式のonポイントの生成を行う．
+	\item 配列onPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイントと値が重なるかどうかを判定する．
+	      \begin{enumerate}
+	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:onpoint_1}）に戻る．
+	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列onPointsに格納する．
+	      \end{enumerate}
+\end{enumerate}
+
+\subsubsection{offポイント}
+offポイントは，着目するonポイントに隣接し，TBでない値である．onポイントに付き複数（着目条件式に含まれる変数 $*$ 2）個存在する．
+配列onPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，onポイントの数だけ以下の手順を繰り返し，onポイントに着目したoffポイントを生成する．
+\begin{enumerate}
+	\item\label{enu:offpoint_2} 着目するonポイントのメンバforcusedConditionalExpressionを参照し，着目するonポイントがどの条件式に着目していたかを保持する．
+	\item (\ref{enu:offpoint_2})の条件式から，引数を抽出する．抽出した引数の数だけ以下を繰り返す．
+	\begin{enumerate}
+		\item 以下の処理を2回繰り返す．1回目は“N=$-$1”と定義し，2回目は“N=1”と定義する．
+		      \begin{enumerate}
+		      	\item\label{enu:offpoint_3} 着目するonポイントインスタンスをコピーする．
+		      	\item\label{enu:offpoint_1} (i)でコピーしたPointインスタンスのメンバ配列factorsから，“Factor.name == 引数名”となるFactorインスタンスを検索する．
+		      	\item (ii)で検索して見つかったFactorインスタンスのメンバvalueを“+N”する．
+		      	\item PointインスタンスのメンバforcusedVariableに引数名を格納する．
+		      	\item Pointインスタンスを配列offPoints（\ref{cha:DomainAnalyzer}節参照）に格納する．
+		      \end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+
+\subsubsection{inポイント}
+in ポイントは，ドメインを決定づける全ての条件式を満たす値である．ドメインに付き1つ生成し，他のonポイント，offポイントと重複してはならない．
+以下の手順を行い，inポイントを生成する．
+\begin{enumerate}
+	\item\label{enu:inpoint_2} もし，条件式の比較演算子が，“$>=$”である場合，“$>$”で置き換える．“$<=$”である場合，“$<$”で置き換える．これを，すべての条件式に対して行う．
+	\item\label{enu:inpoint_1} (\ref{enu:inpoint_2})で修正した条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，inポイントが存在しないため，生成を行わない．
+	\item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
+	      \begin{enumerate}
+	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:inpoint_1}）に戻る．
+	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），配列inPointsに格納する．
+	      \end{enumerate}
+\end{enumerate}
+
+\subsubsection{outポイント}
+outポイントは，着目条件式のみを満たさない値である．ドメインを決定づける条件式に付き1つ生成し，他のoffポイントと重複してはならない，
+ドメインに関わる条件式の数だけ以下の手順を繰り返し，各条件式に着目したoutポイントを生成する．
+\begin{enumerate}
+	\item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え，否定する．
+	\item\label{enu:outpoint_1} (\ref{enu:outpoint_2})で否定した条件式と，その他の条件式をZ3に入力し，解（引数と値のタプルの集合）を求める．解が求まらなかった場合，現在の着目条件式におけるoutポイントが存在しないため，生成を行わずに次の着目条件式のoutポイントの生成を行う．
+	\item 配列onPointsと配列offPoints（\ref{cha:DomainAnalyzer}節参照）を参照し，他のonポイント，offポイントと値が重なるかどうかを判定する．
+	      \begin{enumerate}
+	      	\item 重なっている場合，条件式に，”重なっている変数 $!=$ 重なった値“という条件式を加え，（\ref{enu:outpoint_1}）に戻る．
+	      	\item 重なっていない場合，解を基に，Pointインスタンスを作り（\ref{cha:DomainAnalyzer}節参照），メンバforcusedConditionalExpressionには，着目条件式を格納する．作成したインスタンスを配列outPointsに格納する．
+	      \end{enumerate}
+\end{enumerate}
+
+\subsection{テストケースの生成}
+既存のBWDMは，期待出力生成部において，入力データを基に期待出力を生成する機能を持つ．DomainAnalyzerクラス（\ref{cha:DomainAnalyzer}節参照）のgetAllTestCaseByDomainAnalyzerメソッドを呼び出すことにより，\ref{cha:create_point}節で生成した各ドメインの各ポイントを，期待出力生成部に入力できるデータ構造として抽出することができる．
+そのため，既存のBWDMの期待出力生成部をそのまま用いて，期待出力生成とテストケース生成は可能である．
+拡張したBWDMでは，各ドメインの各ポイントのテストケースを出力する．
+
+しかし，既存のBWDMのテストケース生成部には，ドメインテストに必要な，正常系判定値，着目条件式，そして着目変数の情報を出力テストケースに加える処理が存在しない．
+これに対応するため，テストケース生成部において，ドメインテストによるテストケースを出力する際，正常系判定値，着目条件式，着目変数の情報についても出力する処理を追加した．
+着目条件式の出力には，PointクラスのメンバforcusedConditionalExpressionを参照する．
+offポイントの場合，着目変数の出力を行う．出力には，PointクラスのメンバforcusedVariableを参照する．
+正常系判定値は，出力するテストケースの期待出力と，ドメインの期待出力（DomainPoints.name）を比較して判断する．
+等しければ，“正常系”と出力する．等しくなければ“非正常系”と出力する．
+
+出力テストケースのフォーマットを，図\ref{fig:output_format}に示す．$<$と$>$で囲まれている部分を，それぞれの情報で置き換える．
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/dmin_output_format}
+  \caption{ドメイン分析テストのためのテストケースの出力フォーマット}
+  \label{fig:dmin_output_format}
+\end{figure}
+
 \section{対応構文の拡張}
 
 % 適用例
