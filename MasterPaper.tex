@@ -294,17 +294,15 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
   \end{center}
 \end{figure}
 
-\begin{figure*}[t]
-  \begin{center}
-    \includegraphics[keepaspectratio, width=160mm]{figs/DomainAnalyzer.png}
-    \caption{ドメイン分析部のクラス図}
-    \label{fig:class_DomainAnalyzer}
-  \end{center}
-\end{figure*}
-
 \section{単一の関数しかテストケース生成できない問題点}
+既存の\tool{}には、複数の関数が含まれる仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
+本研究では，上記の問題を解決するために，既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する．
+
 
 \section{操作のテストケースを生成できない問題点}
+既存の\tool{}には、操作が含まれる仕様のテストケース生成ができないという問題点がある。
+本研究では，上記の問題を解決するために，既存の\tool{}の構文解析処理をし、操作が含まれる仕様のテストケース生成に対応し、\tool{}を拡張する．
+
 
 
 % 拡張
@@ -447,6 +445,14 @@ BWDMの構文解析は，Nickらの開発したVDM構文解析ツールVDMJを�
 拡張したBWDMはドメイン分析テストにおける，onポイント，offポイント，inポイント，outポイントを生成するために，ドメイン分析部を持つ．
 各ポイントは，テストケースの入力データであり，引数名と値のタプルの配列を保持している．
 各ポイントの生成については，\ref{cha:create_point}節にて説明する．
+
+\begin{figure*}[t]
+  \begin{center}
+    \includegraphics[keepaspectratio, width=160mm]{figs/DomainAnalyzer.png}
+    \caption{ドメイン分析部のクラス図}
+    \label{fig:class_DomainAnalyzer}
+  \end{center}
+\end{figure*}
 
 作成したドメイン分析部のクラス図を，図\ref{fig:class_DomainAnalyzer}に示す．
 各クラスの詳細を，以下に示す．
