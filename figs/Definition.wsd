@@ -1,7 +1,13 @@
 @startuml Definition
 
+class InformationExtractor{
+     - constantValues: LinkedHashMap<String, VDMJ::TCValueDefinition>
+     - instanceVariables: LinkedHashMap<String, VDMJ::TCInstanceVariableDefinition>
+
+}
+
 class Definition{
-     # constantValues: LinkedHashMap<String, TCValueDefinition>
+     # constantValues: LinkedHashMap<String, VDMJ::TCValueDefinition>
      + returnValue: String = tcDefinition.type.result.toString()
      + name: String = tcDefinition.name.name
      + {abstract} setIfElseSyntaxTree(): void
@@ -17,22 +23,25 @@ class FunctionDefinition{
 }
 
 class OperationDefinition{
-     - instanceVariables: LinkedHashMap<String, TCInstanceVariableDefinition>
+     - instanceVariables: LinkedHashMap<String, VDMJ::TCInstanceVariableDefinition>
      # setIfElseSyntaxTree(): void
      # parseIfConditions(): void
      - setUsedInstanceVariables(): void
 }
 
 ' left to right direction
-TCDefinition <|-- TCExplicitFunctionDefinition
-TCDefinition <|-- TCExplicitOperationDefinition
+VDMJ::TCDefinition <|-- VDMJ::TCExplicitFunctionDefinition
+VDMJ::TCDefinition <|-- VDMJ::TCExplicitOperationDefinition
 
 
-Definition "1" *--> "1" TCDefinition: tcDefinition
+Definition "1" *--> "1" VDMJ::TCDefinition: tcDefinition
 Definition <|-- FunctionDefinition
 Definition <|-- OperationDefinition
 
-FunctionDefinition "1" *--> "1" TCExplicitFunctionDefinition: tcDefinition
-OperationDefinition "1" *--> "1" TCExplicitOperationDefinition: tcDefinition
+FunctionDefinition "1" *--> "1" VDMJ::TCExplicitFunctionDefinition: tcDefinition
+OperationDefinition "1" *--> "1" VDMJ::TCExplicitOperationDefinition: tcDefinition
+
+InformationExtractor "1" *--> "0..*" OperationDefinition: operationDefinition
+InformationExtractor "1" *--> "0..*" FunctionDefinition: functionDefinition
 
 @enduml
