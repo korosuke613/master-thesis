@@ -1,0 +1,38 @@
+@startuml Definition
+
+class Definition{
+     # constantValues: LinkedHashMap<String, TCValueDefinition>
+     + returnValue: String = tcDefinition.type.result.toString()
+     + name: String = tcDefinition.name.name
+     + {abstract} setIfElseSyntaxTree(): void
+     + {abstract} parseIfConditions(): void
+     # createCompositParameters(element: String): void
+     # initializeIfconditions(): void
+     # createIfCondition(): void
+}
+
+class FunctionDefinition{
+     # setIfElseSyntaxTree(): void
+     # parseIfConditions(): void
+}
+
+class OperationDefinition{
+     - instanceVariables: LinkedHashMap<String, TCInstanceVariableDefinition>
+     # setIfElseSyntaxTree(): void
+     # parseIfConditions(): void
+     - setUsedInstanceVariables(): void
+}
+
+' left to right direction
+TCDefinition <|-- TCExplicitFunctionDefinition
+TCDefinition <|-- TCExplicitOperationDefinition
+
+
+Definition "1" *--> "1" TCDefinition: tcDefinition
+Definition <|-- FunctionDefinition
+Definition <|-- OperationDefinition
+
+FunctionDefinition "1" *--> "1" TCExplicitFunctionDefinition: tcDefinition
+OperationDefinition "1" *--> "1" TCExplicitOperationDefinition: tcDefinition
+
+@enduml

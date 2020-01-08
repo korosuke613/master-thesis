@@ -1,0 +1,34 @@
+@startuml DomainAnalyzer
+
+class DomainAnalyzer{
+     + getAllTestcaseByDomainAnalyzer(): String
+     + generateOffPoints(dp: DomainPoints): void
+     + generateOnPoints(dp: DomainPoints): void
+     + generateInPoints(dp: DomainPoints): void
+     + generateOutPoints(dp: DomainPoints): void
+}
+
+class DomainPoints{
+     + name: String
+}
+
+class Point{
+     + name: String
+     + focusedConditionalExpression: String
+     + focusedVariable: String
+     + getInputData(): ArrayList<Factor>
+}
+
+class Factor{
+     + name: String
+     + value: Long
+}
+left to right direction	
+DomainAnalyzer "1" *--> "1..*" DomainPoints: domains
+DomainPoints "1" *--> "1..*" Point: onPoints
+DomainPoints "1" *--> "1..*" Point: offPoints
+DomainPoints "1" *--> "1..*" Point: inPoints
+DomainPoints "1" *--> "1..*" Point: outPoints
+Point "1" *--> "1..*" Factor: factors
+
+@enduml
