@@ -299,7 +299,7 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
 
 本研究では，上記の問題を解決するために，ドメイン分析テストのためのテストケース生成手法を提案し，既存のBWDMに適用することで，BWDMを拡張する．
 
-\section{単一の関数しかテストケース生成できない問題点}
+\section{単一の関数しかテストケース生成できない問題点}\label{sec:probrem_only_function}
 既存の\tool{}には、複数の関数が含まれる仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
 複数の関数が含まれるVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
@@ -368,7 +368,7 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{minipage}
 
-\section{操作のテストケースを生成できない問題点}
+\section{操作のテストケースを生成できない問題点}\label{sec:probrem_operation}
 既存の\tool{}には、操作が含まれる仕様のテストケース生成ができないという問題点がある。
 本研究では，上記の問題を解決するために，既存の\tool{}の構文解析処理をし、操作が含まれる仕様のテストケース生成に対応し、\tool{}を拡張する．
 
@@ -606,6 +606,13 @@ outポイントは，着目条件式のみを満たさない値である．ド�
 \end{enumerate}
 
 \subsection{テストケースの生成}
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/dmin_output_format}
+  \caption{ドメイン分析テストのためのテストケースの出力フォーマット}
+  \label{fig:dmin_output_format}
+\end{figure}
+
 既存のBWDMは，期待出力生成部において，入力データを基に期待出力を生成する機能を持つ．DomainAnalyzerクラス（\ref{cha:DomainAnalyzer}節参照）のgetAllTestCaseByDomainAnalyzerメソッドを呼び出すことにより，\ref{cha:create_point}節で生成した各ドメインの各ポイントを，期待出力生成部に入力できるデータ構造として抽出することができる．
 そのため，既存のBWDMの期待出力生成部をそのまま用いて，期待出力生成とテストケース生成は可能である．
 拡張したBWDMでは，各ドメインの各ポイントのテストケースを出力する．
@@ -619,21 +626,21 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 
 出力テストケースのフォーマットを，図\ref{fig:output_format}に示す．$<$と$>$で囲まれている部分を，それぞれの情報で置き換える．
 
+\section{複数の定義への対応}
 \begin{figure}[tp]
   \centering
-  \includegraphics[keepaspectratio, width=160mm]{figs/dmin_output_format}
-  \caption{ドメイン分析テストのためのテストケースの出力フォーマット}
-  \label{fig:dmin_output_format}
+  \includegraphics[keepaspectratio, width=160mm]{figs/multi_bwdm_structure}
+  \caption{複数の定義への対応のために拡張したBWDM}
+  \label{fig:multi_bwdm_structure}
 \end{figure}
 
-\section{複数の定義への対応}
-本研究で拡張したBWDMの処理の流れを，図\ref{fig:bwdm_structure}に示す．
-既存のBWDMでは，入力したVDM++仕様を構文解析し，その結果を，境界値分析部と記号実行部に渡し，テストケースにおける入力データを生成する．
+本研究で拡張したBWDMの処理の流れを，図\ref{fig:multi_bwdm_structure}に示す．
+既存のBWDMでは，入力したVDM++仕様を構文解析部にて、字句解析、構文解析、抽象構文木解析を行い、抽象構文木に変換する。
 
-拡張したBWDMでは，境界値分析部，記号実行部に加えて，ドメイン分析部を追加した．
-ドメイン分析部では，\ref{sec:define}節で記述した，inポイント，outポイント，onポイント，offポイントを生成する．
-また，複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように，構文解析部を一部修正した．
-さらに，ドメインテストに必要な，正常系判定値，着目条件式，そして着目変数の情報をテストケースに含めるために，テストケース生成部において，ドメインテストによるテストケースを出力する際は，正常系判定値，着目条件式，着目変数の情報も出力する処理を追加した．
+拡張したBWDMでは、節\ref{sec:probrem_operation}で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
+また、節\ref{sec:probrem_only_function}で述べた、単一の関数しかテストケース生成できないという問題を解決するため、および、新規に作成したクラスに対応するために、構文解析部の抽象構文木解析処理を一部修正した。
+
+\subsection{関数定義以外の定義の解析}
 
 \begin{figure}[tp]
   \centering
