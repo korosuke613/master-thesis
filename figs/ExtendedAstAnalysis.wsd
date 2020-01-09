@@ -1,0 +1,27 @@
+@startuml ExtendedAstAnalysis
+
+start
+:FunctionDefinition型の連想配列explicitFunctionsをインスタンス化する;
+:OperationDefinition型の連想配列explicitOperationsをインスタンス化する;
+:TCValueDefinition型の連想配列constantValuesをインスタンス化する;
+:TCInstanceVariableDefinition型の連想配列instanceVariablesをインスタンス化する;
+while (抽象構文木の集合) is (空でない)
+:抽象構文木の集合の先頭を取り出し、変数astDefinitionに代入する;
+if(astDefinition.kind() == "explicit function") then (true)
+  :astDefinitionをTCExplicitFunctionDefinitionに型変換する;
+  :explicitFunctionsに追加する;
+elseif(astDefinition.kind() == "explicit operation") then (true)
+  :astDefinitionをTCExplicitOperationDefinitionに型変換する;
+  :explicitOperationsに追加する;
+elseif(astDefinition.kind() == "value") then (true)
+  :astDefinitionをTCValueDefinitionに型変換する;
+  :tcValueDefinitionに追加する;
+elseif(astDefinition.kind() == "instance variable") then (true)
+  :astDefinitionをTCInstanceVariableDefinitionに型変換する;
+  :tcInstanceVariableDefinitionに追加する;
+endif
+endwhile(空である)
+
+stop
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml ExistAstAnalysis
+
+start
+:TCExplicitFunctionDefinition型の変数tcFunctionDefinitionを宣言する;
+while (抽象構文木の集合) is (空でない)
+:抽象構文木の集合の先頭を取り出し、変数astDefinitionに代入する;
+if(astDefinition.kind()) then ("explicit function"である)
+  :astDefinitionをTCExplicitFunctionDefinitionに型変換し、tcFunctionDefinitionに代入する;
+else("explicit function"でない)
+endif
+endwhile(空である)
+
+stop
+
+@enduml

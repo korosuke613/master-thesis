@@ -700,8 +700,23 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 \end{itemize}
 
 \subsection{抽象構文木解析処理の修正}
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/ExistAstAnalysis}
+  \caption{既存のBWDMの抽象構文木解析処理}
+  \label{fig:ExistAstAnalysis}
+\end{figure}
+
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
+既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/ExtendedAstAnalysis}
+  \caption{拡張したBWDMの抽象構文木解析処理}
+  \label{fig:ExtendedAstAnalysis}
+\end{figure}
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
