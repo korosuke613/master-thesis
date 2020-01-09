@@ -55,6 +55,7 @@
 \usepackage{verbatim}           % コメントアウトしてくれる便利なプリアンブルが使える \begin{comment} ... \end{comment}
 \usepackage[hdivide={21mm, , 21mm}, vdivide={30mm, , 25mm}]{geometry} % スタイルを少し変えたくても\hoffset, \voffsetは使わないでね
 %\RequirePackage[l2tabu, orthodox]{nag} % これを入れると、古いコマンドを警告してくれる！なお完全には消せなかった模様
+\newcommand\todo[1]{\textcolor{red}{#1}}
 
 %%
 % マクロの定義
@@ -149,6 +150,9 @@
 \chapter{研究の準備}\label{cha:Preparation}
 
 本章では、\tool{}を実装するにあたり、必要となる前提知識を説明する。
+
+\section{VDMJ}\label{cha:vdmj}
+\todo{TODO: VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
 
 \section{ドメイン分析テスト}\label{cha:domain}
 本研究における、ドメイン分析テストの定義と、ドメインテストが必要となる仕様の例を、以下で示す。
