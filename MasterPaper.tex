@@ -813,25 +813,20 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
   \item\label{enu:ast_kind2} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
   \item \ref{enu:ast_kind2}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
         \begin{enumerate}
-          \item "explicit function"である場合、関数定義なので、以下を実行する。\ref{enu:ast_func_dai}へ進む。
+          \item "explicit function"である場合、関数定義なので、以下を実行する。
                 \begin{enumerate}
                   \item 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、クラスFunctionDefinitionに渡し、インスタンス化する。
                   \item インスタンス化したクラスFunctionDefinitionを、連想配列explicitFunctionsに、キーを定義名(astDefinition.name)として追加する。
                 \end{enumerate}
-          \item "explicit operation"である場合、操作定義なので、以下を実行する。\ref{enu:ast_ope_dai}へ進む。
+          \item "explicit operation"である場合、操作定義なので、以下を実行する。
                 \begin{enumerate}
                   \item 変数astDefinitionをTCExplicitOperationDefinitionに型変換し、クラスOperationDefinitionに渡し、インスタンス化する。
                   \item インスタンス化したクラスOperationDefinitionを、連想配列explicitOperationsに、キーを定義名(astDefinition.name)として追加する。
                 \end{enumerate}
-          \item "value"である場合、定数定義なので、astDefinitionをTCValueDefinitionに型変換し、tcValueDefinitionに追加する。\ref{enu:ast_ope_dai}へ進む。
-          \item "instance variable"である場合、インスタンス変数定義なので、astDefinitionをTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。\ref{enu:ast_ope_dai}へ進む。
+          \item "value"である場合、定数定義なので、astDefinitionをTCValueDefinitionに型変換し、tcValueDefinitionに追加する。
+          \item "instance variable"である場合、インスタンス変数定義なので、astDefinitionをTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。
           \item どれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
         \end{enumerate}
-
-  \item\label{enu:ast_func_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
-  \item\label{enu:ast_ope_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
-  \item\label{enu:ast_val_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
-  \item\label{enu:ast_var_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
   \item \ref{enu:checkAstIsNull2}に進む。
 \end{enumerate}
 
