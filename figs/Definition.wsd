@@ -18,13 +18,11 @@ abstract class Definition{
 
 class FunctionDefinition{
      # setIfElseSyntaxTree(): void
-     # parseIfConditions(): void
 }
 
 class OperationDefinition{
      - instanceVariables: LinkedHashMap<String, VDMJ::TCInstanceVariableDefinition>
      # setIfElseSyntaxTree(): void
-     # parseIfConditions(): void
      - setUsedInstanceVariables(): void
 }
 'note left: tcDefinition->oclIsTypeOf(TCExplicitOperationDefinition)
