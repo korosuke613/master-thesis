@@ -301,6 +301,10 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
 
 \section{単一の関数しかテストケース生成できない問題点}
 既存の\tool{}には、複数の関数が含まれる仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
+複数の関数が含まれるVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
+コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
+既存のBWDMは、最後に定義されている関数のみテストケース生成するため、「うるう年判定」関数を出力できていない。
+
 本研究では，上記の問題を解決するために，既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する．
 
 \lstset{language=}
@@ -336,7 +340,7 @@ end 判定
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-\begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した場合の出力。,label=fig:func_multiple_result]
+\begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した際の出力。,label=fig:func_multiple_result]
 関数名 : 成人判定
 引数の型 : 年齢:nat 
 戻り値の型 : seq of (char)
