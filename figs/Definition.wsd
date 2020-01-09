@@ -13,6 +13,7 @@ abstract class Definition{
      + parameters: ArrayList<String>
      + argumentTypes: ArrayList<String>
      + {abstract} setIfElseSyntaxTree(): void
+     # createIfCondition(): void
 }
 
 class FunctionDefinition{
@@ -23,6 +24,7 @@ class FunctionDefinition{
 class OperationDefinition{
      - instanceVariables: LinkedHashMap<String, VDMJ::TCInstanceVariableDefinition>
      # setIfElseSyntaxTree(): void
+     # parseIfConditions(): void
      - setUsedInstanceVariables(): void
 }
 'note left: tcDefinition->oclIsTypeOf(TCExplicitOperationDefinition)
