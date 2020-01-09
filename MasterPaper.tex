@@ -304,8 +304,8 @@ outポイントは、“Out1”〜“Out3”の3つであり、着目条件式�
 本研究では、上記の問題を解決するために、ドメイン分析テストのためのテストケース生成手法を提案し、既存のBWDMに適用することで、BWDMを拡張する。
 
 \section{単一の関数しかテストケース生成できない問題点}\label{sec:probrem_only_function}
-既存の\tool{}には、複数の関数が含まれる仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
-複数の関数が含まれるVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
+既存の\tool{}には、複数の関数を含む仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
+複数の関数を含むVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
 既存のBWDMは、最後に定義されている関数のみテストケース生成するため、「うるう年判定」関数を出力できていない。
 
@@ -313,7 +313,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、着目条件式�
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=複数の関数が含まれるVDM++仕様。,label=fig:func_multiple]
+  \begin{lstlisting}[caption=複数の関数を含むVDM++仕様。,label=fig:func_multiple]
 class 判定
 
 functions
@@ -372,7 +372,7 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{minipage}
 
-\section{定数が含まれる関数のテストケースを生成できない問題点}\label{sec:probrem_operation}
+\section{定数を含む関数のテストケースを生成できない問題点}\label{sec:probrem_value}
 既存の\tool{}には、定数を含む関数を含む仕様のテストケース生成ができないという問題点がある。
 定数を含む関数を含むVDM++仕様をコード\ref{fig:value_definition}に示す。
 このVDM++仕様には「偶数判定」関数が定義されている。
@@ -707,9 +707,9 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 \end{figure}
 
 本研究で拡張したBWDMの処理の流れを、図\ref{fig:multi_bwdm_structure}に示す。
-既存のBWDMでは、入力したVDM++仕様を構文解析部にて、字句解析、構文解析、抽象構文木解析を行い、抽象構文木に変換する。
+既存のBWDMでは、入力したVDM++仕様を構文解析部に入力し、字句解析、構文解析、抽象構文木解析を行い、抽象構文木に変換する。
 
-拡張したBWDMでは、節\ref{sec:probrem_operation}で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
+拡張したBWDMでは、\ref{sec:probrem_value}節、\ref{sec:probrem_operation}節で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
 また、節\ref{sec:probrem_only_function}で述べた、単一の関数しかテストケース生成できないという問題を解決するため、および、新規に作成したクラスに対応するために、構文解析部の抽象構文木解析処理を一部修正した。
 
 \subsection{定義クラス群の作成}\label{sec:create_definition}
@@ -723,20 +723,26 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 関数定義以外の定義に対応するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを作成した。
 これらの、定義クラス群の関係を図\ref{fig:definition_class}に示す。
 図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラスである。VDMJパッケージのクラスの説明を以下に示す。
+\todo{TODO: ここは2章のVDMJの説明でやったほうが良いかもしれない...}
 
 \begin{itemize}
-  \item 抽象クラスVDMJ::TCDefinition: VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
-  \item クラスVDMJ::TCExplicitFunctionDefinition: VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
-  \item クラスVDMJ::TCExplicitOperationDefinition: VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
-  \item クラスVDMJ::TCValueDefinition: VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
-  \item クラスVDMJ::TCInstanceVariableDefinition: VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
+  \item 抽象クラスVDMJ::TCDefinition\\
+  VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
+  \item クラスVDMJ::TCExplicitFunctionDefinition\\
+  VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
+  \item クラスVDMJ::TCExplicitOperationDefinition\\
+  VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
+  \item クラスVDMJ::TCValueDefinition\\
+  VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
+  \item クラスVDMJ::TCInstanceVariableDefinition\\
+  VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
 \end{itemize}
 
 また、それ以外のクラスの説明を以下に示す。
 
 \begin{itemize}
   \item 抽象クラスDefinition\\
-        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを基に、if-then-else式から木構造を生成（TODO:立山さんの修論参照）する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを基に、if-then-else式から木構造を生成\todo{（TODO:立山さんの修論参照）}する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[name] 定義の名前
           \item[constantValues] 定数定義の集合
@@ -764,6 +770,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
   \item クラスInformationExtractor\\
         抽象構文木解析処理を行うクラスである。
         構文木解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
+        \todo{TODO: 既存のBWDMにも存在することを明記したほうが良いかも}
         \begin{description}
           \item[constantValues] 定数定義の集合
           \item[instanceVariables] インスタンス変数定義の集合
@@ -784,15 +791,16 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
-受け取った抽象構文木の集合は\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
-既存のBWDMの抽象構文木解析処理を以下に示す。
+受け取る抽象構文木の集合は\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
+既存のBWDMの抽象構文木解析処理を以下に示す。\todo{(既存のBWDMに書いた方が良いかも)}
+以下の処理はInformationExtractorクラスにて行う。
 
 %既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
 
 \begin{enumerate}
   \item TCExplicitFunctionDefinition型の変数tcFunctionDefinitionを宣言する。
   \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
-        空である場合、変数tcFunctionDefinitionを構文木解析処理を出力し、処理を終了する。
+        空である場合、変数tcFunctionDefinitionを構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
   \item\label{enu:ast_kind} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
   \item \ref{enu:ast_kind}で取得した抽象構文木の種類が"explicit function"であるか確認する。
@@ -804,7 +812,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 
 拡張したBWDMでは、抽象構文木解析処理にて、受け取った抽象構文木を、\ref{sec:create_definition}節で作成した定義クラス群に変換し、連想配列に格納している。
-拡張したBWDMの抽象構文木解析処理を以下に示す。
+拡張したBWDMの抽象構文木解析処理を以下に示す。以下の処理はInformationExtractorクラスにて行う。
 
 \begin{enumerate}
   \item FunctionDefinition型の連想配列explicitFunctionsをインスタンス化する。
@@ -812,7 +820,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
   \item TCValueDefinition型の連想配列constantValuesをインスタンス化する。
   \item TCInstanceVariableDefinition型の連想配列instanceVariablesをインスタンス化する。
   \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
-        空である場合、変数tcFunctionDefinitionを構文木解析処理を出力し、処理を終了する。
+        空である場合、連想配列explicitFunctionsと連想配列explicitOperationsを構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
   \item\label{enu:ast_kind2} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
   \item \ref{enu:ast_kind2}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
@@ -1038,7 +1046,7 @@ No.2 : 1 -> "奇数"
 拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition})を入力として適用した結果をコード\ref{fig:extended_multiple_definition}に示す。
 コード\ref{fig:extended_multiple_definition}では、「current\_year」インスタンス変数を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
 また、適切なテストケース生成ができていることが確認できる。
-したがって、拡張したBWDMは、既存のBWDMの問題点である、操作定義を含む仕様のテストケース生成ができないという問題点を解決し、操作定義を含む仕様のテストケース生成ができていることを確認できた。
+したがって、拡張したBWDMは、既存のBWDMの問題点である、操作のテストケース生成ができないという問題点を解決し、操作のテストケース生成ができていることを確認できた。
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
