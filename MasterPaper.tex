@@ -721,7 +721,7 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラスである。VDMJパッケージのクラスの説明を以下に示す。
 
 \begin{itemize}
-  \item 抽象クラスVDMJ::TCDefinition: VDM++における各定義ブロックを表す抽象クラスである。
+  \item 抽象クラスVDMJ::TCDefinition: VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
   \item クラスVDMJ::TCExplicitFunctionDefinition: VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
   \item クラスVDMJ::TCExplicitOperationDefinition: VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
   \item クラスVDMJ::TCValueDefinition: VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
@@ -768,26 +768,82 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 \end{itemize}
 
 \subsection{抽象構文木解析処理の修正}
+
+\begin{comment}
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/ExistAstAnalysis}
   \caption{既存のBWDMの抽象構文木解析処理}
   \label{fig:ExistAstAnalysis}
 \end{figure}
+\end{comment}
 
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
-既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
+受け取った抽象構文木の集合は\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
+既存のBWDMの抽象構文木解析処理を以下に示す。
+
+%既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
+
+\begin{enumerate}
+  \item TCExplicitFunctionDefinition型の変数tcFunctionDefinitionを宣言する。
+  \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
+        空である場合、変数tcFunctionDefinitionを構文木解析処理を出力し、処理を終了する。
+  \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
+  \item\label{enu:ast_kind} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
+  \item \ref{enu:ast_kind}で取得した抽象構文木の種類が"explicit function"であるか確認する。
+        "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
+        "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
+  \item\label{enu:ast_dainyu} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、変数tcFunctionDefinitionに代入する。
+  \item \ref{enu:checkAstIsNull}に進む。
+\end{enumerate}
+
 
 拡張したBWDMでは、抽象構文木解析処理にて、受け取った抽象構文木を、\ref{sec:create_definition}節で作成した定義クラス群に変換し、連想配列に格納している。
-拡張したBWDMの抽象構文木解析処理を図\ref{fig:ExtendedAstAnalysis}に示す。
+拡張したBWDMの抽象構文木解析処理を以下に示す。
 
+\begin{enumerate}
+  \item FunctionDefinition型の連想配列explicitFunctionsをインスタンス化する。
+  \item OperationDefinition型の連想配列explicitOperationsをインスタンス化する。
+  \item TCValueDefinition型の連想配列constantValuesをインスタンス化する。
+  \item TCInstanceVariableDefinition型の連想配列instanceVariablesをインスタンス化する。
+  \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
+        空である場合、変数tcFunctionDefinitionを構文木解析処理を出力し、処理を終了する。
+  \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
+  \item\label{enu:ast_kind2} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
+  \item \ref{enu:ast_kind2}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
+        \begin{enumerate}
+          \item "explicit function"である場合、関数定義なので、以下を実行する。\ref{enu:ast_func_dai}へ進む。
+                \begin{enumerate}
+                  \item 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、クラスFunctionDefinitionに渡し、インスタンス化する。
+                  \item インスタンス化したクラスFunctionDefinitionを、連想配列explicitFunctionsに、キーを定義名(astDefinition.name)として追加する。
+                \end{enumerate}
+          \item "explicit operation"である場合、操作定義なので、以下を実行する。\ref{enu:ast_ope_dai}へ進む。
+                \begin{enumerate}
+                  \item 変数astDefinitionをTCExplicitOperationDefinitionに型変換し、クラスOperationDefinitionに渡し、インスタンス化する。
+                  \item インスタンス化したクラスOperationDefinitionを、連想配列explicitOperationsに、キーを定義名(astDefinition.name)として追加する。
+                \end{enumerate}
+          \item "value"である場合、定数定義なので、astDefinitionをTCValueDefinitionに型変換し、tcValueDefinitionに追加する。\ref{enu:ast_ope_dai}へ進む。
+          \item "instance variable"である場合、インスタンス変数定義なので、astDefinitionをTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。\ref{enu:ast_ope_dai}へ進む。
+          \item どれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
+        \end{enumerate}
+
+  \item\label{enu:ast_func_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
+  \item\label{enu:ast_ope_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
+  \item\label{enu:ast_val_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
+  \item\label{enu:ast_var_dai} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、連想配列explicitFunctionsにキーを定義名(astDefinition.name)として追加する。
+  \item \ref{enu:checkAstIsNull2}に進む。
+\end{enumerate}
+
+%拡張したBWDMの抽象構文木解析処理を図\ref{fig:ExtendedAstAnalysis}に示す。
+\begin{comment}
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/ExtendedAstAnalysis}
   \caption{拡張したBWDMの抽象構文木解析処理}
   \label{fig:ExtendedAstAnalysis}
 \end{figure}
+\end{comment}
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
