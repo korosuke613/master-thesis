@@ -93,6 +93,12 @@
 %  tabsize=5,
 }
 
+\lstdefinestyle{interfaces}{
+  float=tp,
+  floatplacement=tbp,
+  abovecaptionskip=-5pt
+}
+
 %%
 % miyazaki-u-paper.sty用設定値
 %
@@ -265,19 +271,6 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
 したがって、組合せ爆発を起こす可能性がある。本稿では、この問題を解決するために、既存のBWDMを拡張する。
 
 \section{複数変数を含む条件式に関する問題点}
-既存のBWDMが持つ問題の1つに，左辺または右辺に複数の変数を含む条件式を持つ仕様に対してテストケース生成ができない点がある．
-図\ref{fig:vdm_park}に示したVDM++仕様には，7行目の条件式の左辺に複数の変数が含まれているため，この仕様を既存のBWDMに適用しても，テストケース生成ができない．
-
-この理由を，既存のBWDMに図\ref{fig:vdm_park}の仕様を入力した場合を例に，以下で説明する．
-
-\begin{itemize}
-  \item 図\ref{fig:vdm_park}の6行目にて，入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している．7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが，既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する．“夫の年齢+妻の年齢”という引数は仕様に定義されていないため，既存のBWDMはエラーを出力し，動作を停止してしまう．
-  \item 図\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには，「制約を満たす入力があるかどうか」という，充足可能性問題（Satisfiable Problem，SAT）を解かなければならない．しかし，既存のBWDMは，充足可能性問題を解くことができない．
-\end{itemize}
-
-本研究では，上記の問題を解決するために，ドメイン分析テストのためのテストケース生成手法を提案し，既存のBWDMに適用することで，BWDMを拡張する．
-
-
 \begin{figure}[t]
   \begin{center}
     \includegraphics[keepaspectratio, width=160mm]{figs/sample_testcase.png}
@@ -294,10 +287,82 @@ outポイントは，“Out1”〜“Out3”の3つであり，着目条件式�
   \end{center}
 \end{figure}
 
+既存のBWDMが持つ問題の1つに，左辺または右辺に複数の変数を含む条件式を持つ仕様に対してテストケース生成ができない点がある．
+図\ref{fig:vdm_park}に示したVDM++仕様には，7行目の条件式の左辺に複数の変数が含まれているため，この仕様を既存のBWDMに適用しても，テストケース生成ができない．
+
+この理由を，既存のBWDMに図\ref{fig:vdm_park}の仕様を入力した場合を例に，以下で説明する．
+
+\begin{itemize}
+  \item 図\ref{fig:vdm_park}の6行目にて，入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している．7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが，既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する．“夫の年齢+妻の年齢”という引数は仕様に定義されていないため，既存のBWDMはエラーを出力し，動作を停止してしまう．
+  \item 図\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには，「制約を満たす入力があるかどうか」という，充足可能性問題（Satisfiable Problem，SAT）を解かなければならない．しかし，既存のBWDMは，充足可能性問題を解くことができない．
+\end{itemize}
+
+本研究では，上記の問題を解決するために，ドメイン分析テストのためのテストケース生成手法を提案し，既存のBWDMに適用することで，BWDMを拡張する．
+
 \section{単一の関数しかテストケース生成できない問題点}
 既存の\tool{}には、複数の関数が含まれる仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
 本研究では，上記の問題を解決するために，既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する．
 
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[caption=複数の関数が含まれるVDM++仕様。,label=fig:func_multiple]
+class 判定
+
+functions
+
+public うるう年判定 : int -> seq of char
+  うるう年判定(年) ==
+    if(年 mod 4 = 0) then
+      if(年 mod 100 = 0) then
+        if(年 mod 400 = 0) then
+          "うるう年"
+        else
+          "平年"
+      else
+        "うるう年"
+    else
+      "平年";
+
+public 成人判定 : nat -> seq of char
+  成人判定(年齢) ==
+    if(年齢 <= 20) then
+      "未成年"
+    else
+      "成人";
+
+end 判定
+\end{lstlisting}
+\end{minipage}
+
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した場合の出力。,label=fig:func_multiple_result]
+関数名 : 成人判定
+引数の型 : 年齢:nat 
+戻り値の型 : seq of (char)
+生成テストケース数 : 8件(境界値分析:6/記号実行:2)
+
+各引数の境界値
+年齢 : 4294967295 4294967294 0 -1 20 21 
+
+記号実行情報
+戻り値の数 : 2
+制約 : 年齢 <= 20 , 戻り値 : "未成年"
+制約 : !( 年齢 <= 20 ) , 戻り値 : "成人"
+
+境界値分析によるテストケース
+No.1 : 4294967295 -> Undefined Action
+No.2 : 4294967294 -> "成人"
+No.3 : 0 -> "未成年"
+No.4 : -1 -> Undefined Action
+No.5 : 20 -> "未成年"
+No.6 : 21 -> "成人"
+
+記号実行によるテストケース
+No.1 : 1 -> "未成年"
+No.2 : 21 -> "成人"
+\end{lstlisting}
+\end{minipage}
 
 \section{操作のテストケースを生成できない問題点}
 既存の\tool{}には、操作が含まれる仕様のテストケース生成ができないという問題点がある。
@@ -558,9 +623,13 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 \end{figure}
 
 \section{複数の定義への対応}
+本研究で拡張したBWDMの処理の流れを，図\ref{fig:bwdm_structure}に示す．
+既存のBWDMでは，入力したVDM++仕様を構文解析し，その結果を，境界値分析部と記号実行部に渡し，テストケースにおける入力データを生成する．
 
-
-\section{定数定義、インスタンス変数定義、操作定義への対応}
+拡張したBWDMでは，境界値分析部，記号実行部に加えて，ドメイン分析部を追加した．
+ドメイン分析部では，\ref{sec:define}節で記述した，inポイント，outポイント，onポイント，offポイントを生成する．
+また，複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように，構文解析部を一部修正した．
+さらに，ドメインテストに必要な，正常系判定値，着目条件式，そして着目変数の情報をテストケースに含めるために，テストケース生成部において，ドメインテストによるテストケースを出力する際は，正常系判定値，着目条件式，着目変数の情報も出力する処理を追加した．
 
 \begin{figure}[tp]
   \centering
@@ -594,6 +663,7 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 \end{table}
 
 \lstset{language=}
+\noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[caption=因子が3、水準が（6 6 6）の関数を持つVDM++仕様。,label=fig:pict4javaSampleVdm]
 class SampleClass
 functions
@@ -612,6 +682,7 @@ sampleFunction(a, b, c)==
 
 end SampleClass
 \end{lstlisting}
+\end{minipage}
 
 本稿で拡張したBWDMが正しく動作することを検証するため、拡張したBWDMにVDM++仕様を適用した。
 適用結果を、表\ref{tab:pict4javaTekiyourei }に示す。
@@ -649,6 +720,7 @@ outポイントは，関係する3つの条件式に着目し，着目条件式�
 \section{評価}
 \subsection{膨大な数のテストケースを生成}
 \lstset{language=}
+\noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[caption=因子が7、水準が（6 8 6 8 8 6 6）の関数を持つVDM++仕様。,label=fig:pict4javaIndication]
 class ProblemClass
 functions
@@ -681,6 +753,7 @@ problemFunction : nat*nat*nat*nat*nat*nat*nat -$>$ seq of char
       "a<=4";
 end ProblemClass
 \end{lstlisting}
+\end{minipage}
 
 本稿で拡張したBWDMが、既存のBWDMに比べて、テストケース総数を削減できることを確認する。
 膨大な数のテストケースを生成するために、因子が7、境界値分析後の水準がそれぞれ(6, 8, 6, 8, 8, 6, 6)の関数を持つVDM++仕様を、既存のBWDMと拡張後のBWDMにそれぞれ適用する。
