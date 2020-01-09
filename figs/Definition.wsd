@@ -7,13 +7,13 @@ class InformationExtractor{
 }
 
 abstract class Definition{
-     # constantValues: LinkedHashMap<String, VDMJ::TCValueDefinition>
-     + returnValue: String = tcDefinition.type.result.toString()
      + name: String = tcDefinition.name.name
+     # constantValues: LinkedHashMap<String, VDMJ::TCValueDefinition>
+     + returnValue: String = tcDefinition.type.result
+     + parameters: ArrayList<String>
+     + argumentTypes: ArrayList<String>
      + {abstract} setIfElseSyntaxTree(): void
      + {abstract} parseIfConditions(): void
-     # createCompositParameters(element: String): void
-     # initializeIfconditions(): void
      # createIfCondition(): void
 }
 
