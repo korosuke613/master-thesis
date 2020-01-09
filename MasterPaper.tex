@@ -990,6 +990,46 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{minipage}
 
+\section{定数を含む関数を含む仕様}
+拡張したBWDMに、定数を含む関数を含む仕様(コード\ref{fig:value_definition})を入力として適用した結果をコード\ref{fig:extended_value_definition_result}に示す。
+コード\ref{fig:extended_value_definition_result}では、12行目にて「$数 mod 2 = 0$」となっており、evenを2に正しく変換できていることが確認できる。
+また、13行目も同様に確認できる。
+また、適切なテストケース生成ができていることが確認できる。
+したがって、拡張したBWDMは，既存のBWDMの問題点である、定数を含む関数を含む仕様のテストケース生成ができないという問題点を解決し、定数を含む関数を含む仕様のテストケース生成ができていることを確認できた。
+
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力。,label=fig:extended_value_definition_result]
+
+関数名 : 偶数判定
+引数の型 : 数:int 
+戻り値の型 : seq of (char)
+生成テストケース数 : 9件(境界値分析:7/記号実行:2)
+
+各引数の境界値
+数 : 2147483648 2147483647 -2147483648 -2147483649 1 2 3 
+
+記号実行情報
+戻り値の数 : 2
+制約 : 数 mod 2 = 0 , 戻り値 : "偶数"
+制約 : !( 数 mod 2 = 0 ) , 戻り値 : "奇数"
+
+境界値分析によるテストケース
+No.1 : 2147483648 -> Undefined Action
+No.2 : 2147483647 -> "奇数"
+No.3 : -2147483648 -> "偶数"
+No.4 : -2147483649 -> Undefined Action
+No.5 : 1 -> "奇数"
+No.6 : 2 -> "偶数"
+No.7 : 3 -> "奇数"
+
+記号実行によるテストケース
+No.1 : 2 -> "偶数"
+No.2 : 1 -> "奇数"
+
+\end{lstlisting}
+\end{minipage}
+
 % 考察
 \chapter{考察}\label{cha:Evaluation}
 \section{評価}
