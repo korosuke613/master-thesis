@@ -253,6 +253,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、着目条件式�
 
 % 既存
 \chapter{既存の\tool{}}\label{cha:Exist}
+\todo{TODO: ぜんぜんBWDMの説明になっていないので、もっと既存のBWDMにできることを説明する。}
 
 本章では、既存の\tool{} (\toolFullName{})について説明する。
 
@@ -269,12 +270,14 @@ outポイントは、“Out1”〜“Out3”の3つであり、着目条件式�
 
 しかし、既存のBWDMには問題がある。
 
-\section{組合せ爆発に関する問題点}
+\section{問題点}
+
+\subsection{組合せ爆発に関する問題点}
 境界値分析によるテストケース生成において、生成したテストケース数は因子が取り得るそれぞれの値の数を掛け合わせることにより決定する。
 たとえば、（6、6、2、4、5、7）の因子の場合、既存のBWDMは、6×6×2×4×5×7＝10,080のテストケースを生成する。
 したがって、組合せ爆発を起こす可能性がある。本稿では、この問題を解決するために、既存のBWDMを拡張する。
 
-\section{複数変数を含む条件式に関する問題点}
+\subsection{複数変数を含む条件式に関する問題点}
 \begin{figure}[t]
   \begin{center}
     \includegraphics[keepaspectratio, width=160mm]{figs/sample_testcase.png}
@@ -303,7 +306,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、着目条件式�
 
 本研究では、上記の問題を解決するために、ドメイン分析テストのためのテストケース生成手法を提案し、既存のBWDMに適用することで、BWDMを拡張する。
 
-\section{単一の関数しかテストケース生成できない問題点}\label{sec:probrem_only_function}
+\subsection{単一の関数しかテストケース生成できない問題点}\label{sec:probrem_only_function}
 既存の\tool{}には、複数の関数を含む仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
 複数の関数を含むVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
@@ -372,7 +375,7 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{minipage}
 
-\section{定数を含む関数のテストケースを生成できない問題点}\label{sec:probrem_value}
+\subsection{定数を含む関数のテストケースを生成できない問題点}\label{sec:probrem_value}
 既存の\tool{}には、定数を含む関数を含む仕様のテストケース生成ができないという問題点がある。
 定数を含む関数を含むVDM++仕様をコード\ref{fig:value_definition}に示す。
 このVDM++仕様には「偶数判定」関数が定義されている。
@@ -404,7 +407,7 @@ end 判定
 \end{lstlisting}
 \end{minipage}
 
-\section{操作のテストケースを生成できない問題点}\label{sec:probrem_operation}
+\subsection{操作のテストケースを生成できない問題点}\label{sec:probrem_operation}
 既存の\tool{}には、操作を含む仕様のテストケース生成ができないという問題点がある。
 操作を含む関数を含むVDM++仕様をコード\ref{fig:multiple_definition}に示す。
 このVDM++仕様には「西暦設定」操作、「うるう年判定」操作が定義されている。
