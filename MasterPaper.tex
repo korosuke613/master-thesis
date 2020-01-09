@@ -827,7 +827,6 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
           \item "instance variable"である場合、インスタンス変数定義なので、astDefinitionをTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。
           \item どれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
         \end{enumerate}
-  \item \ref{enu:checkAstIsNull2}に進む。
 \end{enumerate}
 
 %拡張したBWDMの抽象構文木解析処理を図\ref{fig:ExtendedAstAnalysis}に示す。
@@ -839,6 +838,10 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
   \label{fig:ExtendedAstAnalysis}
 \end{figure}
 \end{comment}
+
+\subsection{境界値分析部、記号実行部、ドメイン分析部で定義クラス群を入力とするように修正}
+既存のBWDMでは、境界値分析部、記号実行部、ドメイン分析部に入力するオブジェクトの型がTCExplicitFunctionDefinition型であった。
+したがって、拡張したBWDMでは、\ref{sec:create_definition}節で作成した定義クラス群を境界値分析部、記号実行部、ドメイン分析部に入力できるように修正した。
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
@@ -915,7 +918,77 @@ outポイントは，関係する3つの条件式に着目し，着目条件式�
 したがって，拡張したBWDMは，既存のBWDMの問題点である，条件式内に複数の変数があるVDM++仕様を解析できること，かつ，ドメインテストによるテストケース生成が適切にできることを確認できた．
 
 
-\section{class構文とoparation構文を用いた仕様}
+\section{複数の関数を含む仕様}
+拡張したBWDMに、複数の関数を含む仕様(コード\ref{fig:func_multiple})を入力として適用した結果をコード\ref{fig:extended_func_multiple_result}に示す。
+コード\ref{fig:extended_func_multiple_result}では、「成人判定」関数だけでなく、「うるう年判定」関数も適切なテストケース生成できていることが確認できる。
+したがって、拡張したBWDMは，既存のBWDMの問題点である、単一の関数しかテストケース生成できないという問題点を解決し、複数の関数のテストケース生成ができていることを確認できた。
+
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力。,label=fig:extended_func_multiple_result]
+関数名 : うるう年判定
+引数の型 : 年:int 
+戻り値の型 : seq of (char)
+生成テストケース数 : 17件(境界値分析:13/記号実行:4)
+
+各引数の境界値
+年 : 2147483648 2147483647 -2147483648 -2147483649 3 4 5 99 100 101 399 400 401 
+
+記号実行情報
+戻り値の数 : 4
+制約 : 年 mod 400 = 0 and 年 mod 100 = 0and 年 mod 4 = 0, 戻り値 : "うるう年"
+制約 : !( 年 mod 400 = 0 ) and 年 mod 100 = 0and 年 mod 4 = 0, 戻り値 : "平年"
+制約 : !( 年 mod 100 = 0 ) and 年 mod 4 = 0, 戻り値 : "うるう年"
+制約 : !( 年 mod 4 = 0 ) , 戻り値 : "平年"
+
+境界値分析によるテストケース
+No.1 : 2147483648 -> Undefined Action
+No.2 : 2147483647 -> "平年"
+No.3 : -2147483648 -> "うるう年"
+No.4 : -2147483649 -> Undefined Action
+No.5 : 3 -> "平年"
+No.6 : 4 -> "うるう年"
+No.7 : 5 -> "平年"
+No.8 : 99 -> "平年"
+No.9 : 100 -> "平年"
+No.10 : 101 -> "平年"
+No.11 : 399 -> "平年"
+No.12 : 400 -> "うるう年"
+No.13 : 401 -> "平年"
+
+記号実行によるテストケース
+No.1 : 400 -> "うるう年"
+No.2 : 500 -> "平年"
+No.3 : 104 -> "うるう年"
+No.4 : 1 -> "平年"
+
+関数名 : 成人判定
+引数の型 : 年齢:nat 
+戻り値の型 : seq of (char)
+生成テストケース数 : 8件(境界値分析:6/記号実行:2)
+
+各引数の境界値
+年齢 : 4294967295 4294967294 0 -1 20 21 
+
+記号実行情報
+戻り値の数 : 2
+制約 : 年齢 <= 20 , 戻り値 : "未成年"
+制約 : !( 年齢 <= 20 ) , 戻り値 : "成人"
+
+境界値分析によるテストケース
+No.1 : 4294967295 -> Undefined Action
+No.2 : 4294967294 -> "成人"
+No.3 : 0 -> "未成年"
+No.4 : -1 -> Undefined Action
+No.5 : 20 -> "未成年"
+No.6 : 21 -> "成人"
+
+記号実行によるテストケース
+No.1 : 1 -> "未成年"
+No.2 : 21 -> "成人"
+
+\end{lstlisting}
+\end{minipage}
 
 % 考察
 \chapter{考察}\label{cha:Evaluation}
