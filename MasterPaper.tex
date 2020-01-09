@@ -640,14 +640,68 @@ offポイントの場合，着目変数の出力を行う．出力には，Point
 拡張したBWDMでは、節\ref{sec:probrem_operation}で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
 また、節\ref{sec:probrem_only_function}で述べた、単一の関数しかテストケース生成できないという問題を解決するため、および、新規に作成したクラスに対応するために、構文解析部の抽象構文木解析処理を一部修正した。
 
-\subsection{関数定義以外の定義の解析}
-
+\subsection{定義クラス群の作成}
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/Definition_class_diagram}
   \caption{Definitionクラス関係のクラス図}
   \label{fig:definition_class}
 \end{figure}
+
+関数定義以外の定義に対応するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを作成した。
+これらの、定義クラス群の関係を図\ref{fig:definition_class}に示す。
+図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラスである。VDMJパッケージのクラスの説明を以下に示す。
+
+\begin{description}
+  \item[抽象クラスVDMJ::TCDefinition] VDM++における各定義ブロックを表す抽象クラスである。
+  \item[クラスVDMJ::TCExplicitFunctionDefinition] VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
+  \item[クラスVDMJ::TCExplicitOperationDefinition] VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
+  \item[クラスVDMJ::TCValueDefinition] VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
+  \item[クラスVDMJ::TCInstanceVariableDefinition] VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
+\end{description}
+
+また、それ以外のクラスの説明を以下に示す。
+
+\begin{itemize}
+  \item 抽象クラスDefinition\\
+  テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを基に、if-then-else式から木構造を生成（TODO:立山さんの修論参照）する。以下のフィールドとメソッドを持つ。
+  \begin{description}
+    \item[name] 定義の名前
+    \item[constantValues] 定数定義の集合
+    \item[returnType] 返値の型
+    \item[argumentTypes] 引数の型の集合 
+    \item[parameters] 仮引数名の集合
+    \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する抽象メソッド
+    \item[createIfCondition()] if-then-else式を構文解析する
+  \end{description}
+
+  \item クラスFunctionDefinition\\
+  テストケース生成を行う関数を表すクラスである。TCExplicitFunctionDefinition型のオブジェクトを基に、if-then-else式から木構造を生成（TODO:立山さんの修論参照）する。以下のフィールドとメソッドを持つ。
+  \begin{description}
+    \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
+  \end{description}
+
+  \item クラスOperationDefinition\\
+  テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを基に、if-then-else式から木構造を生成（TODO:立山さんの修論参照）する。以下のフィールドとメソッドを持つ。
+  \begin{description}
+    \item[instanceVariables] インスタンス変数定義の集合
+    \item[setUsesInstanceVariables()] if-then-else木構造内で使用されるインスタンス変数をargumentTypesとparametersに追加する
+    \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
+  \end{description}
+
+  \item クラスInformationExtractor\\
+  抽象構文木解析処理を行うクラスである。
+  構文木解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
+  \begin{description}
+    \item[constantValues] 定数定義の集合
+    \item[instanceVariables] インスタンス変数定義の集合
+  \end{description}
+
+\end{itemize}
+
+\subsection{抽象構文木解析処理の修正}
+既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
+抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
