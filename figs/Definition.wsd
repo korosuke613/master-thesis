@@ -6,7 +6,7 @@ class InformationExtractor{
 
 }
 
-class Definition{
+abstract class Definition{
      # constantValues: LinkedHashMap<String, VDMJ::TCValueDefinition>
      + returnValue: String = tcDefinition.type.result.toString()
      + name: String = tcDefinition.name.name
@@ -28,11 +28,13 @@ class OperationDefinition{
      # parseIfConditions(): void
      - setUsedInstanceVariables(): void
 }
+'note left: tcDefinition->oclIsTypeOf(TCExplicitOperationDefinition)
 
 ' left to right direction
 VDMJ::TCDefinition <|-- VDMJ::TCExplicitFunctionDefinition
 VDMJ::TCDefinition <|-- VDMJ::TCExplicitOperationDefinition
 
+abstract class VDMJ::TCDefinition
 
 Definition "1" *--> "1" VDMJ::TCDefinition: tcDefinition
 Definition <|-- FunctionDefinition
@@ -41,7 +43,6 @@ Definition <|-- OperationDefinition
 FunctionDefinition "1" *--> "1" VDMJ::TCExplicitFunctionDefinition: tcDefinition
 OperationDefinition "1" *--> "1" VDMJ::TCExplicitOperationDefinition: tcDefinition
 
-InformationExtractor "1" *--> "0..*" OperationDefinition: operationDefinition
-InformationExtractor "1" *--> "0..*" FunctionDefinition: functionDefinition
+InformationExtractor "1" *--> "0..*" Definition: definitions
 
 @enduml
