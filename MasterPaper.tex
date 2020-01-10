@@ -343,16 +343,17 @@ VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
 本研究では、左辺、右辺に複数の変数を含む条件式を持つ仕様のテストケース生成ができないという問題を解決するために、ドメイン分析テストのためのテストケース生成手法を提案し、既存のBWDMに適用することで、BWDMを拡張する。
 
 \subsection{単一の関数しかテストケース生成できない問題点}\label{sec:probrem_only_function}
-既存の\tool{}には、複数の関数を含む仕様のテストケースを生成した際に、最後に出現した関数のテストケースしか出力しないという問題点がある。
-複数の関数を含むVDM++仕様をコード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
+既存の\tool{}には、単一の関数しかテストケース生成できないという問題がある。
+したがって、複数の関数を含む仕様のテストケースを生成した際に、最後に定義した関数のテストケースしか出力できない。
+複数の関数を含むVDM++仕様を、コード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
 既存のBWDMは、最後に定義されている関数のみテストケース生成するため、「うるう年判定」関数を出力できていない。
 
-本研究では、上記の問題を解決するために、既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する。
+本研究では、単一の関数しかテストケース生成できないという問題を解決するために、既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する。
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=複数の関数を含むVDM++仕様。,label=fig:func_multiple]
+  \begin{lstlisting}[caption=複数の関数を含むVDM++仕様,label=fig:func_multiple]
 class 判定
 
 functions
@@ -383,7 +384,7 @@ end 判定
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した際の出力。,label=fig:func_multiple_result]
+  \begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した際の出力,label=fig:func_multiple_result]
 関数名 : 成人判定
 引数の型 : 年齢:nat 
 戻り値の型 : seq of (char)
@@ -423,7 +424,7 @@ No.2 : 21 -> "成人"
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=定数を含む関数を含むVDM++仕様。,label=fig:value_definition]
+  \begin{lstlisting}[caption=定数を含む関数を含むVDM++仕様,label=fig:value_definition]
 class 判定
 
 values
@@ -456,7 +457,7 @@ end 判定
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=操作を含むVDM++仕様。,label=fig:multiple_definition]
+  \begin{lstlisting}[caption=操作を含むVDM++仕様,label=fig:multiple_definition]
 class 判定
 
 instance variables
@@ -920,7 +921,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=因子が3、水準が(6 6 6)の関数を持つVDM++仕様。,label=fig:pict4javaSampleVdm]
+  \begin{lstlisting}[caption=因子が3、水準が(6 6 6)の関数を持つVDM++仕様,label=fig:pict4javaSampleVdm]
 class SampleClass
 functions
 
@@ -976,7 +977,7 @@ outポイントは、関係する3つの条件式に着目し、着目条件式�
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力。,label=fig:extended_func_multiple_result]
+  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力,label=fig:extended_func_multiple_result]
 関数名 : うるう年判定
 引数の型 : 年:int 
 戻り値の型 : seq of (char)
@@ -1050,7 +1051,7 @@ No.2 : 21 -> "成人"
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力。,label=fig:extended_value_definition_result]
+  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力,label=fig:extended_value_definition_result]
 
 関数名 : 偶数判定
 引数の型 : 数:int 
@@ -1089,7 +1090,7 @@ No.2 : 1 -> "奇数"
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:multiple_definition}を適用した際の出力。,label=fig:extended_multiple_definition]
+  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:multiple_definition}を適用した際の出力,label=fig:extended_multiple_definition]
 
 関数名 : うるう年判定
 引数の型 : current_year:nat 
@@ -1136,7 +1137,7 @@ No.4 : 1 -> "平年"
 \subsection{膨大な数のテストケースを生成}
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
-  \begin{lstlisting}[caption=因子が7、水準が(6 8 6 8 8 6 6)の関数を持つVDM++仕様。,label=fig:pict4javaIndication]
+  \begin{lstlisting}[caption=因子が7、水準が(6 8 6 8 8 6 6)の関数を持つVDM++仕様,label=fig:pict4javaIndication]
 class ProblemClass
 functions
 
