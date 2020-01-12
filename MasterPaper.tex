@@ -152,6 +152,36 @@
 \section{VDMJ}\label{cha:vdmj}
 \todo{TODO: VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
 
+\begin{itemize}
+  \item 抽象クラスVDMJ::TCDefinition\\
+        VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
+  \item クラスVDMJ::TCExplicitFunctionDefinition\\
+        VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
+  \item クラスVDMJ::TCExplicitOperationDefinition\\
+        VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
+  \item クラスVDMJ::TCValueDefinition\\
+        VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
+  \item クラスVDMJ::TCInstanceVariableDefinition\\
+        VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
+\end{itemize}
+
+\begin{table}[t]
+  \begin{center}
+    \caption{VDM++における定義、および、定義に対応するVDMJでの呼び方}
+    \label{tab:vdmj_definition_name}
+    \begin{tabular}{c|c}
+      VDM++における定義    & VDMJでの呼び方     \\
+      \hline
+      \hline
+      関数定義             & explicit function  \\
+      操作定義             & explicit operation \\
+      定数定義             & value              \\
+      インスタンス変数定義 & instance variable  \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
 \section{ドメイン分析テスト}\label{cha:domain}
 本研究における、ドメイン分析テストの定義と、ドメインテストが必要となる仕様の例を、以下で示す。
 
@@ -492,21 +522,21 @@ end 判定
     \caption{本研究で行う拡張とそれぞれが対応する問題}
     \label{tab:problem_compare}
     \begin{tabular}{c|c}
-      本研究で行う拡張 & 解決する問題                           \\
+      本研究で行う拡張   & 解決する問題                   \\
       \hline
       \hline
       ペアワイズ法の適用によるテストケース数削減
-                             & \ref{sec:problem_pairwise}節   \\ \hline
+                         & \ref{sec:problem_pairwise}節   \\ \hline
       \begin{tabular}{c}
-        ドメイン分析テストの適用による\\複数変数を含む条件式を含む関数のテストケース生成
+        ドメイン分析テストの適用による \\複数変数を含む条件式を含む関数のテストケース生成
       \end{tabular}
-                             & \ref{sec:problem_double_var}節 \\ \hline
-      複数の定義への対応     &
+                         & \ref{sec:problem_double_var}節 \\ \hline
+      複数の定義への対応 &
       \begin{tabular}{c}
         \ref{sec:probrem_only_function}節 \\
         \ref{sec:probrem_value}節         \\
         \ref{sec:probrem_operation}節
-      \end{tabular}                              \\
+      \end{tabular}                          \\
       \hline
     \end{tabular}
   \end{center}
@@ -786,23 +816,9 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 関数定義以外の定義に対応するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを作成した。
 これらの、定義クラス群の関係を、図\ref{fig:definition_class}に示す。
-図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラスである。VDMJパッケージのクラスの説明を以下に示す。
-\todo{TODO: ここは2章のVDMJの説明でやったほうが良いかもしれない...}
+図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラス(\ref{cha:vdmj}節)である。
 
-\begin{itemize}
-  \item 抽象クラスVDMJ::TCDefinition\\
-        VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
-  \item クラスVDMJ::TCExplicitFunctionDefinition\\
-        VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
-  \item クラスVDMJ::TCExplicitOperationDefinition\\
-        VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
-  \item クラスVDMJ::TCValueDefinition\\
-        VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
-  \item クラスVDMJ::TCInstanceVariableDefinition\\
-        VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
-\end{itemize}
-
-また、それ以外のクラスの説明を以下に示す。
+それ以外のクラスの説明を以下に示す。
 
 \begin{itemize}
   \item 抽象クラスDefinition\\
@@ -818,13 +834,13 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
         \end{description}
 
   \item クラスFunctionDefinition\\
-        テストケース生成を行う関数を表すクラスである。TCExplicitFunctionDefinition型のオブジェクトを元に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う関数を表すクラスである。TCExplicitFunctionDefinition型のオブジェクトを元に、if-then-else式から木構造を生成する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
         \end{description}
 
   \item クラスOperationDefinition\\
-        テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを元に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを元に、if-then-else式から木構造を生成する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[instanceVariables] インスタンス変数定義の集合
           \item[setUsesInstanceVariables()] if-then-else木構造内で使用されるインスタンス変数をargumentTypesとparametersに追加する
@@ -833,7 +849,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
   \item クラスInformationExtractor\\
         抽象構文木解析処理を行うクラスである。
-        構文木解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
+        構文解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
         \todo{TODO: 既存のBWDMにも存在することを明記したほうが良いかも}
         \begin{description}
           \item[constantValues] 定数定義の集合
@@ -855,7 +871,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
-受け取る抽象構文木の集合は\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
+受け取る抽象構文木の集合は、\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
 既存のBWDMの抽象構文木解析処理を以下に示す。\todo{(既存のBWDMに書いた方が良いかも)}
 以下の処理はInformationExtractorクラスにて行う。
 
@@ -866,8 +882,8 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
   \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
         空である場合、変数tcFunctionDefinitionを構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
-  \item\label{enu:ast_kind} astDefinition.kind()を実行し、抽象構文木の種類を取得する。
-  \item \ref{enu:ast_kind}で取得した抽象構文木の種類が"explicit function"であるか確認する。
+  \item\label{enu:ast_kind} astDefinition.kind()を実行し、定義の種類を取得する。
+  \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
         "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
         "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
   \item\label{enu:ast_dainyu} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、変数tcFunctionDefinitionに代入する。
@@ -901,7 +917,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
                 \end{enumerate}
           \item "value"である場合、定数定義なので、astDefinitionをTCValueDefinitionに型変換し、tcValueDefinitionに追加する。
           \item "instance variable"である場合、インスタンス変数定義なので、astDefinitionをTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。
-          \item どれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
+          \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
         \end{enumerate}
 \end{enumerate}
 
@@ -917,10 +933,12 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 \subsection{境界値分析部、記号実行部、ドメイン分析部で定義クラス群を入力とするように修正}
 既存のBWDMでは、境界値分析部、記号実行部、ドメイン分析部に入力するオブジェクトの型がTCExplicitFunctionDefinition型であった。
-したがって、拡張したBWDMでは、\ref{sec:create_definition}節で作成した定義クラス群を境界値分析部、記号実行部、ドメイン分析部に入力できるように修正した。
+したがって、拡張したBWDMでは、\ref{sec:create_definition}節で作成した定義クラス群を境界値分析部、記号実行部、ドメイン分析部に入力できるように修正する。
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
+
+
 \section{因子と水準の組合せ数が大きい仕様}
 
 \begin{table}[t]
@@ -1014,7 +1032,7 @@ outポイントは、関係する3つの条件式に着目し、着目条件式�
 戻り値の数 : 4
 制約 : 年 mod 400 = 0 and 年 mod 100 = 0and 年 mod 4 = 0, 戻り値 : "うるう年"
 制約 : !( 年 mod 400 = 0 ) and 年 mod 100 = 0and 年 mod 4 = 0, 戻り値 : "平年"
-制約 : !( 年 mod 100 = 0 ) and 年 mod 4 = 0, 戻り値 : "うるう年"
+制約 : !( 年 mod 100 = 0 ) and 年 mod 4 = 0, ��り値 : "うるう年"
 制約 : !( 年 mod 4 = 0 ) , 戻り値 : "平年"
 
 境界値分析によるテストケース
