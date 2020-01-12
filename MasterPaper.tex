@@ -382,7 +382,6 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 既存のBWDMには問題がある。問題点を以下で説明する。
 
 \subsection{組合せ爆発に関する問題点}\label{sec:problem_pairwise}
-\todo{因子と水準の説明を2章ですべき}
 境界値分析によるテストケース生成において、生成したテストケース数は因子が取り得るそれぞれの値の数(水準)を掛け合わせることにより決定する。
 たとえば、因子(6、6、2、4、5、7)の場合、既存のBWDMは、$6 \times 6 \times 2 \times 4 \times 5 \times 7＝10,080個$のテストケースを生成する。
 したがって、組合せ爆発を起こす可能性があるという問題がある。
@@ -409,7 +408,7 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 複数の関数を含むVDM++仕様を、コード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
 
-既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
+既存のBWDMでは、図\ref{fig:existBwdmStructure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
 受け取る抽象構文木の集合は、\ref{sec:vdmj_class}節で示した抽象クラス\ttt{TCDefinition}を継承したクラスの集合である。
 既存のBWDMの抽象構文木解析処理を以下に示す。
