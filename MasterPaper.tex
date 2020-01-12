@@ -55,7 +55,7 @@
 \usepackage{verbatim}           % コメントアウトしてくれる便利なプリアンブルが使える \begin{comment} ... \end{comment}
 \usepackage[hdivide={21mm, , 21mm}, vdivide={30mm, , 25mm}]{geometry} % スタイルを少し変えたくても\hoffset, \voffsetは使わないでね
 %\RequirePackage[l2tabu, orthodox]{nag} % これを入れると、古いコマンドを警告してくれる！なお完全には消せなかった模様
-\newcommand\todo[1]{\textcolor{red}{#1}}
+\newcommand\todo[1]{\PackageWarning{}{Detection TODO:#1}\textcolor{red}{(TODO:#1)}}
 
 %%
 % マクロの定義
@@ -119,7 +119,7 @@
 
 \preface{概要}
 
-\todo{TODO:ここには概要を書く}
+\todo{ここには概要を書く}
 
 
 %%
@@ -150,7 +150,7 @@
 本章では、\tool{}を実装するにあたり、必要となる前提知識を説明する。
 
 \section{VDMJ}\label{cha:vdmj}
-\todo{TODO: VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
+\todo{VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
 
 \subsection{VDMJのクラス}
 \begin{table}[t]
@@ -285,7 +285,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
 
 % 既存
 \chapter{既存の\tool{}}\label{cha:Exist}
-\todo{TODO: ぜんぜんBWDMの説明になっていないので、もっと既存のBWDMにできることを説明する。}
+\todo{ぜんぜんBWDMの説明になっていないので、もっと既存のBWDMにできることを説明する。}
 
 本章では、既存の\tool{} (\toolFullName{})について説明する。
 
@@ -355,7 +355,7 @@ VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
 既存のBWDMには問題がある。問題点を以下で説明する。
 
 \subsection{組合せ爆発に関する問題点}\label{sec:problem_pairwise}
-\todo{(TODO: 因子と水準の説明を2章ですべき)}
+\todo{因子と水準の説明を2章ですべき}
 境界値分析によるテストケース生成において、生成したテストケース数は因子が取り得るそれぞれの値の数(水準)を掛け合わせることにより決定する。
 たとえば、因子(6、6、2、4、5、7)の場合、既存のBWDMは、$6 \times 6 \times 2 \times 4 \times 5 \times 7＝10,080個$のテストケースを生成する。
 したがって、組合せ爆発を起こす可能性があるという問題がある。
@@ -793,7 +793,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 正常系判定値は、出力するテストケースの期待出力と、ドメインの期待出力(DomainPoints.name)を比較して判断する。
 等しければ、“正常系”と出力する。等しくなければ“非正常系”と出力する。
 
-出力テストケースのフォーマットを、図\ref{fig:output_format}に示す。$<$と$>$で囲まれている部分を、それぞれの情報で置き換える。
+出力テストケースのフォーマットを、図\ref{fig:dmin_output_format}に示す。$<$と$>$で囲まれている部分を、それぞれの情報で置き換える。
 
 \section{複数の定義への対応}\label{sec:extendMultiple}
 \begin{figure}[tp]
@@ -825,7 +825,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 \begin{itemize}
   \item 抽象クラスDefinition\\
-        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを元に、if-then-else式から木構造を生成\todo{(TODO:立山さんの修論参照)}する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを元に、if-then-else式から木構造を生成\todo{立山さんの修論参照}する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[name] 定義の名前
           \item[constantValues] 定数定義の集合
@@ -853,7 +853,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
   \item クラスInformationExtractor\\
         抽象構文木解析処理を行うクラスである。
         構文解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
-        \todo{TODO: 既存のBWDMにも存在することを明記したほうが良いかも}
+        \todo{既存のBWDMにも存在することを明記したほうが良いかも}
         \begin{description}
           \item[constantValues] 定数定義の集合
           \item[instanceVariables] インスタンス変数定義の集合
@@ -875,7 +875,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
 受け取る抽象構文木の集合は、\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
-既存のBWDMの抽象構文木解析処理を以下に示す。\todo{(既存のBWDMに書いた方が良いかも)}
+既存のBWDMの抽象構文木解析処理を以下に示す。\todo{既存のBWDMに書いた方が良いかも}
 以下の処理はInformationExtractorクラスにて行う。
 
 %既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
@@ -1393,18 +1393,18 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 
 
 \section{拡張した\tool{}の問題点}
-\todo{TODO: これからの問題点をかく}
+\todo{これからの問題点をかく}
 
 % おわりに
 \chapter{おわりに} \label{cha:Conclusion}
-\todo{TODO: 終わりにをかく}
+\todo{終わりにをかく}
 
 %%
 % 謝辞
 %
 \acknowledgment{}
 
-\todo{TODO: 謝辞をかく}
+\todo{謝辞をかく}
 
 
 %%
