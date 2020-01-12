@@ -346,22 +346,34 @@ end SampleClass
 \begin{figure}[t]
   \begin{center}
     \includegraphics[keepaspectratio, width=160mm]{figs/sample_testcase.png}
-    \caption{出力例：テストケース}
+    \caption{出力例：テストケース\todo{出力例にペアワイズが入っているから直す。図ではなくてコードにする。}}
     \label{fig:testcase_sample}
   \end{center}
 \end{figure}
 
-\begin{figure}[t]
-  \begin{center}
-    \includegraphics[keepaspectratio, width=160mm]{figs/bwdm_format.png}
-    \caption{既存のBWDMのテストケースの出力フォーマット}
-    \label{fig:bwdm_format}
-  \end{center}
-\end{figure}
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=既存のBWDMのテストケースの出力フォーマット,label=fig:bwdm_format]
+
+各引数の境界値
+<引数1>: <入力値1> ... <入力値N>
+・
+・
+・
+<引数N>: <入力値1> ... <入力値N>
+
+境界値分析によるテストケース（ペアワイズ法適用）
+<ID> : <入力値1> ... <入力値N> -> <期待出力>
+
+記号実行によるテストケース
+<ID> : <入力値1> ... <入力値N> -> <期待出力>
+
+\end{lstlisting}
+\end{minipage}
 
 VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 そのファイルから生成したテストケースの例を図\ref{fig:testcase_sample}に，それぞれ示す．
-また，出力テストケースのフォーマットを，図\ref{fig:bwdm_format}に示す．
+また，出力テストケースのフォーマットを，コード\ref{fig:bwdm_format}に示す．
 “各引数の境界値”にて，引数a， b， cそれぞれの境界値の集合を出力している．
 そして，“境界値分析によるテストケース”にて，ペアワイズ法を用いて，各引数の境界値の組合せ総数を削減したテストスイートを出力している．
 また，”記号実行によるテストケース”にて，関数のすべての実行フローを網羅できるテストスイートを出力している．
@@ -821,12 +833,34 @@ outポイントは、着目条件式のみを満たさない値である。ド�
 \end{enumerate}
 
 \subsection{テストケースの生成}
-\begin{figure}[tp]
-  \centering
-  \includegraphics[keepaspectratio, width=160mm]{figs/dmin_output_format}
-  \caption{ドメイン分析テストのためのテストケースの出力フォーマット}
-  \label{fig:dmin_output_format}
-\end{figure}
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=ドメイン分析テストのためのテストケースの出力フォーマット,label=fig:dmin_output_format]
+
+ドメインテストによるテストケース
+- <ドメインの期待出力>
+-- Onポイント
+<ID> : <入力値1> ... <入力値N>, <正常系かどうか>, <着目する条件式> -> <期待出力>
+
+-- Offポイント
+<ID> : <入力値1> ... <入力値N>, <正常系かどうか>, <着目する条件式>, <着目する条件式> -> <期待出力>
+
+-- Inポイント
+<ID> : <入力値1> ... <入力値N>, <正常系かどうか> -> <期待出力>
+
+-- Outポイント
+<ID> : <入力値1> ... <入力値N>, <正常系かどうか>, <着目する条件式> -> <期待出力>
+
+- <ドメイン名2>
+
+・
+・
+・
+
+- <ドメイン名N>
+
+\end{lstlisting}
+\end{minipage}
 
 既存のBWDMは、期待出力生成部において、入力データを元に期待出力を生成する機能を持つ。
 \ttt{DomainAnalyzer}クラス(\ref{cha:DomainAnalyzer}節参照)の\ttt{getAllTestCaseByDomainAnalyzer}メソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
@@ -840,7 +874,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 正常系判定値は、出力するテストケースの期待出力と、ドメインの期待出力(\ttt{DomainPoints.name})を比較して判断する。
 等しければ、“正常系”と出力する。等しくなければ“非正常系”と出力する。
 
-出力テストケースのフォーマットを、図\ref{fig:dmin_output_format}に示す。$<$と$>$で囲まれている部分を、それぞれの情報で置き換える。
+出力テストケースのフォーマットを、コード\ref{fig:dmin_output_format}に示す。$<$と$>$で囲まれている部分を、それぞれの情報で置き換える。
 
 \section{複数の定義への対応}\label{sec:extendMultiple}
 \begin{figure}[tp]
