@@ -771,10 +771,10 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 \end{figure}
 
 本研究で拡張したBWDMの処理の流れを、図\ref{fig:multi_bwdm_structure}に示す。
-既存のBWDMでは、入力したVDM++仕様を構文解析部に入力し、字句解析、構文解析、抽象構文木解析を行い、抽象構文木に変換する。
+既存のBWDMでは、入力したVDM++仕様を構文解析部に入力し、字句解析、構文解析、抽象構文木解析を行い、最後に定義された定義の抽象構文木を抽出する。
 
-拡張したBWDMでは、\ref{sec:probrem_value}節、\ref{sec:probrem_operation}節で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
-また、節\ref{sec:probrem_only_function}で述べた、単一の関数しかテストケース生成できないという問題を解決するため、および、新規に作成したクラスに対応するために、構文解析部の抽象構文木解析処理を一部修正した。
+拡張したBWDMでは、\ref{sec:probrem_value}節と\ref{sec:probrem_operation}節で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを新規に作成し、追加した。
+また、\ref{sec:probrem_only_function}節で述べた、単一の関数しかテストケース生成できないという問題を解決するため、および、新規に作成したクラスに対応するために、構文解析部の抽象構文木解析処理を一部修正した。
 
 \subsection{定義クラス群の作成}\label{sec:create_definition}
 \begin{figure}[tp]
@@ -785,7 +785,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 \end{figure}
 
 関数定義以外の定義に対応するために、抽象クラスDefinition、クラスFunctionDefinition、クラスOperationDefinitionを作成した。
-これらの、定義クラス群の関係を図\ref{fig:definition_class}に示す。
+これらの、定義クラス群の関係を、図\ref{fig:definition_class}に示す。
 図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラスである。VDMJパッケージのクラスの説明を以下に示す。
 \todo{TODO: ここは2章のVDMJの説明でやったほうが良いかもしれない...}
 
