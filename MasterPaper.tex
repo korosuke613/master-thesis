@@ -187,6 +187,9 @@
 \end{itemize}
 
 
+\section{因子と水準}\label{sec:factor_and_level}
+\todo{因子と水準の説明を書く}
+
 \section{ドメイン分析テスト}\label{cha:domain}
 本研究における、ドメイン分析テストの定義と、ドメインテストが必要となる仕様の例を、以下で示す。
 
@@ -198,20 +201,20 @@
 境界値とは、同値分割した領域の端、あるいは端のどちらか側で最小の増加的距離にある入力値、または、出力値である\cite{jstqb}。
 本研究では、境界値の中でも、条件式を満たす境界値を利用する。これを、TB(True Boundary)と命名する。
 TBの定義を、以下に示す。
-$exp$を条件式、$left$を左辺、$int$を右辺とする。
+$condition$を条件式、$exp$を左辺、$int$を右辺とする。
 \begin{itemize}
-  \item $exp$が$left = int$のとき、$TB = int$とする。
-  \item $exp$が$left < int$のとき、$TB = int - 1$とする。
-  \item $exp$が$left > int$のとき、$TB = int + 1$とする。
-  \item $exp$が$left <= int$のとき、$TB = int$とする。
-  \item $exp$が$left >= int$のとき、$TB = int$とする。
+  \item $condition$が$exp = int$のとき、$TB = int$とする。
+  \item $condition$が$exp < int$のとき、$TB = int - 1$とする。
+  \item $condition$が$exp > int$のとき、$TB = int + 1$とする。
+  \item $condition$が$exp <= int$のとき、$TB = int$とする。
+  \item $condition$が$exp >= int$のとき、$TB = int$とする。
 \end{itemize}
 それぞれのポイントの定義を、以下に示す。
 \begin{itemize}
-  \item onポイント：着目条件式(後述)のTBである。ドメインを決定づける条件式に付き1つ生成する。他のonポイントと重複してはならない。$targetExp$を着目条件式とすると、onポイントは、$targetExp = True$かつ$left = TB$となる値でなければならない。
+  \item onポイント：着目条件式(後述)のTBである。ドメインを決定づける条件式に付き1つ生成する。他のonポイントと重複してはならない。$targetExp$を着目条件式とすると、onポイントは、$targetExp = True$かつ$exp = TB$となる値でなければならない。
   \item offポイント：着目するonポイントに隣接し、TBでない値である。onポイントに付き複数(着目条件式に含まれる変数 $*$ 2)個存在する。$targetVar$を着目変数(後述)とすると、offポイントは、$targetVar + 1$となる値、または、$targetVar - 1$となる値でなければならない。
-  \item inポイント：ドメインを決定づけるすべての条件式を満たす値である。ドメインに付き1つ生成する。onポイントやoffポイントと重複してはならない。$onPoints$をonポイントの集合とし、$offPoints$をoffポイントの集合、$inPoint$をinポイントとすると、inポイントは、 $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない。
-  \item outポイント：着目条件式のみを満たさない値である。ドメインを決定づける条件式に付き1つ生成する。offポイントと重複してはならない。$outPoint$をoutポイントとすると、outポイントは、$ (\lnot targetExp \land exp1 \land exp2 \land ... \land expN) = True$かつ$outPoint \notin offPoints$となる値でなければならない。
+  \item inポイント：ドメインを決定づけるすべての条件式を満たす値である。ドメインに付き1つ生成する。onポイントやoffポイントと重複してはならない。$onPoints$をonポイントの集合とし、$offPoints$をoffポイントの集合、$inPoint$をinポイントとすると、inポイントは、 $(condition1 \land condition2 \land ... \land conditionN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない。
+  \item outポイント：着目条件式のみを満たさない値である。ドメインを決定づける条件式に付き1つ生成する。offポイントと重複してはならない。$outPoint$をoutポイントとすると、outポイントは、$ (\lnot targetExp \land condition1 \land condition2 \land ... \land conditionN) = True$かつ$outPoint \notin offPoints$となる値でなければならない。
 \end{itemize}
 また、それぞれのポイントは、以下のパラメータを持つ。
 \begin{itemize}
