@@ -152,7 +152,7 @@
 \section{VDMJ}\label{cha:vdmj}
 \todo{VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
 
-\subsection{VDMJのクラス}
+\subsection{VDMJのクラス}\label{sec:vdmj_class}
 \begin{table}[t]
   \begin{center}
     \caption{VDM++における定義、および、定義に対応するVDMJでの呼び方}
@@ -299,6 +299,15 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
 境界値分析によって生成したテストケースは、境界値テストに使用することができる。
 既存のBWDMを使用することにより、VDM++仕様を用いたソフトウェア開発効率を改善できる。
 
+\begin{figure}[tp]
+  \centering
+  \includegraphics[keepaspectratio, width=160mm]{figs/exist_bwdm_structure.png}
+  \caption{既存のBWDMの構造}
+  \label{fig:existBwdmStructure}
+\end{figure}
+
+既存のBWDMの構造を図\ref{fig:existBwdmStructure}に示す。
+
 \section{入出力例}
 
 \lstset{language=}
@@ -378,7 +387,25 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 したがって、複数の関数を含む仕様のテストケースを生成した際に、最後に定義した関数のテストケースしか出力できない。
 複数の関数を含むVDM++仕様を、コード\ref{fig:func_multiple}に示す。このVDM++仕様には「うるう年判定」関数と「成人判定」関数が定義されている。
 コード\ref{fig:func_multiple}を既存のBWDMに適用した際の出力をコード\ref{fig:func_multiple_result}に示す。
-既存のBWDMは、最後に定義されている関数のみテストケース生成するため、「うるう年判定」関数を出力できていない。
+
+既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
+抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
+受け取る抽象構文木の集合は、\ref{sec:vdmj_class}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
+既存のBWDMの抽象構文木解析処理を以下に示す。
+
+\begin{enumerate}
+  \item TCExplicitFunctionDefinition型の変数tcFunctionDefinitionを宣言する。
+  \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
+        空である場合、変数tcFunctionDefinitionを構文木解析処理の出力とし、処理を終了する。
+  \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数astDefinitionに格納する。
+  \item\label{enu:ast_kind} astDefinition.kind()を実行し、定義の種類を取得する。
+  \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
+        "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
+        "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
+  \item\label{enu:ast_dainyu} 変数astDefinitionをTCExplicitFunctionDefinitionに型変換し、変数tcFunctionDefinitionに代入する。
+  \item \ref{enu:checkAstIsNull}に進む。
+\end{enumerate}
+したがって、既存のBWDMは、単一の関数しかテストケース生成ができない。
 
 本研究では、単一の関数しかテストケース生成できないという問題を解決するために、既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する。
 
@@ -616,7 +643,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/pict4java_embed}
-  \caption{pict4java組込み後の処理の流れ}
+  \caption{\ref{sec:extendPairwise}節で拡張するBWDMの構造}
   \label{fig:pict4javaEmbed}
 \end{figure}
 
@@ -664,14 +691,14 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 \begin{figure*}[t]
   \begin{center}
     \includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
-    \caption{拡張したBWDMの処理の流れ}
+    \caption{\ref{sec:extendPairwise}節で拡張するBWDMの構造}
     \label{fig:bwdm_structure}
   \end{center}
 \end{figure*}
 
 \subsection{構文解析部}
 % BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
-既存のBWDMは、各条件式の左辺、、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節)。
+既存のBWDMは、各条件式の左辺、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節)。
 したがって、if条件式の左辺と右辺の式を構文解析し、条件式内の変数を抽出することによって、左辺、または、右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とした。
 
 \subsection{ドメイン分析部}\label{cha:DomainAnalyzer}
@@ -796,7 +823,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/multi_bwdm_structure}
-  \caption{複数の定義への対応のために拡張したBWDM}
+  \caption{\ref{sec:extendMultiple}節で拡張するBWDMの構造}
   \label{fig:multi_bwdm_structure}
 \end{figure}
 
