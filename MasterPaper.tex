@@ -238,7 +238,7 @@ $exp$を条件式、$left$を左辺、$int$を右辺とする。
         \end{itemize}
   \item A) でない場合、遊園地チケットは割引価格とならない。
 \end{enumerate}
-この仕様をVDM++で記述した仕様を、図\ref{fig:vdm_park}に示す。
+この仕様をVDM++で記述した仕様を、コード\ref{fig:vdm_park}に示す。
 7行目に、複数の変数を左辺に含む条件式があるため、既存のBWDMではテストケース生成ができない。
 また、“割引価格となる”というドメインの各ポイントを生成した例を、図\ref{fig:domain_points}に示す。
 ドメインを決定づける3つの条件式は、“夫の年齢 + 妻の年齢 $<=$ 50”、“夫の年齢 $>=$ 18”、“妻の年齢 $>=$ 16”である。
@@ -248,36 +248,34 @@ offポイントは、“Off11”〜“Off32”の8つである。“Off11”〜�
 inポイントは、“In”の1つであり、“割引価格となる”ドメインのすべての条件式を満たす値を持つ。
 outポイントは、“Out1”〜“Out3”の3つであり、それぞれの’着目条件式のみを満たさない値を持つ。
 
-\begin{figure}[tb]
-  \setbox0\vbox{
-    \hbox{ 1 class 遊園地チケット}
-    \hbox{ 2}
-    \hbox{ 3 functions}
-    \hbox{ 4}
-    \hbox{ 5 static public 割引判定 : int * int -$>$ seq of char}
-    \hbox{ 6 \ \ 割引判定(夫の年齢, 妻の年齢) ==}
-    \hbox{ 7 \ \ \ \ if(夫の年齢 + 妻の年齢 $<=$ 50) then}
-    \hbox{ 8 \ \ \ \ \ \ if(夫の年齢 $>=$ 18) then}
-    \hbox{ 9 \ \ \ \ \ \ \ \ if(妻の年齢 $>=$ 16) then}
-    \hbox{10 \ \ \ \ \ \ \ \ \ \ ``割引価格となる''}
-    \hbox{11 \ \ \ \ \ \ \ else}
-    \hbox{12 \ \ \ \ \ \ \ \ \ \ ``割引価格とならない(妻の年齢 $<$ 16)''}
-    \hbox{13 \ \ \ \ \ \ else}
-    \hbox{14 \ \ \ \ \ \ \ \ ``割引価格とならない(夫の年齢 $<$ 18)''}
-    \hbox{15 \ \ \ \ else}
-    \hbox{16 \ \ \ \ \ \  \  ``割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)'';}
-    \hbox{17}
-    \hbox{18 end 遊園地チケット}
-  }
-  \centerline{\fbox{\box0}}
-  \caption{ドメインテストが必要となる仕様(遊園地チケット割引機能)}
-  \label{fig:vdm_park}
-\end{figure}
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=ドメインテストが必要となる仕様(遊園地チケット割引機能),label=fig:vdm_park]
+class 遊園地チケット
+
+functions
+
+static public 割引判定 : int * int -$>$ seq of char
+  割引判定(夫の年齢, 妻の年齢) ==
+    if(夫の年齢 + 妻の年齢 $<=$ 50) then
+      if(夫の年齢 $>=$ 18) then
+        if(妻の年齢 $>=$ 16) then
+          ``割引価格となる''
+        else
+          ``割引価格とならない(妻の年齢 $<$ 16)''
+      else
+        ``割引価格とならない(夫の年齢 $<$ 18)''
+    else
+      ``割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)'';
+
+end 遊園地チケット
+\end{lstlisting}
+\end{minipage}
 
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/domain_points}
-  \caption{遊園地チケット割引機能(図\ref{fig:vdm_park})の割引になる条件にドメイン分析を適用した例}
+  \caption{遊園地チケット割引機能( コード\ref{fig:vdm_park})の割引になる条件にドメイン分析を適用した例}
   \label{fig:domain_points}
 \end{figure}
 
@@ -303,30 +301,29 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
 
 \section{入出力例}
 
-\begin{figure}[tb]
-  \setbox0\vbox{
-    \hbox{ 1 class SampleClass}
-    \hbox{ 2 }
-    \hbox{ 3 functions}
-    \hbox{ 4 }
-    \hbox{ 5 sampleFunction : int*nat*nat $->$ seq of char}
-    \hbox{ 6 \ \ sampleFunction(a, b, c) == }
-    \hbox{ 7 \ \ \ if(a $<$ 100) then}
-    \hbox{ 8 \ \ \ \ if(b $>$ 2018) then}
-    \hbox{ 9 \ \ \ \ \ "aは100未満かつbは2018より大きい"}
-    \hbox{10 \ \ \ \ else}
-    \hbox{11 \ \ \ \ \ "aは100未満かつbは2018以下"}
-    \hbox{12 \ \ \ elseif(c $<$ 12) then}
-    \hbox{13 \ \ \ \ \ "aは100以上かつcは12未満"}
-    \hbox{14 \ \ \ else}
-    \hbox{15 \ \ \ \ \ "aは100以上かつcは12以上";}
-    \hbox{16 }
-    \hbox{17 end SampleClass}
-  }
-  \centerline{\fbox{\box0}}
-  \caption{入力例：VDM++仕様}
-  \label{fig:input_sample}
-\end{figure}
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=入力例：VDM++仕様,label=fig:input_sample]
+class SampleClass
+
+functions
+
+sampleFunction : int*nat*nat $->$ seq of char
+  sampleFunction(a, b, c) == 
+    if(a $<$ 100) then
+      if(b $>$ 2018) then
+        "aは100未満かつbは2018より大きい"
+      else
+        "aは100未満かつbは2018以下"
+    elseif(c $<$ 12) then
+      "aは100以上かつcは12未満"
+    else
+      "aは100以上かつcは12以上";
+
+end SampleClass
+
+\end{lstlisting}
+\end{minipage}
 
 \begin{figure}[t]
   \begin{center}
@@ -344,7 +341,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
   \end{center}
 \end{figure}
 
-VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
+VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 そのファイルから生成したテストケースの例を図\ref{fig:testcase_sample}に，それぞれ示す．
 また，出力テストケースのフォーマットを，図\ref{fig:bwdm_format}に示す．
 “各引数の境界値”にて，引数a， b， cそれぞれの境界値の集合を出力している．
@@ -365,13 +362,13 @@ VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
 \subsection{複数変数を含む条件式に関する問題点}\label{sec:problem_double_var}
 
 既存のBWDMには、左辺、右辺に複数の変数を含む条件式を持つ仕様のテストケース生成ができないという問題がある。
-図\ref{fig:vdm_park}に示したVDM++仕様には、7行目の条件式の左辺に複数の変数が含まれているため、この仕様を既存のBWDMに適用しても、テストケース生成ができない。
+ コード\ref{fig:vdm_park}に示したVDM++仕様には、7行目の条件式の左辺に複数の変数が含まれているため、この仕様を既存のBWDMに適用しても、テストケース生成ができない。
 
-この理由を、既存のBWDMに図\ref{fig:vdm_park}の仕様を入力した場合を例に、以下で説明する。
+この理由を、既存のBWDMに コード\ref{fig:vdm_park}の仕様を入力した場合を例に、以下で説明する。
 
 \begin{itemize}
-  \item 図\ref{fig:vdm_park}の6行目にて、入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している。7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが、既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する。“夫の年齢+妻の年齢”という引数は仕様に定義されていないため、既存のBWDMはエラーを出力し、動作を停止してしまう。
-  \item 図\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには、「制約を満たす入力があるかどうか」という、充足可能性問題(Satisfiable Problem、SAT)\cite{sat}を解かなければならない。しかし、既存のBWDMは、充足可能性問題を解くことができない。
+  \item  コード\ref{fig:vdm_park}の6行目にて、入力する2つの変数は“夫の年齢”と“妻の年齢”と定義している。7行目のif条件式は“夫の年齢”と“妻の年齢”の2つの変数を利用しているが、既存のBWDMは“夫の年齢+妻の年齢”という1つの変数だと解釈する。“夫の年齢+妻の年齢”という引数は仕様に定義されていないため、既存のBWDMはエラーを出力し、動作を停止してしまう。
+  \item  コード\ref{fig:vdm_park}の7行目の“夫の年齢+妻の年齢$<$=50”という条件式のTBを求めるには、「制約を満たす入力があるかどうか」という、充足可能性問題(Satisfiable Problem、SAT)\cite{sat}を解かなければならない。しかし、既存のBWDMは、充足可能性問題を解くことができない。
 \end{itemize}
 
 本研究では、左辺、右辺に複数の変数を含む条件式を持つ仕様のテストケース生成ができないという問題を解決するために、ドメイン分析テストのためのテストケース生成手法を提案し、既存のBWDMに適用することで、BWDMを拡張する。
@@ -1044,11 +1041,11 @@ No.40 : -2147483649 4294967295 0 -> Undefined Action
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/tekiyourei}
-  \caption{遊園地チケット割引機能(図\ref{fig:vdm_park})のテストケースの一部}
+  \caption{遊園地チケット割引機能( コード\ref{fig:vdm_park})のテストケースの一部}
   \label{fig:park_testcase}
 \end{figure}
 
-拡張したBWDMに、遊園地チケット割引機能(図\ref{fig:vdm_park})を入力として適用した結果の一部を、図\ref{fig:park_testcase}に示す。
+拡張したBWDMに、遊園地チケット割引機能( コード\ref{fig:vdm_park})を入力として適用した結果の一部を、図\ref{fig:park_testcase}に示す。
 図\ref{fig:park_testcase}では、“割引価格となる”期待出力以外の期待出力を持つドメイン(“割引価格とならない(妻の年齢 $<$ 16)”、“割引価格とならない(夫の年齢 $<$ 18)”、“割引価格とならない(夫の年齢 + 妻の年齢 $>$ 50)”)のテストケースは省略してある。
 
 “割引価格となる”ドメインの3つのonポイントは、ドメインを決定づける3つの条件式(“夫の年齢 + 妻の年齢 $<=$ 50”、“夫の年齢 $>=$ 18”、“妻の年齢 $>=$ 16”)にそれぞれ着目し、着目条件式のTBが入力となっており、かつ、期待出力と正常系判定値(ポイントの期待出力とドメインの期待出力が一致するかどうか)が適切であることが確認できる。
@@ -1308,7 +1305,7 @@ end ProblemClass
 人手によるドメイン分析テストのためのテストケース作成と、拡張したBWDMによるドメイン分析テストのためのテストケース生成で、作成(生成)に要した時間の比較検証を行った。
 その結果を、表\ref{tab:time}に示す。
 
-対象としたVDM++仕様は、\ref{cha:domain}章で用いた図\ref{fig:vdm_park}である。
+対象としたVDM++仕様は、\ref{cha:domain}章で用いた コード\ref{fig:vdm_park}である。
 “割引価格となる”を期待出力に持つドメインに対するドメイン分析テストのためのテストケースを作成する時間を計測した。
 生成するテストケースとしては、以下を基準とした。
 \begin{enumerate}
@@ -1325,7 +1322,7 @@ VDM++の文法の知識を持たない者も含まれるが、
 また、ドメイン分析テストのためのテストケース生成についても、事前に他のVDM++仕様とテストケースの例を用いてレクチャーした。
 
 人手による検証では、
-図\ref{fig:vdm_park}を印刷した紙を渡し、
+ コード\ref{fig:vdm_park}を印刷した紙を渡し、
 仕様を確認後、
 テストケースを書き始めてから、テストケースを記述し終えるのに要した時間を計測した。
 入力データと戻り値の組み合わせが不正確な場合、間違いを指摘し、
