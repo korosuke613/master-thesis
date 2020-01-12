@@ -738,16 +738,18 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 作成したドメイン分析部のクラス図を、図\ref{fig:class_DomainAnalyzer}に示す。
 各クラスの詳細を、以下に示す。
 
+\newcommand{\forcusedConditionalExpression}{\ttt{forcusedConditionalExpression}}
+
 \begin{itemize}
   \item
-        Factorクラスは、引数の情報を持つクラスである。変数名(name)と値(value)を保持する。
+        Factorクラスは、引数の情報を持つクラスである。変数名(\ttt{name})と値(\ttt{value})を保持する。
   \item
-        Pointクラスは、テストケースの入力データの情報を持つクラスである。テストケース名(name)、そのポイントが着目条件式(forcusedConditionalExpression)、そのポイントの着目変数(forcusedVariable)、そして複数のFactor(factors)を保持する。
+        Pointクラスは、テストケースの入力データの情報を持つクラスである。テストケース名(\ttt{name})、そのポイントが着目条件式(\forcusedConditionalExpression{})、そのポイントの着目変数(\ttt{forcusedVariable})、そして複数のFactor(\ttt{factors})を保持する。
   \item
-        DomainPointsクラスは、ドメインの情報を持つクラスである。期待出力(name)、onポイントの集合(onPoints)、offポイントの集合(offPoints)、inポイント(inPoints)、outポイントの集合(outPoints)を保持する。
+        DomainPointsクラスは、ドメインの情報を持つクラスである。期待出力(\ttt{name})、onポイントの集合(\ttt{onPoints})、offポイントの集合(\ttt{offPoints})、inポイント(\ttt{inPoints})、outポイントの集合(\ttt{outPoints})を保持する。
   \item
-        DomainAnalyzerクラスは、ドメイン分析を行うクラスである。ドメインの集合(domains)を保持している。
-        また、onポイント、offポイント、inポイント、outポイントを生成する機能(generateXXPointsメソッド)、および、各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出する機能(getAllTestCaseByDomainAnalyzerメソッド)を持つ。
+        DomainAnalyzerクラスは、ドメイン分析を行うクラスである。ドメインの集合(\ttt{domains})を保持している。
+        また、onポイント、offポイント、inポイント、outポイントを生成する機能(\ttt{generateXXPoints}メソッド)、および、各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出する機能(\ttt{getAllTestCaseByDomainAnalyzer}メソッド)を持つ。
 
 \end{itemize}
 
@@ -771,24 +773,24 @@ onポイントは、着目条件式のTBである。ドメインを決定づけ�
   \item 配列onPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:onpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列onPointsに格納する。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{onPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
 \subsubsection{offポイント}
 offポイントは、着目するonポイントに隣接し、TBでない値である。onポイントに付き複数(着目条件式に含まれる変数 $*$ 2)個存在する。
-配列onPoints(\ref{cha:DomainAnalyzer}節参照)を参照し、onポイントの数だけ以下の手順を繰り返し、onポイントに着目したoffポイントを生成する。
+配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節)を参照し、onポイントの数だけ以下の手順を繰り返し、onポイントに着目したoffポイントを生成する。
 \begin{enumerate}
-  \item\label{enu:offpoint_2} 着目するonポイントのメンバforcusedConditionalExpressionを参照し、着目するonポイントがどの条件式に着目していたかを保持する。
+  \item\label{enu:offpoint_2} 着目するonポイントのメンバ\forcusedConditionalExpression{}を参照し、着目するonポイントがどの条件式に着目していたかを保持する。
   \item \ref{enu:offpoint_2}.の条件式から、引数を抽出する。抽出した引数の数だけ以下を繰り返す。
         \begin{enumerate}
           \item 以下の処理を2回繰り返す。1回目は“N=$-$1”と定義し、2回目は“N=1”と定義する。
                 \begin{enumerate}
                   \item\label{enu:offpoint_3} 着目するonポイントインスタンスをコピーする。
-                  \item\label{enu:offpoint_1} i.でコピーしたPointインスタンスのメンバ配列factorsから、“Factor.name == 引数名”となるFactorインスタンスを検索する。
-                  \item ii.で検索して見つかったFactorインスタンスのメンバvalueを“+N”する。
-                  \item PointインスタンスのメンバforcusedVariableに引数名を格納する。
-                  \item Pointインスタンスを配列offPoints(\ref{cha:DomainAnalyzer}節)に格納する。
+                  \item\label{enu:offpoint_1} i.でコピーしたPointインスタンスのメンバ配列\ttt{factors}から、“Factor.name == 引数名”となるFactorインスタンスを検索する。
+                  \item ii.で検索して見つかったFactorインスタンスのメンバ\ttt{value}を“+N”する。
+                  \item Pointインスタンスのメンバ\ttt{forcusedVariable}に引数名を格納する。
+                  \item Pointインスタンスを配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節)に格納する。
                 \end{enumerate}
         \end{enumerate}
 \end{enumerate}
@@ -799,10 +801,10 @@ in ポイントは、ドメインを決定づけるすべての条件式を満�
 \begin{enumerate}
   \item\label{enu:inpoint_2} もし、条件式の比較演算子が、“$>=$”である場合、“$>$”で置き換える。“$<=$”である場合、“$<$”で置き換える。これを、すべての条件式に対して行う。
   \item\label{enu:inpoint_1} \ref{enu:inpoint_2}.で修正した条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、inポイントが存在しないため、生成を行わない。
-  \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
+  \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:inpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、配列inPointsに格納する。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、配列\ttt{inPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -811,11 +813,12 @@ outポイントは、着目条件式のみを満たさない値である。ド�
 ドメインに関わる条件式の数だけ以下の手順を繰り返し、各条件式に着目したoutポイントを生成する。
 \begin{enumerate}
   \item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え、否定する。
-  \item\label{enu:outpoint_1} \ref{enu:outpoint_2}.で否定した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるoutポイントが存在しないため、生成を行わずに次の着目条件式のoutポイントの生成を行う。
+  \item\label{enu:outpoint_1} \ref{enu:outpoint_2}.で否定した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。
+        解が求まらなかった場合、現在の着目条件式におけるoutポイントが存在しないため、生成を行わずに次の着目条件式のoutポイントの生成を行う。
   \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:outpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列outPointsに格納する。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{outPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -827,14 +830,14 @@ outポイントは、着目条件式のみを満たさない値である。ド�
   \label{fig:dmin_output_format}
 \end{figure}
 
-既存のBWDMは、期待出力生成部において、入力データを元に期待出力を生成する機能を持つ。DomainAnalyzerクラス(\ref{cha:DomainAnalyzer}節参照)のgetAllTestCaseByDomainAnalyzerメソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
+既存のBWDMは、期待出力生成部において、入力データを元に期待出力を生成する機能を持つ。DomainAnalyzerクラス(\ref{cha:DomainAnalyzer}節参照)の\ttt{getAllTestCaseByDomainAnalyzer}メソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
 そのため、既存のBWDMの期待出力生成部をそのまま用いて、期待出力生成とテストケース生成は可能である。
 拡張したBWDMでは、各ドメインの各ポイントのテストケースを出力する。
 
 しかし、既存のBWDMのテストケース生成部には、ドメインテストに必要な、正常系判定値、着目条件式、そして着目変数の情報を出力テストケースに加える処理が存在しない。
 これに対応するため、テストケース生成部において、ドメインテストによるテストケースを出力する際、正常系判定値、着目条件式、着目変数の情報についても出力する処理を追加した。
-着目条件式の出力には、PointクラスのメンバforcusedConditionalExpressionを参照する。
-offポイントの場合、着目変数の出力を行う。出力には、PointクラスのメンバforcusedVariableを参照する。
+着目条件式の出力には、Pointクラスのメンバ\forcusedConditionalExpression{}を参照する。
+offポイントの場合、着目変数の出力を行う。出力には、Pointクラスのメンバ\ttt{forcusedVariable}を参照する。
 正常系判定値は、出力するテストケースの期待出力と、ドメインの期待出力(DomainPoints.name)を比較して判断する。
 等しければ、“正常系”と出力する。等しくなければ“非正常系”と出力する。
 
@@ -870,38 +873,37 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 \begin{itemize}
   \item 抽象クラスDefinition\\
-        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを元に、if-then-else式から木構造を生成\todo{立山さんの修論参照}する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う定義を表す抽象クラスである。\ttt{TCDefinition}型のオブジェクトを元に、if-then-else式から木構造を生成\todo{立山さんの修論参照}する。以下のフィールドとメソッドを持つ。
         \begin{description}
-          \item[name] 定義の名前
-          \item[constantValues] 定数定義の集合
-          \item[returnType] 返値の型
-          \item[argumentTypes] 引数の型の集合
-          \item[parameters] 仮引数名の集合
-          \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する抽象メソッド
-          \item[createIfCondition()] if-then-else式を構文解析する
+          \item[\ttt{name}] 定義の名前
+          \item[\ttt{\ttt{constantValues}}] 定数定義の集合
+          \item[\ttt{returnType}] 返値の型
+          \item[\ttt{argumentTypes}] 引数の型の集合
+          \item[\ttt{parameters}] 仮引数名の集合
+          \item[\ttt{setIfElseSyntaxTree()}] if-then-else式から木構造を生成する抽象メソッド
+          \item[\ttt{createIfCondition()}] if-then-else式を構文解析する
         \end{description}
 
   \item クラスFunctionDefinition\\
         テストケース生成を行う関数を表すクラスである。\TCExplicitFunctionDefinition{}型のオブジェクトを元に、if-then-else式から木構造を生成する。以下のフィールドとメソッドを持つ。
         \begin{description}
-          \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
+          \item[\ttt{setIfElseSyntaxTree()}] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
         \end{description}
 
   \item クラスOperationDefinition\\
-        テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを元に、if-then-else式から木構造を生成する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う操作を表すクラスである。\ttt{TCExplicitOperationDefinition}型のオブジェクトを元に、if-then-else式から木構造を生成する。以下のフィールドとメソッドを持つ。
         \begin{description}
-          \item[instanceVariables] インスタンス変数定義の集合
-          \item[setUsesInstanceVariables()] if-then-else木構造内で使用されるインスタンス変数をargumentTypesとparametersに追加する
-          \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
+          \item[\ttt{\ttt{instanceVariables}}] インスタンス変数定義の集合
+          \item[\ttt{setUsesInstanceVariables()}] if-then-else木構造内で使用されるインスタンス変数を\ttt{argumentTypes}と\ttt{parameters}に追加する
+          \item[\ttt{setIfElseSyntaxTree()}] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
         \end{description}
 
   \item クラスInformationExtractor\\
         抽象構文木解析処理を行うクラスである。
         構文解析処理から受け取った、定義を表す抽象構文木の集合から、定義クラスの集合を生成する。
-        \todo{既存のBWDMにも存在することを明記したほうが良いかも}
         \begin{description}
-          \item[constantValues] 定数定義の集合
-          \item[instanceVariables] インスタンス変数定義の集合
+          \item[\ttt{\ttt{constantValues}}] 定数定義の集合
+          \item[\ttt{\ttt{instanceVariables}}] インスタンス変数定義の集合
         \end{description}
 
 \end{itemize}
@@ -919,7 +921,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
-受け取る抽象構文木の集合は、\ref{sec:create_definition}節で示した抽象クラスTCDefinitionを継承したクラスの集合である。
+受け取る抽象構文木の集合は、\ref{sec:create_definition}節で示した抽象クラス\ttt{TCDefinition}を継承したクラスの集合である。
 既存のBWDMの抽象構文木解析処理を以下に示す。
 以下の処理はInformationExtractorクラスにて行う。
 
@@ -930,7 +932,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
   \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
         空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
-  \item\label{enu:ast_kind} \astDefinition{}.kind()を実行し、定義の種類を取得する。
+  \item\label{enu:ast_kind} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
   \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
         "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
         "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
@@ -943,12 +945,12 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 拡張したBWDMの抽象構文木解析処理を以下に示す。以下の処理はInformationExtractorクラスにて行う。
 
 \begin{enumerate}
-  \item FunctionDefinition型の連想配列explicitFunctionsをインスタンス化する。
-  \item OperationDefinition型の連想配列explicitOperationsをインスタンス化する。
-  \item TCValueDefinition型の連想配列constantValuesをインスタンス化する。
-  \item TCInstanceVariableDefinition型の連想配列instanceVariablesをインスタンス化する。
+  \item FunctionDefinition型の連想配列\ttt{explicitFunctions}をインスタンス化する。
+  \item OperationDefinition型の連想配列\ttt{explicitOperations}をインスタンス化する。
+  \item TCValueDefinition型の連想配列\ttt{constantValues}をインスタンス化する。
+  \item TCInstanceVariableDefinition型の連想配列\ttt{instanceVariables}をインスタンス化する。
   \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
-        空である場合、連想配列explicitFunctionsと連想配列explicitOperationsを構文木解析処理の出力とし、処理を終了する。
+        空である場合、連想配列\ttt{explicitFunctions}と連想配列\ttt{explicitOperations}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
   \item\label{enu:ast_kind2} \astDefinition{}.kind()を実行し、抽象構文木の種類を取得する。
   \item \ref{enu:ast_kind2}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
@@ -956,15 +958,15 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
           \item "explicit function"である場合、関数定義なので、以下を実行する。
                 \begin{enumerate}
                   \item 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、クラスFunctionDefinitionに渡し、インスタンス化する。
-                  \item インスタンス化したクラスFunctionDefinitionを、連想配列explicitFunctionsに、キーを定義名(\astDefinition{}.name)として追加する。
+                  \item インスタンス化したクラスFunctionDefinitionを、連想配列\ttt{explicitFunctions}に、キーを定義名(\astDefinition{}.name)として追加する。
                 \end{enumerate}
           \item "explicit operation"である場合、操作定義なので、以下を実行する。
                 \begin{enumerate}
-                  \item 変数\astDefinition{}をTCExplicitOperationDefinitionに型変換し、クラスOperationDefinitionに渡し、インスタンス化する。
-                  \item インスタンス化したクラスOperationDefinitionを、連想配列explicitOperationsに、キーを定義名(\astDefinition{}.name)として追加する。
+                  \item 変数\astDefinition{}を\ttt{TCExplicitOperationDefinition}に型変換し、クラスOperationDefinitionに渡し、インスタンス化する。
+                  \item インスタンス化したクラスOperationDefinitionを、連想配列\ttt{explicitOperations}に、キーを定義名(\astDefinition{}\ttt{.name})として追加する。
                 \end{enumerate}
-          \item "value"である場合、定数定義なので、\astDefinition{}をTCValueDefinitionに型変換し、tcValueDefinitionに追加する。
-          \item "instance variable"である場合、インスタンス変数定義なので、\astDefinition{}をTCInstanceVariableDefinitionに型変換し、tcInstanceVariableDefinitionに追加する。
+          \item "value"である場合、定数定義なので、\astDefinition{}を\ttt{TCValueDefinition}に型変換し、\ttt{tcValueDefinition}に追加する。
+          \item "instance variable"である場合、インスタンス変数定義なので、\astDefinition{}を\ttt{TCInstanceVariableDefinition}に型変換し、\ttt{tcInstanceVariableDefinition}に追加する。
           \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
         \end{enumerate}
 \end{enumerate}
