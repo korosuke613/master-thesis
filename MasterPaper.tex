@@ -64,6 +64,7 @@
 %%
 % マクロの定義
 %
+\newcommand\ttt[1]{\texttt{#1}}
 \newcommand{\tool}{BWDM}
 \newcommand{\toolFullName}{Verification tool for Vienna Development Method}
 
@@ -177,16 +178,16 @@
 本研究で利用するVDMJのクラスを以下に示す。
 
 \begin{itemize}
-  \item 抽象クラス\texttt{VDMJ::TCDefinition}\\
-        VDM++における各定義ブロックを表す抽象クラスである。フィールド\texttt{name}の値は定義名を示す。メソッド\texttt{kind()}を実行することで、定義の種類を取得できる。
+  \item 抽象クラス\ttt{VDMJ::TCDefinition}\\
+        VDM++における各定義ブロックを表す抽象クラスである。フィールド\ttt{name}の値は定義名を示す。メソッド\ttt{kind()}を実行することで、定義の種類を取得できる。
         定義の種類を\ref{tab:vdmj_definition_name}に示す。
-  \item クラス\texttt{VDMJ::TCExplicitFunctionDefinition}\\
+  \item クラス\ttt{VDMJ::TCExplicitFunctionDefinition}\\
         VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
-  \item クラス\texttt{VDMJ::TCExplicitOperationDefinition}\\
+  \item クラス\ttt{VDMJ::TCExplicitOperationDefinition}\\
         VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
-  \item クラス\texttt{VDMJ::TCValueDefinition}\\
+  \item クラス\ttt{VDMJ::TCValueDefinition}\\
         VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
-  \item クラス\texttt{VDMJ::TCInstanceVariableDefinition}\\
+  \item クラス\ttt{VDMJ::TCInstanceVariableDefinition}\\
         VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
 \end{itemize}
 
@@ -398,19 +399,19 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 
 既存のBWDMでは、図\ref{fig:multi_bwdm_structure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
-受け取る抽象構文木の集合は、\ref{sec:vdmj_class}節で示した抽象クラス\texttt{TCDefinition}を継承したクラスの集合である。
+受け取る抽象構文木の集合は、\ref{sec:vdmj_class}節で示した抽象クラス\ttt{TCDefinition}を継承したクラスの集合である。
 既存のBWDMの抽象構文木解析処理を以下に示す。
 
-\newcommand{\TCExplicitFunctionDefinition}{\texttt{TCExplicitFunctionDefinition}}
-\newcommand{\tcFunctionDefinition}{\texttt{tcFunctionDefinition}}
-\newcommand{\astDefinition}{\texttt{astDefinition}}
+\newcommand{\TCExplicitFunctionDefinition}{\ttt{TCExplicitFunctionDefinition}}
+\newcommand{\tcFunctionDefinition}{\ttt{tcFunctionDefinition}}
+\newcommand{\astDefinition}{\ttt{astDefinition}}
 
 \begin{enumerate}
   \item \TCExplicitFunctionDefinition{}型の変数\tcFunctionDefinition{}を宣言する。
   \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
         空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
-  \item\label{enu:ast_kind} \astDefinition{}\texttt{.kind()}を実行し、定義の種類を取得する。
+  \item\label{enu:ast_kind} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
   \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
         "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
         "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
@@ -608,56 +609,55 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
   \label{fig:pict4javaClass}
 \end{figure}
 
-\newcommand{\PictAddParameter}{\texttt{PictAddParameter}}
-\newcommand{\PictGenerate}{\texttt{PictGenerate}}
-\newcommand{\PictGetNextResultRow}{\texttt{PictGetNextResultRow}}
-\newcommand{\createTask}{\texttt{createTask}}
-\newcommand{\setRootModel}{\texttt{setRootModel}}
-\newcommand{\generate}{\texttt{generate}}
-\newcommand{\addFactor}{\texttt{addFactor}}
-\newcommand{\PictAddParameter}{\texttt{PictAddParameter}}
+\newcommand{\PictAddParameter}{\ttt{PictAddParameter}}
+\newcommand{\PictGenerate}{\ttt{PictGenerate}}
+\newcommand{\PictGetNextResultRow}{\ttt{PictGetNextResultRow}}
+\newcommand{\createTask}{\ttt{createTask}}
+\newcommand{\setRootModel}{\ttt{setRootModel}}
+\newcommand{\generate}{\ttt{generate}}
+\newcommand{\addFactor}{\ttt{addFactor}}
 
 
 図\ref{fig:pict4javaClass}に、pict4javaのクラス図を示す。それぞれのクラスの説明を、以下に示す。
 \begin{itemize}
-  \item クラス\texttt{Pict}\\
+  \item クラス\ttt{Pict}\\
         Microsoft社が開発したC++で記述されたPICTライブラリである。
-  \item クラス\texttt{LibPict}\\
+  \item クラス\ttt{LibPict}\\
         JNAを用いてJavaで記述したPICTライブラリのインタフェースである。
         メソッド名はすべてPICTライブラリの持つ関数名と同じである。\\
         主に使用するPICTの関数を、以下に示す。
         \begin{description}
-          \item[PictAddParameter()] PICTへの因子と水準の登録
-          \item[PictGenerate()] 組合せデータの生成
-          \item[PictGetNextResultRow()] 生成データの取得
+          \item[\PictAddParameter{}()] PICTへの因子と水準の登録
+          \item[\PictGenerate{}()] 組合せデータの生成
+          \item[\PictGetNextResultRow{}()] 生成データの取得
         \end{description}
-  \item クラス\texttt{PictWrapper}\\
+  \item クラス\ttt{PictWrapper}\\
         PICTを操作するためのクラスである。Kotlin\cite{kotlin}で記述する。以下の機能を持つ。
         \begin{description}
-          \item[createTask()] Taskの生成と初期化をする。
+          \item[\createTask{}()] Taskの生成と初期化をする。
                 Taskは、PICTの組合せ生成処理の最小単位である。
-                PICTライブラリにおけるPictCreateTaskに相当する。
-          \item[setRootModel()] TaskにModelの登録をする。
+                PICTライブラリにおける\ttt{PictCreateTask}に相当する。
+          \item[\setRootModel{}()] TaskにModelの登録をする。
                 Modelは因子の集合である。
-                PICTライブラリにおけるPictSetRootModelに相当する。
-          \item[generate()] ペアワイズ法を適用した組合せの生成をする。
-                PICTライブラリにおけるPictGenerateに相当する。
+                PICTライブラリにおける\ttt{PictSetRootModel}に相当する。
+          \item[\generate{}()] ペアワイズ法を適用した組合せの生成をする。
+                PICTライブラリにおける\PictGenerate{}に相当する。
         \end{description}
-  \item クラス\texttt{Model}\\
+  \item クラス\ttt{Model}\\
         因子の集合を保持するためのクラスである。Kotlinで記述する。
         \begin{description}
-          \item[コンストラクタ()] PICTライブラリにおけるModelを生成する。PictCreateModelに相当する。
-          \item[addFactor()] 因子(Factor)をModelに登録する。PICTライブラリにおけるPictAddParameterに相当する。
+          \item[コンストラクタ()] PICTライブラリにおけるModelを生成する。\ttt{PictCreateModel}に相当する。
+          \item[\addFactor{}()] 因子(Factor)をModelに登録する。PICTライブラリにおける\PictAddParameter{}に相当する。
         \end{description}
-  \item クラス\texttt{Factor}
+  \item クラス\ttt{Factor}
         \begin{description}
-          \item[\texttt{level}] 水準
-          \item[\texttt{named\_level}] 因子の取り得る値の集合
-          \item[\texttt{n}] 最低限組合せるペア数(デフォルトで2)
-          \item[\texttt{weights}] 因子の取り得る値の重みの集合
-          \item[\texttt{name}] 因子の名前
+          \item[\ttt{level}] 水準
+          \item[\ttt{named\_level}] 因子の取り得る値の集合
+          \item[\ttt{n}] 最低限組合せるペア数(デフォルトで2)
+          \item[\ttt{weights}] 因子の取り得る値の重みの集合
+          \item[\ttt{name}] 因子の名前
         \end{description}
-        メンバ変数nの値を変えることによって、その因子については、n個の組合せを網羅する入力データを作成できる。
+        メンバ変数\ttt{n}の値を変えることによって、その因子については、n個の組合せを網羅する入力データを作成できる。
 \end{itemize}
 
 \subsection{pict4javaの組込み}
@@ -687,13 +687,13 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 
 \begin{enumerate}
   \item 因子と、因子の取り得る値を元に、クラスFactorのインスタンスを因子の数だけ生成する。
-  \item クラスModelのaddFactorメソッドを用いて、PictAddParameter関数を呼び出し、PICTに因子と因子ごとの水準を登録する。
-  \item\label{enu:pict4java0} クラスPictWrapperのgenerateメソッドを用いて、ペアワイズ法を適用した組合せデータのリストを生成する。
+  \item クラスModelの\addFactor{}メソッドを用いて、\PictAddParameter{}関数を呼び出し、PICTに因子と因子ごとの水準を登録する。
+  \item\label{enu:pict4java0} クラスPictWrapperの\generate{}メソッドを用いて、ペアワイズ法を適用した組合せデータのリストを生成する。
         組合せデータは文字列型の配列のリストである。
         詳細の処理を以下に示す。
         \begin{enumerate}
-          \item\label{enu:pict4java1} PictGenerate関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
-          \item\label{enu:pict4java2} PictGetNextResultRow関数を用いて(a)で生成した組合せデータを1件取得する。取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(b)の処理を繰り返す。
+          \item\label{enu:pict4java1} \PictGenerate{}関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
+          \item\label{enu:pict4java2} \PictGetNextResultRow{}関数を用いて(a)で生成した組合せデータを1件取得する。取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(b)の処理を繰り返す。
           \item (b)で取得したデータのインデックスに該当するパラメータを用いて、組合せデータのリストを生成する。
         \end{enumerate}
   \item \ref{enu:pict4java0}.で生成したリストを、pict4javaの出力データとする。
