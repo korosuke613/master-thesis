@@ -159,7 +159,7 @@
 本研究におけるドメイン分析テストとは、関係性がある複数の変数を同時にテストする方法である\cite{izon}\cite{jstqb}。
 ドメインとは、入力するデータの定義域である。
 ドメイン分析とは、入力する変数と条件式を分析し、ドメインを抽出することである。
-ドメイン分析テストでは、ドメインごとにonポイント、offポイント、inポイント、outポイントと呼ばれる入力値、および、それを基にしたテストケースを作成し、テストする。
+ドメイン分析テストでは、ドメインごとにonポイント、offポイント、inポイント、outポイントと呼ばれる入力値、および、それを元にしたテストケースを作成し、テストする。
 境界値とは、同値分割した領域の端、あるいは端のどちらか側で最小の増加的距離にある入力値、または、出力値である\cite{jstqb}。
 本研究では、境界値の中でも、条件式を満たす境界値を利用する。これを、TB(True Boundary)と命名する。
 TBの定義を、以下に示す。
@@ -640,8 +640,8 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 \end{figure*}
 
 \subsection{構文解析部}
-BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
-既存のBWDMは、各条件式の左辺、、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節参照)。
+% BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
+既存のBWDMは、各条件式の左辺、、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節)。
 したがって、if条件式の左辺と右辺の式を構文解析し、条件式内の変数を抽出することによって、左辺、または、右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とした。
 
 \subsection{ドメイン分析部}\label{cha:DomainAnalyzer}
@@ -678,20 +678,22 @@ BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを�
 
 各ポイントを満たす変数の値を求めるために、SMTソルバ(Satisfiable Modulo Theories)\cite{sat}を利用する。
 充足可能性問題(SAT)を解くアルゴリズムを実装したソフトウェアをSATソルバと呼び、SATソルバを算術演算に対応させたソフトウェアをSMTソルバと呼ぶ。
-幅広く知られているSMTソルバの1つに、Microsoft Researchが開発を進めているZ3\cite{z3}がある。Z3は、C、C++、Java、Pythonなどのプログラミング言語から利用できるAPIを提供する。拡張したBWDMは、このZ3を利用し、条件式を満たす入力値を生成する。
+幅広く知られているSMTソルバの1つに、Microsoft Researchが開発を進めているZ3\cite{z3}がある。
+Z3は、C、C++、Java、Pythonなどのプログラミング言語から利用できるAPIを提供する。
+拡張したBWDMは、このZ3を利用し、条件式を満たす入力値を生成する。
 
-各ポイントの生成方法の提案手法を、以下に示す。
+各ポイントの生成方法を、以下に示す。
 
 \subsubsection{onポイント}
 onポイントは、着目条件式のTBである。ドメインを決定づける条件式に付き1つ生成し、他のonポイントと重複してはならない。
 ドメインに関わる条件式の数だけ以下の手順を繰り返し、各条件式に着目したonポイントを生成する。
 \begin{enumerate}
   \item\label{enu:onpoint_2} もし、着目条件式の比較演算子が、“$>=$”、または、“$<=$”である場合、“=”に置き換える。“$>$”である場合、“=”で置き換え、右辺を“+1”する。“$<$”である場合、“=”で置き換え、左辺を“+1”する。
-  \item\label{enu:onpoint_1} (\ref{enu:onpoint_2})で修正した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるonポイントが存在しないため、生成を行わずに次の着目条件式のonポイントの生成を行う。
-  \item 配列onPoints(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイントと値が重なるかどうかを判定する。
+  \item\label{enu:onpoint_1} \ref{enu:onpoint_2}.で修正した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるonポイントが存在しないため、生成を行わずに次の着目条件式のonポイントの生成を行う。
+  \item 配列onPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
-          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、(\ref{enu:onpoint_1})に戻る。
-          \item 重なっていない場合、解を基に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列onPointsに格納する。
+          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:onpoint_1}.に戻る。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列onPointsに格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -700,15 +702,15 @@ offポイントは、着目するonポイントに隣接し、TBでない値で�
 配列onPoints(\ref{cha:DomainAnalyzer}節参照)を参照し、onポイントの数だけ以下の手順を繰り返し、onポイントに着目したoffポイントを生成する。
 \begin{enumerate}
   \item\label{enu:offpoint_2} 着目するonポイントのメンバforcusedConditionalExpressionを参照し、着目するonポイントがどの条件式に着目していたかを保持する。
-  \item (\ref{enu:offpoint_2})の条件式から、引数を抽出する。抽出した引数の数だけ以下を繰り返す。
+  \item \ref{enu:offpoint_2}.の条件式から、引数を抽出する。抽出した引数の数だけ以下を繰り返す。
         \begin{enumerate}
           \item 以下の処理を2回繰り返す。1回目は“N=$-$1”と定義し、2回目は“N=1”と定義する。
                 \begin{enumerate}
                   \item\label{enu:offpoint_3} 着目するonポイントインスタンスをコピーする。
-                  \item\label{enu:offpoint_1} (i)でコピーしたPointインスタンスのメンバ配列factorsから、“Factor.name == 引数名”となるFactorインスタンスを検索する。
-                  \item (ii)で検索して見つかったFactorインスタンスのメンバvalueを“+N”する。
+                  \item\label{enu:offpoint_1} i.でコピーしたPointインスタンスのメンバ配列factorsから、“Factor.name == 引数名”となるFactorインスタンスを検索する。
+                  \item ii.で検索して見つかったFactorインスタンスのメンバvalueを“+N”する。
                   \item PointインスタンスのメンバforcusedVariableに引数名を格納する。
-                  \item Pointインスタンスを配列offPoints(\ref{cha:DomainAnalyzer}節参照)に格納する。
+                  \item Pointインスタンスを配列offPoints(\ref{cha:DomainAnalyzer}節)に格納する。
                 \end{enumerate}
         \end{enumerate}
 \end{enumerate}
@@ -718,11 +720,11 @@ in ポイントは、ドメインを決定づけるすべての条件式を満�
 以下の手順を行い、inポイントを生成する。
 \begin{enumerate}
   \item\label{enu:inpoint_2} もし、条件式の比較演算子が、“$>=$”である場合、“$>$”で置き換える。“$<=$”である場合、“$<$”で置き換える。これを、すべての条件式に対して行う。
-  \item\label{enu:inpoint_1} (\ref{enu:inpoint_2})で修正した条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、inポイントが存在しないため、生成を行わない。
-  \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
+  \item\label{enu:inpoint_1} \ref{enu:inpoint_2}.で修正した条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、inポイントが存在しないため、生成を行わない。
+  \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
-          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、(\ref{enu:inpoint_1})に戻る。
-          \item 重なっていない場合、解を基に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、配列inPointsに格納する。
+          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:inpoint_1}.に戻る。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、配列inPointsに格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -731,11 +733,11 @@ outポイントは、着目条件式のみを満たさない値である。ド�
 ドメインに関わる条件式の数だけ以下の手順を繰り返し、各条件式に着目したoutポイントを生成する。
 \begin{enumerate}
   \item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え、否定する。
-  \item\label{enu:outpoint_1} (\ref{enu:outpoint_2})で否定した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるoutポイントが存在しないため、生成を行わずに次の着目条件式のoutポイントの生成を行う。
-  \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
+  \item\label{enu:outpoint_1} \ref{enu:outpoint_2}.で否定した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるoutポイントが存在しないため、生成を行わずに次の着目条件式のoutポイントの生成を行う。
+  \item 配列onPointsと配列offPoints(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
-          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、(\ref{enu:outpoint_1})に戻る。
-          \item 重なっていない場合、解を基に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列outPointsに格納する。
+          \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:outpoint_1}.に戻る。
+          \item 重なっていない場合、解を元に、Pointインスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバforcusedConditionalExpressionには、着目条件式を格納する。作成したインスタンスを配列outPointsに格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -747,7 +749,7 @@ outポイントは、着目条件式のみを満たさない値である。ド�
   \label{fig:dmin_output_format}
 \end{figure}
 
-既存のBWDMは、期待出力生成部において、入力データを基に期待出力を生成する機能を持つ。DomainAnalyzerクラス(\ref{cha:DomainAnalyzer}節参照)のgetAllTestCaseByDomainAnalyzerメソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
+既存のBWDMは、期待出力生成部において、入力データを元に期待出力を生成する機能を持つ。DomainAnalyzerクラス(\ref{cha:DomainAnalyzer}節参照)のgetAllTestCaseByDomainAnalyzerメソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
 そのため、既存のBWDMの期待出力生成部をそのまま用いて、期待出力生成とテストケース生成は可能である。
 拡張したBWDMでは、各ドメインの各ポイントのテストケースを出力する。
 
@@ -804,7 +806,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 \begin{itemize}
   \item 抽象クラスDefinition\\
-        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを基に、if-then-else式から木構造を生成\todo{(TODO:立山さんの修論参照)}する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う定義を表す抽象クラスである。TCDefinition型のオブジェクトを元に、if-then-else式から木構造を生成\todo{(TODO:立山さんの修論参照)}する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[name] 定義の名前
           \item[constantValues] 定数定義の集合
@@ -816,13 +818,13 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
         \end{description}
 
   \item クラスFunctionDefinition\\
-        テストケース生成を行う関数を表すクラスである。TCExplicitFunctionDefinition型のオブジェクトを基に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う関数を表すクラスである。TCExplicitFunctionDefinition型のオブジェクトを元に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[setIfElseSyntaxTree()] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
         \end{description}
 
   \item クラスOperationDefinition\\
-        テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを基に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
+        テストケース生成を行う操作を表すクラスである。TCExplicitOperationDefinition型のオブジェクトを元に、if-then-else式から木構造を生成(TODO:立山さんの修論参照)する。以下のフィールドとメソッドを持つ。
         \begin{description}
           \item[instanceVariables] インスタンス変数定義の集合
           \item[setUsesInstanceVariables()] if-then-else木構造内で使用されるインスタンス変数をargumentTypesとparametersに追加する
@@ -1297,8 +1299,8 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 %この設計モデルの例を、\figref{fig:model_park}に示す。これは、\figref{fig:vdm_park}の仕様から設計モデルを作成した例である。
 設計モデルは\cite{sekkeiModel}で定義されている。
 
-設計モデルは仕様書を基に、人手で記述する必要があるため、設計モデルの作成に時間と手間がかかってしまうという問題がある。
-これに対して、拡張したBWDMは、VDM++仕様を基に、自動でテストケースを生成できるため、設計モデルを作成する必要がないという利点がある。
+設計モデルは仕様書を元に、人手で記述する必要があるため、設計モデルの作成に時間と手間がかかってしまうという問題がある。
+これに対して、拡張したBWDMは、VDM++仕様を元に、自動でテストケースを生成できるため、設計モデルを作成する必要がないという利点がある。
 しかし、仕様書がVDM++で記述されておらず、自然言語で記述されている場合、VDM++仕様で記述しなければ、拡張したBWDMを使うことができない。
 そのため、自然言語で記述された仕様書からドメイン分析テストのためのテストケースを作成する場合、設計モデルを記述するか、VDM++仕様を記述するかで対応が分かれることとなる。
 なお、設計モデルの記述とVDM++仕様の記述に必要な要素がほぼ同じなため、記述量はほとんど変わらないと考える。
