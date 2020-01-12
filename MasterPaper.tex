@@ -132,13 +132,13 @@
 
 第\ref{cha:Preparation}章では、\tool{}を実装するために必要となる前提知識について説明する。
 
-第\ref{cha:Exist}章では、\tool{}の外観について説明する。
+第\ref{cha:Exist}章では、既存の\tool{}について説明する。
 
-第\ref{cha:Extended}章では、\tool{}の機能について説明する。
+第\ref{cha:Extended}章では、拡張した\tool{}について説明する。
 
-第\ref{cha:Indication}章では、試作した\tool{}が正しく動作することを検証する。
+第\ref{cha:Indication}章では、拡張した\tool{}が正しく動作することを検証する。
 
-第\ref{cha:Evaluation}章では、\tool{}について考察する。
+第\ref{cha:Evaluation}章では、拡張した\tool{}について考察する。
 
 第\ref{cha:Conclusion}章では、本研究のまとめと今後の課題を示す。
 
@@ -152,19 +152,7 @@
 \section{VDMJ}\label{cha:vdmj}
 \todo{TODO: VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
 
-\begin{itemize}
-  \item 抽象クラスVDMJ::TCDefinition\\
-        VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義ブロックの種類を取得できる。
-  \item クラスVDMJ::TCExplicitFunctionDefinition\\
-        VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
-  \item クラスVDMJ::TCExplicitOperationDefinition\\
-        VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
-  \item クラスVDMJ::TCValueDefinition\\
-        VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
-  \item クラスVDMJ::TCInstanceVariableDefinition\\
-        VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
-\end{itemize}
-
+\subsection{VDMJのクラス}
 \begin{table}[t]
   \begin{center}
     \caption{VDM++における定義、および、定義に対応するVDMJでの呼び方}
@@ -180,6 +168,23 @@
     \end{tabular}
   \end{center}
 \end{table}
+
+本研究で利用するVDMJのクラスを以下に示す。
+
+\begin{itemize}
+  \item 抽象クラスVDMJ::TCDefinition\\
+        VDM++における各定義ブロックを表す抽象クラスである。フィールドnameの値は定義名を示す。メソッドkind()を実行することで、定義の種類を取得できる。
+        定義の種類を\ref{tab:vdmj_definition_name}に示す。
+  \item クラスVDMJ::TCExplicitFunctionDefinition\\
+        VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
+  \item クラスVDMJ::TCExplicitOperationDefinition\\
+        VDM++における操作定義ブロックoperationsにある定義を表すクラスである。
+  \item クラスVDMJ::TCValueDefinition\\
+        VDM++における定数定義ブロックvaluesにある定義を表すクラスである。
+  \item クラスVDMJ::TCInstanceVariableDefinition\\
+        VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
+\end{itemize}
+
 
 \section{ドメイン分析テスト}\label{cha:domain}
 本研究における、ドメイン分析テストの定義と、ドメインテストが必要となる仕様の例を、以下で示す。
