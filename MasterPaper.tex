@@ -54,6 +54,9 @@
 \usepackage{txfonts}            % フォントといえばやっぱりtxfonts、今はnewtxってのもあるらしい
 \usepackage{verbatim}           % コメントアウトしてくれる便利なプリアンブルが使える \begin{comment} ... \end{comment}
 \usepackage[hdivide={21mm, , 21mm}, vdivide={30mm, , 25mm}]{geometry} % スタイルを少し変えたくても\hoffset, \voffsetは使わないでね
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+
 %\RequirePackage[l2tabu, orthodox]{nag} % これを入れると、古いコマンドを警告してくれる！なお完全には消せなかった模様
 \newcommand\todo[1]{\PackageWarning{}{Detection TODO:#1}\textcolor{red}{(TODO:#1)}}
 
