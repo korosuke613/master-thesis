@@ -375,7 +375,7 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
 \subsection{複数変数を含む条件式に関する問題点}\label{sec:problem_double_var}
 
 既存のBWDMには、左辺、右辺に複数の変数を含む条件式を持つ仕様のテストケース生成ができないという問題がある。
- コード\ref{fig:vdm_park}に示したVDM++仕様には、7行目の条件式の左辺に複数の変数が含まれているため、この仕様を既存のBWDMに適用しても、テストケース生成ができない。
+コード\ref{fig:vdm_park}に示したVDM++仕様には、7行目の条件式の左辺に複数の変数が含まれているため、この仕様を既存のBWDMに適用しても、テストケース生成ができない。
 
 この理由を、既存のBWDMに コード\ref{fig:vdm_park}の仕様を入力した場合を例に、以下で説明する。
 
@@ -1264,11 +1264,11 @@ No.4 : 1 -> "平年"
     \caption{因子が7、水準が(6 8 6 8 8 6 6)の関数を持つVDM++仕様の生成結果の比較}
     \label{tab:pict4java_result}
     \begin{tabular}{c|c|c}
-      & 生成テストケース数 & 実行時間(秒)                 \\
+                   & 生成テストケース数 & 実行時間(秒) \\
       \hline
       \hline
-      既存のBWDM & 663,552 & 6.767146152 \\ \hline
-      拡張したBWDM & 78 & 0.88973152
+      既存のBWDM   & 663,552            & 6.767146152  \\ \hline
+      拡張したBWDM & 78                 & 0.88973152
     \end{tabular}
   \end{center}
 \end{table}
@@ -1354,7 +1354,7 @@ VDM++の文法の知識を持たない者も含まれるが、
 また、ドメイン分析テストのためのテストケース生成についても、事前に他のVDM++仕様とテストケースの例を用いてレクチャーした。
 
 人手による検証では、
- コード\ref{fig:vdm_park}を印刷した紙を渡し、
+コード\ref{fig:vdm_park}を印刷した紙を渡し、
 仕様を確認後、
 テストケースを書き始めてから、テストケースを記述し終えるのに要した時間を計測した。
 入力データと戻り値の組み合わせが不正確な場合、間違いを指摘し、
@@ -1382,14 +1382,14 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
     \caption{コード\ref{fig:vdm_park}のドメイン分析テストのためのテストケース作成に要した時間の比較}
     \label{tab:time}
     \begin{tabular}{c|c}
-      被験者 or 拡張したBWDM & 時間    \\
+      被験者 or 拡張したBWDM & 時間              \\
       \hline
       \hline
-      被験者A                & 8m 16s  \\ \hline
-      被験者B                & 10m 23s \\ \hline
-      被験者C                & 30m(制限時間超過)     \\ \hline
-      被験者D                & 24m 04s \\ \hline
-      被験者(平均)           & 18m 10s \\ \hline
+      被験者A                & 8m 16s            \\ \hline
+      被験者B                & 10m 23s           \\ \hline
+      被験者C                & 30m(制限時間超過) \\ \hline
+      被験者D                & 24m 04s           \\ \hline
+      被験者(平均)           & 18m 10s           \\ \hline
       BWDM                   & 0m 15s
     \end{tabular}
   \end{center}
@@ -1422,7 +1422,7 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 
 \subsection{複数定義対応に関する評価}
 \todo{この節はまだ実験を行っていないため、\ref{sec:domain_exam}節を参考に、文章のみ記述した。
-実験後に、加筆、修正する。}
+  実験後に、加筆、修正する。}
 
 人手による関数定義、操作定義、定数定義、インスタンス変数定義を含むVDM++仕様のテストケース作成と、拡張したBWDMによるテストケース生成で、作成(生成)に要した時間の比較検証を行った。
 その結果を、表\ref{tab:time_definition}に示す。
@@ -1469,12 +1469,12 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
     \caption{コード\ref{fig:multi_definition_exam}のテストケース作成に要した時間の比較}
     \label{tab:aaaaaaa}
     \begin{tabular}{c|c}
-      被験者 or 拡張したBWDM & 時間    \\
+      被験者 or 拡張したBWDM & 時間  \\
       \hline
       \hline
-      被験者A                & 0m 0s  \\ \hline
+      被験者A                & 0m 0s \\ \hline
       被験者B                & 0m 0s \\ \hline
-      被験者C                & 0m 0s     \\ \hline
+      被験者C                & 0m 0s \\ \hline
       被験者D                & 0m 0s \\ \hline
       被験者(平均)           & 0m 0s \\ \hline
       BWDM                   & 0m 0s
