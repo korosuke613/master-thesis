@@ -175,7 +175,7 @@ $exp$を条件式、$left$を左辺、$int$を右辺とする。
 \begin{itemize}
   \item onポイント：着目条件式(後述)のTBである。ドメインを決定づける条件式に付き1つ生成する。他のonポイントと重複してはならない。$targetExp$を着目条件式とすると、onポイントは、$targetExp = True$かつ$left = TB$となる値でなければならない。
   \item offポイント：着目するonポイントに隣接し、TBでない値である。onポイントに付き複数(着目条件式に含まれる変数 $*$ 2)個存在する。$targetVar$を着目変数(後述)とすると、offポイントは、$targetVar + 1$となる値、または、$targetVar - 1$となる値でなければならない。
-  \item inポイント：ドメインを決定づける全ての条件式を満たす値である。ドメインに付き1つ生成する。onポイントやoffポイントと重複してはならない。$onPoints$をonポイントの集合とし、$offPoints$をoffポイントの集合、$inPoint$をinポイントとすると、inポイントは、 $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない。
+  \item inポイント：ドメインを決定づけるすべての条件式を満たす値である。ドメインに付き1つ生成する。onポイントやoffポイントと重複してはならない。$onPoints$をonポイントの集合とし、$offPoints$をoffポイントの集合、$inPoint$をinポイントとすると、inポイントは、 $(exp1 \land exp2 \land ... \land expN) = True$ かつ $inPoint \notin (onPoints \cup offPoints)$となる値でなければならない。
   \item outポイント：着目条件式のみを満たさない値である。ドメインを決定づける条件式に付き1つ生成する。offポイントと重複してはならない。$outPoint$をoutポイントとすると、outポイントは、$ (\lnot targetExp \land exp1 \land exp2 \land ... \land expN) = True$かつ$outPoint \notin offPoints$となる値でなければならない。
 \end{itemize}
 また、それぞれのポイントは、以下のパラメータを持つ。
@@ -211,7 +211,7 @@ $exp$を条件式、$left$を左辺、$int$を右辺とする。
 onポイントは、“On1”〜“On3”の3つであり、それぞれ、条件式の境界線上に存在する。
 offポイントは、“Off11”〜“Off32”の8つである。“Off11”〜“Off14”は“夫の年齢 + 妻の年齢 $<=$ 50”という条件式に着目した“On1”に隣接するoffポイントであり、4つ存在する。これは、“夫の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在し、同じように、“妻の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在するためである。
 しかし、“On2”のoffポイントは“Off21”、 “Off22”の2つのみである。これは、“夫の年齢”をずらしたoffポイントが“妻の年齢 $>=$ 16”となり、TBとなるからである。
-inポイントは、“In”の1つであり、“割引価格となる”ドメインの全ての条件式を満たす値を持つ。
+inポイントは、“In”の1つであり、“割引価格となる”ドメインのすべての条件式を満たす値を持つ。
 outポイントは、“Out1”〜“Out3”の3つであり、それぞれの’着目条件式のみを満たさない値を持つ。
 
 \begin{figure}[tb]
@@ -263,7 +263,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
   \item 境界値分析によるテストケース生成
 \end{itemize}
 
-記号実行によって生成したテストケースは、全ての実行フローを網羅できることが期待できる。
+記号実行によって生成したテストケースは、すべての実行フローを網羅できることが期待できる。
 境界値分析によって生成したテストケースは、境界値テストに使用することができる。
 既存のBWDMを使用することにより、VDM++仕様を用いたソフトウェア開発効率を改善できる。
 
@@ -315,7 +315,7 @@ VDM++仕様ファイルの例を図\ref{fig:input_sample}に，
 また，出力テストケースのフォーマットを，図\ref{fig:bwdm_format}に示す．
 “各引数の境界値”にて，引数a， b， cそれぞれの境界値の集合を出力している．
 そして，“境界値分析によるテストケース”にて，ペアワイズ法を用いて，各引数の境界値の組合せ総数を削減したテストスイートを出力している．
-また，”記号実行によるテストケース”にて，関数の全ての実行フローを網羅できるテストスイートを出力している．
+また，”記号実行によるテストケース”にて，関数のすべての実行フローを網羅できるテストスイートを出力している．
 
 \section{問題}\label{sec:bwdm_problem}
 既存のBWDMには問題がある。問題点を以下で説明する。
@@ -520,15 +520,18 @@ end 判定
 以降、各拡張点について説明する。
 
 \section{ペアワイズ法の適用によるテストケース数削減}
-本稿ではpict4javaを開発した。
-pict4javaはPICTとBWDMを接続するためのインタフェースである。
-そして、既存のBWDMにpict4javaを埋め込むことで、BWDMを拡張した。
-詳細を以下に示す。
+本研究では、pict4javaを開発する。
+pict4javaは、PICTとBWDMを接続するためのインタフェースである。
+そして、既存のBWDMにpict4javaを組込むことで、BWDMを拡張した。
+詳細を,
+以下に示す。
 
-\subsection{pict4javaについて}
-PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提供しており、C++から利用できる。
-しかし、既存のBWDMはJavaで記述していることから、PICTライブラリを呼び出すことができない。
-そのため、BWDMの拡張の準備として、JNA(Java Native Access) 6)を利用し、Javaから呼び出すことのできるPICTライブラリ(pict4javaと呼称する)を作成した。
+\subsection{pict4javaの概要}\label{sec:create_pict4java}
+PICTは、CLI(Command Line Interface)ツールである。
+API(PICTライブラリと呼称する)も提供しており、C++からのみ利用できる。
+既存のBWDMはJavaで記述していることから、PICTライブラリを呼び出すことができない。
+そのため、BWDMの拡張の準備として、pict4javaを開発する。
+pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び出すことのできるPICTライブラリである。
 
 \begin{figure}[tp]
   \centering
@@ -543,7 +546,7 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
         Microsoft社が開発したC++で記述されたPICTライブラリである。
   \item クラスLibPict\\
         JNAを用いてJavaで記述したPICTライブラリのインタフェースである。
-        メソッド名は全てPICTライブラリの持つ関数名と同じである。\\
+        メソッド名はすべてPICTライブラリの持つ関数名と同じである。\\
         主に使用するPICTの関数を、以下に示す。
         \begin{description}
           \item[PictAddParameter] PICTへの因子と水準の登録
@@ -551,7 +554,7 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
           \item[PictGetNextResultRow] 生成データの取得
         \end{description}
   \item クラスPictWrapper\\
-        PICTを操作するためのクラスである。Kotlinで記述する。以下の機能を持つ。
+        PICTを操作するためのクラスである。Kotlin\cite{kotlin}で記述する。以下の機能を持つ。
         \begin{description}
           \item[createTask] Taskの生成と初期化をする。
                 Taskは、PICTの組合せ生成処理の最小単位である。
@@ -576,7 +579,7 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
           \item[weights] 因子の取り得る値の重みの集合
           \item[name] 因子の名前
         \end{description}
-        メンバ変数nの値を変えることにより、その因子については、n個の組合せを網羅する入力データを作成することができる。
+        メンバ変数nの値を変えることによって、その因子については、n個の組合せを網羅する入力データを作成できる。
 \end{itemize}
 
 \subsection{pict4javaの組込み}
@@ -589,9 +592,9 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
 
 本稿で拡張したBWDMの処理の流れを、図\ref{fig:pict4javaEmbed}に示す。
 境界値分析部ではまず、テストケースの入力データとして、VDM++仕様内の引数ごとにおける、不等式、剰余式などに合わせた境界値、及び型の最小値・最大値の境界値を、それぞれ抽出する。
-既存のBWDMでは、引数ごとに生成した境界値の全ての組合せを生成し、境界値テストの入力データとしていた。
+既存のBWDMでは、引数ごとに生成した境界値のすべての組合せを生成し、境界値テストの入力データとしていた。
 
-拡張後のBWDMでは、全ての組合せを生成するのではなく、3.1節で作成したpict4javaを用いてペアワイズ法を適用し、入力データ生成を行う。
+拡張後のBWDMでは、すべての組合せを生成するのではなく、\ref{sec:create_pict4java}節で述べたpict4javaを用いてペアワイズ法を適用し、入力データ生成を行う。
 具体的には、境界値分析で得た因子が取り得る値をpict4javaに入力する。
 
 境界値分析後の境界値データを受けとったpict4javaの入力データ生成アルゴリズムを、以下に示す。
@@ -607,15 +610,15 @@ PICTはCLIツールであるが、API(PICTライブラリと呼称する)も提�
 \begin{enumerate}
   \item 因子と、因子の取り得る値を元に、クラスFactorのインスタンスを因子の数だけ生成する。
   \item クラスModelのaddFactorメソッドを用いて、PictAddParameter関数を呼び出し、PICTに因子と因子ごとの水準を登録する。
-  \item クラスPictWrapperのgenerateメソッドを用いて、ペアワイズ法を適用した組合せデータのリストを生成する。
+  \item\label{enu:pict4java0} クラスPictWrapperのgenerateメソッドを用いて、ペアワイズ法を適用した組合せデータのリストを生成する。
         組合せデータは文字列型の配列のリストである。
         詳細の処理を以下に示す。
         \begin{enumerate}
-          \item PictGenerate関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
-          \item PictGetNextResultRow関数を用いて(ア)で生成した組合せデータを1件取得する。取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(イ)の処理を繰り返す。
-          \item (イ)で取得したデータのインデックスに該当するパラメータを用いて、組合せデータのリストを生成する。
+          \item\label{enu:pict4java1} PictGenerate関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
+          \item\label{enu:pict4java2} PictGetNextResultRow関数を用いて(a)で生成した組合せデータを1件取得する。取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(b)の処理を繰り返す。
+          \item (b)で取得したデータのインデックスに該当するパラメータを用いて、組合せデータのリストを生成する。
         \end{enumerate}
-  \item C)で生成したリストを、pict4javaの出力データとする。
+  \item \ref{enu:pict4java0}.で生成したリストを、pict4javaの出力データとする。
 \end{enumerate}
 
 \section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
@@ -711,7 +714,7 @@ offポイントは、着目するonポイントに隣接し、TBでない値で�
 \end{enumerate}
 
 \subsubsection{inポイント}
-in ポイントは、ドメインを決定づける全ての条件式を満たす値である。ドメインに付き1つ生成し、他のonポイント、offポイントと重複してはならない。
+in ポイントは、ドメインを決定づけるすべての条件式を満たす値である。ドメインに付き1つ生成し、他のonポイント、offポイントと重複してはならない。
 以下の手順を行い、inポイントを生成する。
 \begin{enumerate}
   \item\label{enu:inpoint_2} もし、条件式の比較演算子が、“$>=$”である場合、“$>$”で置き換える。“$<=$”である場合、“$<$”で置き換える。これを、すべての条件式に対して行う。
