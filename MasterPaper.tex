@@ -549,7 +549,7 @@ end 判定
 
 以降、各拡張点について説明する。
 
-\section{ペアワイズ法の適用によるテストケース数削減}
+\section{ペアワイズ法の適用によるテストケース数削減}\label{sec:extendPairwise}
 本研究では、pict4javaを開発する。
 pict4javaは、PICTとBWDMを接続するためのインタフェースである。
 そして、既存のBWDMにpict4javaを組込むことで、BWDMを拡張した。
@@ -651,7 +651,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
   \item \ref{enu:pict4java0}.で生成したリストを、pict4javaの出力データとする。
 \end{enumerate}
 
-\section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}
+\section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}\label{sec:extendDomain}
 
 本研究で拡張したBWDMの処理の流れを、図\ref{fig:bwdm_structure}に示す。
 既存のBWDMでは、入力したVDM++仕様を構文解析し、その結果を、境界値分析部と記号実行部に渡し、テストケースにおける入力データを生成する。
@@ -792,7 +792,7 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 出力テストケースのフォーマットを、図\ref{fig:output_format}に示す。$<$と$>$で囲まれている部分を、それぞれの情報で置き換える。
 
-\section{複数の定義への対応}
+\section{複数の定義への対応}\label{sec:extendMultiple}
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/multi_bwdm_structure}
@@ -937,29 +937,10 @@ offポイントの場合、着目変数の出力を行う。出力には、Point
 
 % 適用例
 \chapter{適用例}\label{cha:Indication}
+本研究で拡張したBWDMが正しく動作することを検証するため、拡張したBWDMにVDM++仕様を適用した。
 
 
 \section{因子と水準の組合せ数が大きい仕様}
-
-\begin{table}[t]
-  \begin{center}
-    \caption{適用結果}
-    \label{tab:pict4javaTekiyourei}
-    \begin{tabular}{c|c|c|c|c}
-      No & \multicolumn{3}{|c|}{入力} & 期待出力                                             \\
-      \hline
-      \hline
-      1  & 100                        & -1       & 11            & Undefined Action          \\
-      2  & 100                        & 2,018    & 12            & "aは100以上かつcは12以上" \\
-      3  & 2,147,483,647              & 0        & 4,294,967,295 & Undefined Action          \\
-      〜 & 〜                         & 〜       & 〜            & 〜                        \\
-      38 & 2,147,483,647              & -1       & -1            & Undefined Action          \\
-      39 & 2,147,483,647              & -1       & 4,294,967,294 & Undefined Action          \\
-      40 & 2,147,483,647              & 2,018    & 4,294,967,295 & Undefined Action          \\
-      \hline
-    \end{tabular}
-  \end{center}
-\end{table}
 
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
@@ -983,11 +964,76 @@ end SampleClass
 \end{lstlisting}
 \end{minipage}
 
-本稿で拡張したBWDMが正しく動作することを検証するため、拡張したBWDMにVDM++仕様を適用した。
-適用結果を、表\ref{tab:pict4javaTekiyourei}に示す。
-適用した、因子が3、境界値分析後の水準がそれぞれ(6, 6, 6)の関数のVDM++仕様を、コード\ref{fig:pict4javaSampleVdm}に示す。
+\lstset{language=}
+\noindent\begin{minipage}{\textwidth}
+  \begin{lstlisting}[caption=コード\ref{fig:pict4javaSampleVdm}の適用結果,label=fig:pict4javaTekiyourei]
 
-この適用例から、既存のBWDMでは216個生成していたテストケースを、拡張後のBWDMでは40個の生成に抑えており、かつ、40個のテストケースは、2個の因子のペアの組合せをすべて網羅できていることが確認できた。
+関数名 : sampleFunction
+引数の型 : a:int b:nat c:nat 
+戻り値の型 : seq of (char)
+生成テストケース数 : 44件(境界値分析:40/記号実行:4)
+
+各引数の境界値
+a : 2147483648 2147483647 -2147483648 -2147483649 99 100 
+b : 4294967295 4294967294 0 -1 2019 2018 
+c : 4294967295 4294967294 0 -1 11 12 
+
+記号実行情報
+戻り値の数 : 4
+制約 : b > 2018 and a < 100, 戻り値 : "aは100未満かつbは2018より大きい"
+制約 : !( b > 2018 ) and a < 100, 戻り値 : "aは100未満かつbは2018以下"
+制約 : c < 12 and !( a < 100 ) , 戻り値 : "aは100以上かつcは12未満"
+制約 : !( c < 12 ) and !( a < 100 ) , 戻り値 : "aは100以上かつcは12以上"
+
+境界値分析によるテストケース（ペアワイズ法適用）
+No.1 : 100 4294967295 -1 -> Undefined Action
+No.2 : 2147483648 2019 -1 -> Undefined Action
+No.3 : 100 2019 11 -> "aは100以上かつcは12未満"
+No.4 : 2147483648 2018 4294967294 -> Undefined Action
+No.5 : 2147483647 -1 4294967294 -> Undefined Action
+No.6 : -2147483649 0 0 -> Undefined Action
+No.7 : 2147483648 -1 4294967295 -> Undefined Action
+No.8 : 100 -1 12 -> Undefined Action
+No.9 : -2147483649 2019 12 -> Undefined Action
+No.10 : 99 -1 0 -> Undefined Action
+No.11 : 99 4294967295 11 -> Undefined Action
+No.12 : 99 2019 4294967294 -> "aは100未満かつbは2018より大きい"
+No.13 : -2147483648 2018 -1 -> Undefined Action
+No.14 : 100 2018 0 -> "aは100以上かつcは12未満"
+No.15 : 99 4294967294 -1 -> Undefined Action
+No.16 : -2147483649 2018 4294967295 -> Undefined Action
+No.17 : 2147483647 4294967295 4294967295 -> Undefined Action
+No.18 : 100 0 4294967295 -> Undefined Action
+No.19 : 2147483647 0 12 -> "aは100以上かつcは12以上"
+No.20 : 99 2018 12 -> "aは100未満かつbは2018以下"
+No.21 : -2147483648 4294967294 4294967295 -> Undefined Action
+No.22 : 2147483647 4294967294 0 -> "aは100以上かつcは12未満"
+No.23 : 99 0 4294967295 -> Undefined Action
+No.24 : -2147483649 4294967294 4294967294 -> Undefined Action
+No.25 : 2147483647 2019 4294967295 -> Undefined Action
+No.26 : -2147483648 0 11 -> "aは100未満かつbは2018以下"
+No.27 : 2147483648 4294967294 11 -> Undefined Action
+No.28 : 2147483647 -1 -1 -> Undefined Action
+No.29 : -2147483649 -1 11 -> Undefined Action
+No.30 : 100 4294967294 12 -> "aは100以上かつcは12以上"
+No.31 : 2147483648 4294967295 0 -> Undefined Action
+No.32 : 100 4294967295 4294967294 -> Undefined Action
+No.33 : 2147483647 2018 11 -> "aは100以上かつcは12未満"
+No.34 : 2147483648 0 4294967294 -> Undefined Action
+No.35 : -2147483648 2019 0 -> "aは100未満かつbは2018より大きい"
+No.36 : 2147483648 4294967295 12 -> Undefined Action
+No.37 : -2147483648 4294967295 4294967294 -> Undefined Action
+No.38 : -2147483648 -1 12 -> Undefined Action
+No.39 : -2147483649 0 -1 -> Undefined Action
+No.40 : -2147483649 4294967295 0 -> Undefined Action
+\end{lstlisting}
+\end{minipage}
+
+\ref{sec:extendPairwise}節で拡張したBWDMが正しく動作することを検証するため、拡張したBWDMに因子と水準の組合せ数が大きいVDM++仕様を適用した。
+適用例として用いる、因子が3、境界値生成後の水準がそれぞれ(6, 6, 6)の関数のVDM++仕様を、コード\ref{fig:pict4javaSampleVdm}に示す。
+適用結果を、コード\ref{fig:pict4javaTekiyourei}に示す。
+
+この適用結果から、既存のBWDMでは$6 \times 6 \times 6 = 216個$生成していたテストケースを、拡張後のBWDMでは40個の生成に抑えており、かつ、40個のテストケースは、2個の因子のペアの組合せをすべて網羅できていることが確認できた。
 すなわち、拡張したBWDMが、VDM++仕様から、ペアワイズ法を適用した境界値テストケースを正しく出力できていることが確認できた。
 
 
