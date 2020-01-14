@@ -570,26 +570,33 @@ end 判定
 \end{minipage}
 
 % 拡張
-\chapter{拡張した\tool{}}\label{cha:Extended}
+\chapter{\tool{}の拡張}\label{cha:Extended}
 \begin{table}[tp]
   \begin{center}
     \caption{本研究で行う拡張とそれぞれが対応する問題}
     \label{tab:problem_compare}
     \begin{tabular}{c|c}
-      本研究で行う拡張   & 解決する問題                   \\
+      本研究で行う拡張           & 解決する問題 \\
       \hline
       \hline
-      ペアワイズ法の適用によるテストケース数削減
-                         & \ref{sec:problem_pairwise}節   \\ \hline
       \begin{tabular}{c}
-        ドメイン分析テストの適用による \\複数変数を含む条件式を含む関数のテストケース生成
-      \end{tabular}
-                         & \ref{sec:problem_double_var}節 \\ \hline
-      複数の定義への対応 &
+        ペアワイズ法の適用による\\テストケース数削減
+      \end{tabular} 
+                                 &
       \begin{tabular}{c}
-        \ref{sec:probrem_only_function}節 \\
-        \ref{sec:probrem_value}節         \\
-        \ref{sec:probrem_operation}節
+        組合せ爆発に関する問題点 \\(\ref{sec:problem_pairwise}節)
+      \end{tabular}                \\ \hline
+      \begin{tabular}{c}
+        ドメイン分析テストの適用による \\複数変数を含む条件式を含む関数の\\テストケース生成
+      \end{tabular} &
+      \begin{tabular}{c}
+        複数変数を含む条件式に関する問題点 \\(\ref{sec:problem_double_var}節)
+      \end{tabular}                \\ \hline
+      複数の定義への対応         &
+      \begin{tabular}{c}
+        単一の関数しか\\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節)               \\
+        定数定義ブロック内の定義を含む関数の\\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節) \\
+        操作のテストケースを生成できない問題点                               \\(\ref{sec:probrem_operation}節)
       \end{tabular}
     \end{tabular}
   \end{center}
@@ -598,9 +605,9 @@ end 判定
 本章では、拡張した\tool{}について説明する。
 既存のBWDMには5つの問題点がある(\ref{sec:bwdm_problem}節)。
 これらの問題を解決するために、拡張した\tool{}では、大きく分けて3つの拡張を行う。
-本研究で行う拡張とそれぞれが対応する問題を表\ref{tab:problem_compare}に示す。
+本研究で行う拡張とそれぞれが対応する問題を、表\ref{tab:problem_compare}に示す。
 
-以降、各拡張点について説明する。
+以降、各拡張について説明する。
 
 \section{ペアワイズ法の適用によるテストケース数削減}\label{sec:extendPairwise}
 本研究では、pict4javaを開発する。
@@ -1261,7 +1268,7 @@ No.2 : 1 -> "奇数"
 \section{操作定義を含む仕様}
 拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition})を入力として適用した結果をコード\ref{fig:extended_multiple_definition}に示す。
 コード\ref{fig:extended_multiple_definition}では、インスタンス変数「current\_year」を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
-また、入力と出力の組合せが正しいことから、適切なテストケース生成ができていることが確認できた。
+また、入力と出力の組合せが正しいことから��適切なテストケース生成ができていることが確認できた。
 
 したがって、拡張したBWDMは、既存のBWDMの問題点である、操作のテストケース生成ができないという問題点を解決し、操作のテストケース生成ができることを確認できた。
 
