@@ -153,7 +153,7 @@
 % 研究の準備
 \chapter{研究の準備}\label{cha:Preparation}
 
-本章では、\tool{}を実装するにあたり、必要となる前提知識を説明する。
+本章では、\tool{}を拡張するにあたり、必要となる前提知識を説明する。
 
 \section{VDMJ}\label{cha:vdmj}
 \todo{VDMJに関することを書く。既存のBWDM、拡張したBWDMの章で説明したこともこっちで書くべきかもしれない。}
@@ -175,12 +175,12 @@
   \end{center}
 \end{table}
 
-本研究で利用するVDMJのクラスを以下に示す。
+本研究で利用するVDMJのクラスを、以下に示す。
 
 \begin{itemize}
   \item 抽象クラス\ttt{VDMJ::TCDefinition}\\
         VDM++における各定義ブロックを表す抽象クラスである。フィールド\ttt{name}の値は定義名を示す。メソッド\ttt{kind()}を実行することで、定義の種類を取得できる。
-        定義の種類を\ref{tab:vdmj_definition_name}に示す。
+        VDM++における定義の種類を、表\ref{tab:vdmj_definition_name}に示す。
   \item クラス\ttt{VDMJ::TCExplicitFunctionDefinition}\\
         VDM++における関数定義ブロックfunctions内にある定義を表すクラスである。
   \item クラス\ttt{VDMJ::TCExplicitOperationDefinition}\\
@@ -206,7 +206,7 @@
 境界値とは、同値分割した領域の端、あるいは端のどちらか側で最小の増加的距離にある入力値、または、出力値である\cite{jstqb}。
 本研究では、境界値の中でも、条件式を満たす境界値を利用する。これを、TB(True Boundary)と命名する。
 TBの定義を、以下に示す。
-$condition$を条件式、$exp$を左辺、$int$を右辺とする。
+$condition$を条件式、$exp$を左辺、$int$を右辺とする。$int$は、整数でなければならない。
 \begin{itemize}
   \item $condition$が$exp = int$のとき、$TB = int$とする。
   \item $condition$が$exp < int$のとき、$TB = int - 1$とする。
@@ -235,7 +235,7 @@ $condition$を条件式、$exp$を左辺、$int$を右辺とする。
         offポイントのみが持つ。どの変数に着目して、onポイントに隣接するポイントを生成したかの情報である。
 \end{itemize}
 
-\subsection{例}
+\subsection{ドメイン分析テストの例}
 \lstset{language=}
 \noindent\begin{minipage}{\textwidth}
   \begin{lstlisting}[caption=ドメインテストが必要となる仕様(遊園地チケット割引機能),label=fig:vdm_park]
@@ -279,12 +279,12 @@ onポイントは、“On1”〜“On3”の3つであり、それぞれ、条�
 offポイントは、“Off11”〜“Off32”の8つである。“Off11”〜“Off14”は“夫の年齢 + 妻の年齢 $<=$ 50”という条件式に着目した“On1”に隣接するoffポイントであり、4つ存在する。これは、“夫の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在し、同じように、“妻の年齢”を正負の方向にそれぞれずらしたoffポイントが2つ存在するためである。
 しかし、“On2”のoffポイントは“Off21”、 “Off22”の2つのみである。これは、“夫の年齢”をずらしたoffポイントが“妻の年齢 $>=$ 16”となり、TBとなるからである。
 inポイントは、“In”の1つであり、“割引価格となる”ドメインのすべての条件式を満たす値を持つ。
-outポイントは、“Out1”〜“Out3”の3つであり、それぞれの’着目条件式のみを満たさない値を持つ。
+outポイントは、“Out1”〜“Out3”の3つであり、それぞれの着目条件式のみを満たさない値を持つ。
 
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/domain_points}
-  \caption{遊園地チケット割引機能( コード\ref{fig:vdm_park})の割引になる条件にドメイン分析を適用した例}
+  \caption{遊園地チケット割引機能(コード\ref{fig:vdm_park})の割引になる条件にドメイン分析を適用した例}
   \label{fig:domain_points}
 \end{figure}
 
@@ -315,7 +315,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
   \label{fig:existBwdmStructure}
 \end{figure}
 
-既存のBWDMの構造を図\ref{fig:existBwdmStructure}に示す。
+既存のBWDMの構造を、図\ref{fig:existBwdmStructure}に示す。
 
 \section{入出力例}
 
@@ -371,15 +371,15 @@ end SampleClass
 \end{lstlisting}
 \end{minipage}
 
-VDM++仕様ファイルの例をコード\ref{fig:input_sample}に，
-そのファイルから生成したテストケースの例を図\ref{fig:testcase_sample}に，それぞれ示す．
-また，出力テストケースのフォーマットを，コード\ref{fig:bwdm_format}に示す．
-“各引数の境界値”にて，引数a， b， cそれぞれの境界値の集合を出力している．
-そして，“境界値分析によるテストケース”にて，ペアワイズ法を用いて，各引数の境界値の組合せ総数を削減したテストスイートを出力している．
-また，”記号実行によるテストケース”にて，関数のすべての実行フローを網羅できるテストスイートを出力している．
+VDM++仕様ファイルの例をコード\ref{fig:input_sample}に、
+そのファイルから生成したテストケースの例を図\ref{fig:testcase_sample}に、それぞれ示す。
+また、テストケースの出力フォーマットを、コード\ref{fig:bwdm_format}に示す。
+図\ref{fig:testcase_sample}において、“各引数の境界値”には、引数a、b、cそれぞれの境界値の集合を出力している。
+そして、“境界値分析によるテストケース”には、各引数の境界値の総組合せのテストスイートを出力している。
+また、”記号実行によるテストケース”には、関数のすべての実行フローを網羅できるテストスイートを出力している。
 
 \section{問題}\label{sec:bwdm_problem}
-既存のBWDMには問題がある。問題点を以下で説明する。
+既存のBWDMには問題がある。問題点を、以下で説明する。
 
 \subsection{組合せ爆発に関する問題点}\label{sec:problem_pairwise}
 境界値分析によるテストケース生成において、生成したテストケース数は因子が取り得るそれぞれの値の数(水準)を掛け合わせることにより決定する。
@@ -705,7 +705,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
         \begin{enumerate}
           \item\label{enu:pict4java1} \PictGenerate{}関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
           \item\label{enu:pict4java2} \PictGetNextResultRow{}関数を用いて(a)で生成した組合せデータを1件取得する。
-                                      取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(b)の処理を繰り返す。
+                取得したデータは、因子が取り得るパラメータ群のインデックスとなる。因子の数だけ(b)の処理を繰り返す。
           \item (b)で取得したデータのインデックスに該当するパラメータを用いて、組合せデータのリストを生成する。
         \end{enumerate}
   \item \ref{enu:pict4java0}.で生成したリストを、pict4javaの出力データとする。
