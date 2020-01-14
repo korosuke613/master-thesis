@@ -584,26 +584,26 @@ end 判定
       \end{tabular} 
                                  &
       \begin{tabular}{c}
-        組合せ爆発に関する問題点 \\(\ref{sec:problem_pairwise}節)
+        組合せ爆発に関する問題点 \\(\ref{sec:problem_pairwise}節参照)
       \end{tabular}                \\ \hline
       \begin{tabular}{c}
         ドメイン分析テストの適用による \\複数変数を含む条件式を含む関数の\\テストケース生成
       \end{tabular} &
       \begin{tabular}{c}
-        複数変数を含む条件式に関する問題点 \\(\ref{sec:problem_double_var}節)
+        複数変数を含む条件式に関する問題点 \\(\ref{sec:problem_double_var}節参照)
       \end{tabular}                \\ \hline
       複数の定義への対応         &
       \begin{tabular}{c}
-        単一の関数しか\\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節)               \\
-        定数定義ブロック内の定義を含む関数の\\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節) \\
-        操作のテストケースを生成できない問題点                               \\(\ref{sec:probrem_operation}節)
+        単一の関数しか\\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節参照)               \\
+        定数定義ブロック内の定義を含む関数の\\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節参照) \\
+        操作のテストケースを生成できない問題点                               \\(\ref{sec:probrem_operation}節参照)
       \end{tabular}
     \end{tabular}
   \end{center}
 \end{table}
 
 本章では、拡張した\tool{}について説明する。
-既存のBWDMには5つの問題点がある(\ref{sec:bwdm_problem}節)。
+既存のBWDMには5つの問題点がある(\ref{sec:bwdm_problem}節参照)。
 これらの問題を解決するために、拡張した\tool{}では、大きく分けて3つの拡張を行う。
 本研究で行う拡張とそれぞれが対応する問題を、表\ref{tab:problem_compare}に示す。
 
@@ -644,7 +644,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
         Microsoft社が開発したC++で記述されたPICTライブラリである。
   \item クラス\ttt{LibPict}\\
         JNAを用いてJavaで記述したPICTライブラリのインタフェースである。
-        メソッド名はすべてPICTライブラリの持つ関数名と同じである。\\
+        メソッド名はすべて、PICTライブラリの持つ関数名と同じである。\\
         主に使用するPICTの関数を、以下に示す。
         \begin{description}
           \item[\PictAddParameter{}()] PICTへの因子と水準の登録
@@ -688,8 +688,8 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
   \label{fig:pict4javaEmbed}
 \end{figure}
 
-本稿で拡張したBWDMの処理の流れを、図\ref{fig:pict4javaEmbed}に示す。
-境界値分析部ではまず、テストケースの入力データとして、VDM++仕様内の引数ごとにおける、不等式、剰余式などに合わせた境界値、及び型の最小値・最大値の境界値を、それぞれ抽出する。
+本節で拡張したBWDMの処理の流れを、図\ref{fig:pict4javaEmbed}に示す。
+境界値分析部ではまず、テストケースの入力データとして、VDM++仕様内の引数ごとにおける、不等式、剰余式などに合わせた境界値、および、型の最小値、最大値の境界値を、それぞれ抽出する。
 既存のBWDMでは、引数ごとに生成した境界値のすべての組合せを生成し、境界値テストの入力データとしていた。
 
 拡張後のBWDMでは、すべての組合せを生成するのではなく、\ref{sec:create_pict4java}節で述べたpict4javaを用いてペアワイズ法を適用し、入力データ生成を行う。
@@ -710,7 +710,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
   \item クラス\ttt{Model}の\addFactor{}メソッドを用いて、\PictAddParameter{}関数を呼び出し、PICTに因子と因子ごとの水準を登録する。
   \item\label{enu:pict4java0} クラス\ttt{PictWrapper}の\generate{}メソッドを用いて、ペアワイズ法を適用した組合せデータのリストを生成する。
         組合せデータは文字列型の配列のリストである。
-        詳細の処理を以下に示す。
+        詳細の処理を、以下に示す。
         \begin{enumerate}
           \item\label{enu:pict4java1} \PictGenerate{}関数を用いて、PICTにペアワイズ法を適用した組合せデータを生成させる。
           \item\label{enu:pict4java2} \PictGetNextResultRow{}関数を用いて(a)で生成した組合せデータを1件取得する。
@@ -740,7 +740,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 
 \subsection{構文解析部}
 % BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
-既存のBWDMは、各条件式の左辺、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節)。
+既存のBWDMは、各条件式の左辺、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節。
 したがって、if条件式の左辺と右辺の式を構文解析し、条件式内の変数を抽出することによって、左辺、または、右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とした。
 
 \subsection{ドメイン分析部}\label{cha:DomainAnalyzer}
@@ -787,17 +787,17 @@ onポイントは、着目条件式のTBである。ドメインを決定づけ�
 \begin{enumerate}
   \item\label{enu:onpoint_2} もし、着目条件式の比較演算子が、“$>=$”、または、“$<=$”である場合、“=”に置き換える。“$>$”である場合、“=”で置き換え、右辺を“+1”する。“$<$”である場合、“=”で置き換え、左辺を“+1”する。
   \item\label{enu:onpoint_1} \ref{enu:onpoint_2}.で修正した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるonポイントが存在しないため、生成を行わずに次の着目条件式のonポイントの生成を行う。
-  \item 配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイントと値が重なるかどうかを判定する。
+  \item 配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節参照を参照し、他のonポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:onpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。
                 作成したインスタンスを配列\ttt{onPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
 \subsubsection{offポイント}
 offポイントは、着目するonポイントに隣接し、TBでない値である。onポイントに付き複数(着目条件式に含まれる変数 $*$ 2)個存在する。
-配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節)を参照し、onポイントの数だけ以下の手順を繰り返し、onポイントに着目したoffポイントを生成する。
+配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、onポイントの数だけ以下の手順を繰り返し、onポイントに着目したoffポイントを生成する。
 \begin{enumerate}
   \item\label{enu:offpoint_2} 着目するonポイントのメンバ\forcusedConditionalExpression{}を参照し、着目するonポイントがどの条件式に着目していたかを保持する。
   \item \ref{enu:offpoint_2}.の条件式から、引数を抽出する。抽出した引数の数だけ以下を繰り返す。
@@ -808,7 +808,7 @@ offポイントは、着目するonポイントに隣接し、TBでない値で�
                   \item\label{enu:offpoint_1} i.でコピーした\ttt{Point}インスタンスのメンバ配列\ttt{factors}から、“\ttt{Factor.name} == 引数名”となる\ttt{Factor}インスタンスを検索する。
                   \item ii.で検索して見つかった\ttt{Factor}インスタンスのメンバ\ttt{value}を“+N”する。
                   \item \ttt{Point}インスタンスのメンバ\ttt{forcusedVariable}に引数名を格納する。
-                  \item \ttt{Point}インスタンスを配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節)に格納する。
+                  \item \ttt{Point}インスタンスを配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節参照)に格納する。
                 \end{enumerate}
         \end{enumerate}
 \end{enumerate}
@@ -819,10 +819,10 @@ in ポイントは、ドメインを決定づけるすべての条件式を満�
 \begin{enumerate}
   \item\label{enu:inpoint_2} もし、条件式の比較演算子が、“$>=$”である場合、“$>$”で置き換える。“$<=$”である場合、“$<$”で置き換える。これを、すべての条件式に対して行う。
   \item\label{enu:inpoint_1} \ref{enu:inpoint_2}.で修正した条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、inポイントが存在しないため、生成を行わない。
-  \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
+  \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:inpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節)、配列\ttt{inPoints}に格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、配列\ttt{inPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -833,10 +833,10 @@ outポイントは、着目条件式のみを満たさない値である。ド�
   \item\label{enu:outpoint_2} 着目条件式を“$!$(着目条件式)”に置き換え、否定する。
   \item\label{enu:outpoint_1} \ref{enu:outpoint_2}.で否定した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。
         解が求まらなかった場合、現在の着目条件式におけるoutポイントが存在しないため、生成を行わずに次の着目条件式のoutポイントの生成を行う。
-  \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
+  \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:outpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{outPoints}に格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{outPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -908,7 +908,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 
 関数定義以外の定義に対応するために、抽象クラス\ttt{Definition}、クラス\ttt{FunctionDefinition}、クラス\ttt{OperationDefinition}を作成した。
 これらの、定義クラス群の関係を、図\ref{fig:definition_class}に示す。
-図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラス(\ref{cha:vdmj}節)である。
+図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラス(\ref{cha:vdmj}節参照)である。
 
 それ以外のクラスの説明を以下に示す。
 
