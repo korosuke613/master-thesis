@@ -1056,15 +1056,15 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 
 \begin{enumerate}
   \item \TCExplicitFunctionDefinition{}型の変数\tcFunctionDefinition{}を宣言する。
-  \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
+  \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
         空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
-  \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
-  \item\label{enu:ast_kind} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
-  \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name}参照)が"explicit function"であるか確認する。
-        "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
-        "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
-  \item\label{enu:ast_dainyu} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
-  \item \ref{enu:checkAstIsNull}に進む。
+  \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
+  \item\label{enu:ast_kind2} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
+  \item \ref{enu:ast_kind2}で取得した定義の種類(表\ref{tab:vdmj_definition_name}参照)が"explicit function"であるか確認する。
+        "explicit function"である場合、\ref{enu:ast_dainyu2}へ進む。
+        "explicit function"でない場合、\ref{enu:checkAstIsNull2}へ進む。
+  \item\label{enu:ast_dainyu2} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
+  \item \ref{enu:checkAstIsNull2}に進む。
 \end{enumerate}
 
 
@@ -1076,11 +1076,11 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
   \item \ttt{OperationDefinition}型の連想配列\ttt{explicitOperations}をインスタンス化する。
   \item \ttt{TCValueDefinition}型の連想配列\ttt{constantValues}をインスタンス化する。
   \item \ttt{TCInstanceVariableDefinition}型の連想配列\ttt{instanceVariables}をインスタンス化する。
-  \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
+  \item\label{enu:checkAstIsNull3} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null3}へ進む。
         空である場合、連想配列\ttt{explicitFunctions}と連想配列\ttt{explicitOperations}を構文木解析処理の出力とし、処理を終了する。
-  \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
-  \item\label{enu:ast_kind2} \astDefinition{}.kind()を実行し、抽象構文木の種類を取得する。
-  \item \ref{enu:ast_kind2}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
+  \item\label{enu:ast_not_null3} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
+  \item\label{enu:ast_kind3} \astDefinition{}.kind()を実行し、抽象構文木の種類を取得する。
+  \item \ref{enu:ast_kind3}で取得した抽象構文木の種類を確認し、種類に応じて以下のいずれかを実行する。
         \begin{enumerate}
           \item "explicit function"である場合、関数定義なので、以下を実行する。
                 \begin{enumerate}
@@ -1094,7 +1094,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
                 \end{enumerate}
           \item "value"である場合、定数定義なので、\astDefinition{}を\ttt{TCValueDefinition}に型変換し、\ttt{tcValueDefinition}に追加する。
           \item "instance variable"である場合、インスタンス変数定義なので、\astDefinition{}を\ttt{TCInstanceVariableDefinition}に型変換し、\ttt{tcInstanceVariableDefinition}に追加する。
-          \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull2}へ進む。
+          \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull3}へ進む。
         \end{enumerate}
 \end{enumerate}
 
