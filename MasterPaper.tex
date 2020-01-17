@@ -151,7 +151,7 @@
 近年、形式仕様記述言語を用いた仕様記述が重要視されてきている\cite{software}。
 
 一方で、作成したソフトウェアにはテストが必要であるが、人手によるテストケースの設計には手間と時間がかかる。
-そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM（Boundary Value/Vienna Develop Method）を立山らが開発した\cite{bwdm}。
+そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM（Boundary Value/Vienna Develop Method）を立山らが開発した\cite{tachiyama1}。
 
 既存のBWDMは、VDM++仕様を入力として、境界値分析と記号実行を行い、境界値テストと、if-then-else式の構造認識に基づいたテストを実施するためのテストケースを自動生成する。
 
@@ -1672,12 +1672,9 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 %%
 % 参考文献
 %
-\begin{thebibliography}{99}
-  % 森氏の成果物
-  \bibitem{ICAROB2019} Keisuke Mori, Tetsuro Katayama, Yoshihiro Kita, Hisaaki Yamaba, Kentaro Aburada, and Naonobu Okazaki: ``Development of Library Fescue Extracting Elements of Attributes and Operations of Class Diagram in UML,'' The 2019 International Conference on Artificial Life and Robotics (ICAROB2019), pp. 165--168, 2019
-
-  \bibitem{Fescue} GitHub: ``Fescue: Feature Elements Section of Class in UML Extraction,'' https://github.com/Morichan/Fescue (最終アクセス 2019/01/25)
-\end{thebibliography}
+\bibliography{master} %hoge.bibから拡張子を外した名前
+\bibliographystyle{junsrt} %参考文献出力スタイル
+%\bibliographystyle{packages/ipsjunsrt} %参考文献出力スタイル
 
 %%
 % 付録
