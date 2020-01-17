@@ -522,8 +522,10 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に、
   \item\label{enu:ast_dainyu} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
   \item \ref{enu:checkAstIsNull}に進む。
 \end{enumerate}
-\todo{このように〜、から始まる理由を書く}
 
+このように、抽象構文木解析処理では、受け取った定義の集合から、関数定義のみを抽出する。
+抽出した関数定義ごとに、\TCExplicitFunctionDefinition{}型の変数に関数定義を代入するが、
+この変数が1つしか用意されていないため、最終的に、VDM++仕様で最後に定義された関数のみが抽象構文木解析処理の出力となってしまう。
 したがって、既存のBWDMは、単一の関数しかテストケース生成ができない。
 
 本研究では、単一の関数しかテストケースを生成できないという問題を解決するために、既存の\tool{}の構文解析処理を修正し、複数の関数のテストケース生成に対応し、\tool{}を拡張する。
