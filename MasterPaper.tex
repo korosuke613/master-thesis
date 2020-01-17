@@ -58,6 +58,14 @@
 \usepackage{pxjahyper}
 \usepackage[htt]{hyphenat}
 
+%%
+% font周りのwarningを消す。
+% https://www.semipol.de/2018/06/12/latex-best-practices.html#filtering-warnings
+%
+\usepackage{silence}% http://ctan.org/pkg/silence
+\WarningFilter{latexfont}{Font}
+\WarningFilter{latexfont}{Some font shapes}
+
 %\RequirePackage[l2tabu, orthodox]{nag} % これを入れると、古いコマンドを警告してくれる！なお完全には消せなかった模様
 \newcommand\todo[1]{\PackageWarning{}{Detection TODO:#1}\textcolor{red}{(TODO:#1)}}
 
