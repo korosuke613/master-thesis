@@ -63,11 +63,11 @@
 % https://www.semipol.de/2018/06/12/latex-best-practices.html#filtering-warnings
 %
 \usepackage{silence}% http://ctan.org/pkg/silence
-\WarningFilter{latexfont}{Font}
+\WarningFilter{latexfont}{Font shape}
 \WarningFilter{latexfont}{Some font shapes}
 
 %\RequirePackage[l2tabu, orthodox]{nag} % これを入れると、古いコマンドを警告してくれる！なお完全には消せなかった模様
-\newcommand\todo[1]{\PackageWarning{}{Detection TODO:#1}\textcolor{red}{(TODO:#1)}}
+\newcommand\todo[1]{\PackageWarning{Todo}{Detection TODO:#1}\textcolor{red}{(TODO:#1)}}
 
 %%
 % マクロの定義
@@ -140,7 +140,16 @@
 %
 % はじめに
 \chapter{はじめに}\label{cha:Introduction}
-社会におけるソフトウェアの重要性は高まっており、形式仕様記述言語を用いた仕様記述が重要視されてきている\cite{software}。
+社会におけるソフトウェアの重要性は高まっており、ソフトウェアのバグが社会にもたらす影響も近年では甚大なものとなっている\cite{mizuho}。
+ソフトウェアにバグが混入する原因の1つとして、上流工程のソフトウェア設計段階において、自然言語を一般的に用いていることが挙げられる\cite{seminarFormalMethod}。
+自然言語は元来、曖昧さを含んでいる。
+そのため、プログラマが、仕様書上の表記を、仕様の作成者が本来意図していない意味で捉えてしまうことが起こる。
+プログラマが、本来の仕様書の意図から外れた認識に基づいて実装を行った結果、ソフトウェアにバグが混入されてしまう。
+
+この問題を解決するための1つの方法として、
+形式手法(Formal Methods)\cite{programSpecification}を用いた上流工程でのソフトウェア設計が挙げられる。
+近年、形式仕様記述言語を用いた仕様記述が重要視されてきている\cite{software}。
+
 一方で、作成したソフトウェアにはテストが必要であるが、人手によるテストケースの設計には手間と時間がかかる。
 そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM（Boundary Value/Vienna Develop Method）を立山らが開発した\cite{bwdm}。
 
@@ -814,14 +823,6 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 ドメイン分析部では、\ref{sec:define}節で記述した、inポイント、outポイント、onポイント、offポイントを生成する。
 また、複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように、構文解析部を一部修正した。
 さらに、ドメインテストに必要な、正常系判定値、着目条件式、そして着目変数の情報をテストケースに含めるために、テストケース生成部において、ドメインテストによるテストケースを出力する際は、正常系判定値、着目条件式、着目変数の情報も出力する処理を追加した。
-
-\begin{figure*}[t]
-  \begin{center}
-    \includegraphics[keepaspectratio, width=160mm]{figs/bwdm_structure.png}
-    \caption{\ref{sec:extendPairwise}節で拡張するBWDMの構造}
-    \label{fig:bwdm_structure}
-  \end{center}
-\end{figure*}
 
 \subsection{構文解析部}
 % BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
@@ -1553,33 +1554,33 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 ヒューマンエラーの有無などにより、テストケース生成に要する時間の差は更に拡大していくと思われる。
 
 \begin{table}[tp]
+\centering
+\caption{コード\ref{fig:vdm_park}のドメイン分析テストのためのテストケース作成に要した時間の比較}
+\label{tab:time}
+\begin{tabular}{cc}
+\begin{minipage}[c]{0.5\hsize}
   \centering
-  \caption{コード\ref{fig:vdm_park}のドメイン分析テストのためのテストケース作成に要した時間の比較}
-  \label{tab:time}
-  \begin{tabular}{cc}
-    \begin{minipage}[c]{0.5\hsize}
-      \centering
-      \begin{tabular}{c|c}
-        被験者 & 時間              \\
-        \hline
-        \hline
-        被験者A                & 8m 16s            \\ \hline
-        被験者B                & 10m 23s           \\ \hline
-        被験者C                & 30m(制限時間超過) \\ \hline
-        被験者D                & 24m 04s
-      \end{tabular}
-    \end{minipage} &
-    \begin{minipage}[c]{0.5\hsize}
-      \centering
-      \begin{tabular}{c|c}
-         & 時間              \\
-        \hline
-        \hline
-        被験者(平均)           & 18m 10s           \\ \hline
-        BWDM                   & 0m 15s
-      \end{tabular}
-    \end{minipage}
-  \end {tabular}
+  \begin{tabular}{c|c}
+    被験者  & 時間              \\
+    \hline
+    \hline
+    被験者A & 8m 16s            \\ \hline
+    被験者B & 10m 23s           \\ \hline
+    被験者C & 30m(制限時間超過) \\ \hline
+    被験者D & 24m 04s
+  \end{tabular}
+\end{minipage} &
+\begin{minipage}[c]{0.5\hsize}
+  \centering
+  \begin{tabular}{c|c}
+                 & 時間    \\
+    \hline
+    \hline
+    被験者(平均) & 18m 10s \\ \hline
+    BWDM         & 0m 15s
+  \end{tabular}
+\end{minipage}
+\end {tabular}
 \end{table}
 
 \subsubsection{関連研究}
