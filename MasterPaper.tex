@@ -151,7 +151,7 @@
 近年、形式仕様記述言語を用いた仕様記述が重要視されてきている\cite{seminarFormalMethod}。
 
 一方で、作成したソフトウェアにはテストが必要であるが、人手によるテストケースの設計には手間と時間がかかる。
-そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM（Boundary Value/Vienna Develop Method）を立山らが開発した\cite{tachiyama1}。
+そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM（Boundary Value/Vienna Develop Method）を立山らが開発した\cite{tachiyama1, tachiyama2,tachiyama3,tachiyama4, tachiyama5, tachiyama6, tachiyama7, tachiyama8}。
 
 既存のBWDMは、VDM++仕様を入力として、境界値分析と記号実行を行い、境界値テストと、if-then-else式の構造認識に基づいたテストを実施するためのテストケースを自動生成する。
 
@@ -711,8 +711,8 @@ end 判定
       \end{tabular}                \\ \hline
       複数の定義への対応         &
       \begin{tabular}{c}
-        単一の関数しか                         \\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節参照)               \\
-        定数定義ブロック内の定義を含む関数の   \\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節参照) \\
+        単一の関数しか                         \\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節参照) \\ \hline
+        定数定義ブロック内の定義を含む関数の   \\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節参照) \\ \hline
         操作のテストケースを生成できない問題点 \\(\ref{sec:probrem_operation}節参照)
       \end{tabular}
     \end{tabular}
@@ -1082,11 +1082,11 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
         空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
   \item\label{enu:ast_kind2} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
-  \item \ref{enu:ast_kind2}で取得した定義の種類(表\ref{tab:vdmj_definition_name}参照)が"explicit function"であるか確認する。
-        "explicit function"である場合、\ref{enu:ast_dainyu2}へ進む。
-        "explicit function"でない場合、\ref{enu:checkAstIsNull2}へ進む。
+  \item \ref{enu:ast_kind2}.で取得した定義の種類(表\ref{tab:vdmj_definition_name}参照)が"explicit function"であるか確認する。
+        "explicit function"である場合、\ref{enu:ast_dainyu2}.へ進む。
+        "explicit function"でない場合、\ref{enu:checkAstIsNull2}.へ進む。
   \item\label{enu:ast_dainyu2} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
-  \item \ref{enu:checkAstIsNull2}に進む。
+  \item \ref{enu:checkAstIsNull2}.に進む。
 \end{enumerate}
 
 
@@ -1098,7 +1098,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
   \item \ttt{OperationDefinition}型の連想配列\ttt{explicitOperations}をインスタンス化する。
   \item \ttt{TCValueDefinition}型の連想配列\ttt{constantValues}をインスタンス化する。
   \item \ttt{TCInstanceVariableDefinition}型の連想配列\ttt{instanceVariables}をインスタンス化する。
-  \item\label{enu:checkAstIsNull3} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null3}へ進む。
+  \item\label{enu:checkAstIsNull3} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null3}.へ進む。
         空である場合、連想配列\ttt{explicitFunctions}と連想配列\ttt{explicitOperations}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null3} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
   \item\label{enu:ast_kind3} \astDefinition{}.kind()を実行し、抽象構文木の種類を取得する。
@@ -1116,7 +1116,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
                 \end{enumerate}
           \item "value"である場合、定数定義なので、\astDefinition{}を\ttt{TCValueDefinition}に型変換し、\ttt{tcValueDefinition}に追加する。
           \item "instance variable"である場合、インスタンス変数定義なので、\astDefinition{}を\ttt{TCInstanceVariableDefinition}に型変換し、\ttt{tcInstanceVariableDefinition}に追加する。
-          \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull3}へ進む。
+          \item (a)、(b)、(c)、(d)のいずれでもない場合、\ref{enu:checkAstIsNull3}.へ進む。
         \end{enumerate}
 \end{enumerate}
 
@@ -1406,7 +1406,7 @@ No.2 : 1 -> "奇数"
 \section{操作定義を含む仕様}
 拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition}参照)を入力として適用した結果をコード\ref{fig:extended_multiple_definition}に示す。
 コード\ref{fig:extended_multiple_definition}では、インスタンス変数「current\_year」を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
-また、入力と出力の組合せが正しいことから��適切なテストケース生成ができていることが確認できた。
+また、入力と出力の組合せが正しいことから、適切なテストケース生成ができていることが確認できた。
 
 したがって、拡張したBWDMは、既存のBWDMの問題点である、操作のテストケース生成ができないという問題点を解決し、操作のテストケース生成ができることを確認できた。
 
