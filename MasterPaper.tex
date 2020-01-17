@@ -211,20 +211,24 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 
 本章では、\tool{}を拡張するにあたり、必要となる前提知識を説明する。
 
-\section{VDM}
-\todo{vdmの説明を書く}
+\section{VDM++}
+形式手法の1つにVDM(Vienna Development Method)がある。
+1970年代にウィーンのIBM研究所で考案され、1990年代前半にかけて開発された。
+1996年には形式仕様記述言語VDM-SLがISO標準となっている\cite{iso96}。
+VDM++は、VDM-SLにオブジェクト指向拡張を施した形式仕様記述言語である。
+本研究で拡張するBWDMはこのVDM++を用いる。
+VDMには、VDMTools\cite{vdmtools}などの支援ツールが揃っており、
+仕様の検証などを他の形式手法に比べ比較的行いやすいという利点がある。
 
 \subsection{定義ブロック}
 \todo{関数定義、操作定義、定数定義、インスタンス定義について書く}
 
-\section{Java}
-\todo{javaの説明を書く}
-
-\section{Kotlin}
-\todo{kotlinの説明を書く}
-
 \section{VDMJ}\label{cha:vdmj}
-\todo{VDMJに関することを書く。}\cite{vdmj}
+VDMJ\cite{vdmj}は、Nick Battle氏が開発しているVDMの支援ツールである。
+GNU GPL3ライセンスで公開しているVDM支援ツールであり、構文解析器、型チェッカー、デバッガなどの機能を持つ。
+VDMを用いた開発を支援するIDEであるOverture Tool\cite{overture}の内部にも用いられている。
+
+本研究では、VDM++仕様の静的解析において、VDMJの字句解析機能と構文解析機能を利用する。
 
 \subsection{VDMJのクラス}\label{sec:vdmj_class}
 \begin{table}[t]
@@ -258,9 +262,6 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
   \item クラス\ttt{VDMJ::TCInstanceVariableDefinition}\\
         VDM++におけるインスタンス変数定義ブロックinstance variablesにある定義を表すクラスである。
 \end{itemize}
-
-\section{JNA(Java Native Access)}
-\todo{jnaの説明を書く}
 
 \section{PICT(Pairwise Independent Combinatorial Testing)}
 \todo{pictの説明を書く}
