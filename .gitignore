@@ -6,6 +6,8 @@
 *.log
 *.pdf
 *.toc
+*.out
+*.synctex(busy)
 
 .DS_Store
 
