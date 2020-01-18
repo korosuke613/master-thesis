@@ -217,10 +217,55 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 1996年には形式仕様記述言語VDM-SLがISO標準となっている\cite{iso96}。
 VDM++は、VDM-SLにオブジェクト指向拡張を施した形式仕様記述言語である。
 本研究で拡張するBWDMはこのVDM++を用いる。
+また、本研究では、Overture Projectが発行しているVDM-10 Language Manualで定義されているVDM++を対称とする\cite{vdm_manual}。
+
 VDMには、VDMTools\cite{vdmtools}などの支援ツールが揃っており、
 仕様の検証などを他の形式手法に比べ比較的行いやすいという利点がある。
 
-\todo{関数定義、操作定義、定数定義、インスタンス定義について書く}
+VDM++では、関数や操作の定義を定義ブロック(\ttt{definition block})で行う。
+それぞれの定義と、各定義に対応する日本語での呼び方を表\ref{tab:vdm_definition_japanese}に示す。
+\begin{table}[t]
+  \begin{center}
+    \caption{VDM++における定義、および、各定義に対応する日本語での呼び方}
+    \label{tab:vdm_definition_japanese}
+    \begin{tabular}{c|c}
+      VDM++における定義    & 日本語での呼び方    \\
+      \hline
+      \hline
+      \ttt{type definitions}             & 型定義  \\ \hline
+      \ttt{state definition}             & 状態定義  \\ \hline
+      \ttt{value definitions}             & 定数定義  \\ \hline
+      \ttt{function definitions}             & 関数定義  \\ \hline
+      \ttt{operation definitions}             & 操作定義  \\ \hline
+      \ttt{instance variable definitions}             & インスタンス変数定義  \\ \hline
+      \ttt{synchronization definitions}             & 同期定義  \\ \hline
+      \ttt{thread definitions}             & スレッド定義  \\ \hline
+      \ttt{traces definitions}             & トレース定義
+    \end{tabular}
+  \end{center}
+\end{table}
+
+また、本研究で拡張するBWDMは、あらたに、表\ref{tab:vdm_definition_japanese}における、定数定義、操作定義、インスタンス変数定義に対応する。
+詳細を、以下に示す。
+
+\begin{itemize}
+  \item 定数定義\\
+        定数定義は、Javaにおける定数を表す。
+        定義した定数は、関数定義、操作定義で利用できる。
+        拡張するBWDMは、定数定義に対応することで、関数定義、または、操作定義内で定数を利用できる。
+        ただし、定義する定数の型は\ttt{int}、\ttt{nat}、\ttt{nat1}のいずれかでなければならない。
+  \item 操作定義\\
+        操作定義は、Javaにおけるメソッドを表す。
+        定義した操作は、同クラス内のインスタンス変数を参照できる。
+        拡張するBWDMは、操作定義に対応することで、if-then-else式の構造認識に基づいたテストを実施するためのテストケースを自動生成する。
+        ただし、定義する操作内では\ttt{int}、\ttt{nat}、\ttt{nat1}と\ttt{sec of char}(返値のみ)しか利用できない。
+        また、事前条件、事後条件は対応しない。
+  \item インスタンス変数定義\\
+        インスタンス変数定義は、Javaにおけるフィールドを表す。
+        定義した定数は、関数定義、操作定義で利用できる。
+        拡張するBWDMは、インスタンス変数定義に対応することで、操作定義内でインスタンス変数を利用できる。
+        ただし、定義するインスタンス変数の型は\ttt{int}、\ttt{nat}、\ttt{nat1}のいずれかでなければならない。
+\end{itemize}
 
 \section{VDMJ}\label{sec:vdmj}
 VDMJ\cite{vdmj}は、Nick Battle氏が開発しているVDMの支援ツールである。
