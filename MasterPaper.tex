@@ -952,12 +952,12 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 拡張するBWDMには、境界値分析部、記号実行部に加えて、ドメイン分析部を追加する。
 ドメイン分析部では、\ref{sec:define}節で記述した、inポイント、outポイント、onポイント、offポイントを生成する。
 また、複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように、構文解析部を一部修正する。
-さらに、ドメインテストに必要な、正常系判定値、着目条件式、そして着目変数の情報をテストケースに含めるために、テストケース生成部において、ドメインテストによるテストケースを出力する際は、正常系判定値、着目条件式、着目変数の情報も出力する処理を追加する。
+さらに、ドメインテストに必要な、正常系判定値と着目条件式、着目変数の情報をテストケースに含めるために、テストケース生成部において、ドメインテストによるテストケースを出力する際は、既存の出力に加えて、正常系判定値と着目条件式、着目変数の情報も出力するよう処理を追加する。
 
 \subsection{構文解析部}
 % BWDMの構文解析は、Nickらの開発したVDM構文解析ツールVDMJを用いて実現している\cite{vdmj}。
-既存のBWDMは、各条件式の左辺、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節。
-したがって、if条件式の左辺と右辺の式を構文解析し、条件式内の変数を抽出することによって、左辺、または、右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とする。
+既存のBWDMは、各条件式の左辺、または、右辺に複数の変数を含む場合、エラーを出力してしまう(\ref{sec:bwdm_problem}節参照)。
+左辺、または、右辺に複数の変数が条件式に含まれるVDM++仕様の構文解析を可能とするために、if条件式の左辺と右辺の式を構文解析し、条件式内の変数を抽出する。
 
 \subsection{ドメイン分析部}\label{cha:DomainAnalyzer}
 拡張するBWDMはドメイン分析テストにおける、onポイント、offポイント、inポイント、outポイントを生成するために、ドメイン分析部を持つ。
@@ -980,7 +980,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 \begin{itemize}
   \item \ttt{Factor}クラスは、引数の情報を持つクラスである。変数名(\ttt{name})と値(\ttt{value})を保持する。
   \item \ttt{Point}クラスは、テストケースの入力データの情報を持つクラスである。テストケース名(\ttt{name})、そのポイントが着目条件式(\forcusedConditionalExpression{})、そのポイントの着目変数(\ttt{forcusedVariable})、そして複数の\ttt{Factor}(\ttt{factors})を保持する。
-  \item \ttt{DomainPoints}クラスは、ドメインの情報を持つクラスである。期待出力(\ttt{name})、onポイントの集合(\ttt{onPoints})、offポイントの集合(\ttt{offPoints})、inポイント(\ttt{inPoints})、outポイントの集合(\ttt{outPoints})を保持する。
+  \item \ttt{DomainPoints}クラスは、ドメインの情報を持つクラスである。ドメインの期待出力(\ttt{name})、onポイントの集合(\ttt{onPoints})、offポイントの集合(\ttt{offPoints})、inポイント(\ttt{inPoints})、outポイントの集合(\ttt{outPoints})を保持する。
   \item \ttt{DomainAnalyzer}クラスは、ドメイン分析を行うクラスである。ドメインの集合(\ttt{domains})を保持している。
         また、onポイント、offポイント、inポイント、outポイントを生成する機能(\ttt{generateXXPoints}メソッド)、および、各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出する機能(\ttt{getAllTestCaseByDomainAnalyzer}メソッド)を持つ。
 
@@ -1003,10 +1003,10 @@ onポイントは、着目条件式のTBである。ドメインを決定づけ�
 \begin{enumerate}
   \item\label{enu:onpoint_2} もし、着目条件式の比較演算子が、“$>=$”、または、“$<=$”である場合、“=”に置き換える。“$>$”である場合、“=”で置き換え、右辺を“+1”する。“$<$”である場合、“=”で置き換え、左辺を“+1”する。
   \item\label{enu:onpoint_1} \ref{enu:onpoint_2}.で修正した条件式と、その他の条件式をZ3に入力し、解(引数と値のタプルの集合)を求める。解が求まらなかった場合、現在の着目条件式におけるonポイントが存在しないため、生成を行わずに次の着目条件式のonポイントの生成を行う。
-  \item 配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節参照を参照し、他のonポイントと値が重なるかどうかを判定する。
+  \item 配列\ttt{onPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:onpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンス(\ref{cha:DomainAnalyzer}節参照)を作り、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。
                 作成したインスタンスを配列\ttt{onPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
@@ -1038,7 +1038,7 @@ in ポイントは、ドメインを決定づけるすべての条件式を満�
   \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:inpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、配列\ttt{inPoints}に格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンス(\ref{cha:DomainAnalyzer}節参照)を作り、配列\ttt{inPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -1052,7 +1052,7 @@ outポイントは、着目条件式のみを満たさない値である。ド�
   \item 配列\ttt{onPoints}と配列\ttt{offPoints}(\ref{cha:DomainAnalyzer}節参照)を参照し、他のonポイント、offポイントと値が重なるかどうかを判定する。
         \begin{enumerate}
           \item 重なっている場合、条件式に、”重なっている変数 $!=$ 重なった値“という条件式を加え、\ref{enu:outpoint_1}.に戻る。
-          \item 重なっていない場合、解を元に、\ttt{Point}インスタンスを作り(\ref{cha:DomainAnalyzer}節参照)、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{outPoints}に格納する。
+          \item 重なっていない場合、解を元に、\ttt{Point}インスタンス(\ref{cha:DomainAnalyzer}節参照)を作り、メンバ\forcusedConditionalExpression{}には、着目条件式を格納する。作成したインスタンスを配列\ttt{outPoints}に格納する。
         \end{enumerate}
 \end{enumerate}
 
@@ -1087,12 +1087,12 @@ outポイントは、着目条件式のみを満たさない値である。ド�
 \end{figure}
 
 既存のBWDMは、期待出力生成部において、入力データを元に期待出力を生成する機能を持つ。
-\ttt{DomainAnalyzer}クラス(\ref{cha:DomainAnalyzer}節参照)の\ttt{getAllTestCaseByDomainAnalyzer}メソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出することができる。
+\ttt{DomainAnalyzer}クラス(\ref{cha:DomainAnalyzer}節参照)の\ttt{getAllTestCaseByDomainAnalyzer}メソッドを呼び出すことにより、\ref{cha:create_point}節で生成した各ドメインの各ポイントを、期待出力生成部に入力できるデータ構造として抽出できる。
 そのため、既存のBWDMの期待出力生成部をそのまま用いて、期待出力生成とテストケース生成は可能である。
 拡張するBWDMでは、各ドメインの各ポイントのテストケースを出力する。
 
-しかし、既存のBWDMのテストケース生成部には、ドメインテストに必要な、正常系判定値、着目条件式、そして着目変数の情報を出力テストケースに加える処理が存在しない。
-これに対応するため、テストケース生成部において、ドメインテストによるテストケースを出力する際、正常系判定値、着目条件式、着目変数の情報についても出力する処理を追加する。
+しかし、既存のBWDMのテストケース生成部には、ドメインテストに必要な、正常系判定値と着目条件式、着目変数の情報を出力テストケースに加える処理が存在しない。
+これに対応するため、テストケース生成部において、ドメインテストによるテストケースを出力する際、正常系判定値と着目条件式、着目変数の情報についても出力するよう処理を追加する。
 着目条件式の出力には、\ttt{Point}インスタンスのメンバ\forcusedConditionalExpression{}を参照する。
 offポイントの場合、着目変数の出力を行う。出力には、\ttt{Point}インスタンスのメンバ\ttt{forcusedVariable}を参照する。
 正常系判定値は、出力するテストケースの期待出力と、ドメインの期待出力(\ttt{DomainPoints.name})を比較して判断する。
@@ -1120,7 +1120,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 これらの、定義クラス群の関係を、図\ref{fig:definition_class}に示す。
 図中にある、VDMJパッケージのクラスはVDMJであらかじめ用意されているクラス(\ref{sec:vdmj}節参照)である。
 
-それ以外のクラスの説明を以下に示す。
+それ以外のクラスの説明を、以下に示す。
 
 \begin{itemize}
   \item 抽象クラス\ttt{Definition}\\
@@ -1148,7 +1148,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
         \begin{description}
           \item[\ttt{\ttt{instanceVariables}}] インスタンス変数定義の集合
           \item[\ttt{setUsesInstanceVariables()}] if-then-else木構造内で使用されるインスタンス変数を\ttt{argumentTypes}と\ttt{parameters}に追加する
-          \item[\ttt{setIfElseSyntaxTree()}] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタから呼び出される
+          \item[\ttt{setIfElseSyntaxTree()}] if-then-else式から木構造を生成する。インスタンス生成時にコンストラクタが呼び出す
         \end{description}
 
   \item クラス\ttt{InformationExtractor}\\
@@ -1172,27 +1172,9 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 \end{figure}
 \end{comment}
 
-既存のBWDMでは、図\ref{fig:extendedBwdmStructure}の構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
+既存のBWDMでは、図\ref{fig:extendedBwdmStructure}に示した構文解析処理で定義ごとの抽象構文木を生成し、それらを抽象構文木解析処理に渡す。
 抽象構文木解析処理では、受け取った抽象構文木の集合から、関数定義であるものだけを抽出する。
 受け取る抽象構文木の集合は、\ref{sec:create_definition}節で示した抽象クラス\ttt{TCDefinition}を継承したクラスの集合である。
-既存のBWDMの抽象構文木解析処理を、以下に示す。
-以下の処理は\ttt{InformationExtractor}インスタンスにて行う。
-
-%既存のBWDMの抽象構文木解析処理を図\ref{fig:ExistAstAnalysis}に示す。
-
-\begin{enumerate}
-  \item \TCExplicitFunctionDefinition{}型の変数\tcFunctionDefinition{}を宣言する。
-  \item\label{enu:checkAstIsNull2} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null2}へ進む。
-        空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
-  \item\label{enu:ast_not_null2} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
-  \item\label{enu:ast_kind2} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
-  \item \ref{enu:ast_kind2}.で取得した定義の種類(表\ref{tab:vdmj_definition_name}参照)が"explicit function"であるか確認する。
-        "explicit function"である場合、\ref{enu:ast_dainyu2}.へ進む。
-        "explicit function"でない場合、\ref{enu:checkAstIsNull2}.へ進む。
-  \item\label{enu:ast_dainyu2} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
-  \item \ref{enu:checkAstIsNull2}.に進む。
-\end{enumerate}
-
 
 拡張するBWDMでは、抽象構文木解析処理にて、受け取った抽象構文木を、\ref{sec:create_definition}節で作成した定義クラス群に変換し、連想配列に格納する。
 拡張するBWDMの抽象構文木解析処理を以下に示す。以下の処理は\ttt{InformationExtractor}インスタンスにて行う。
@@ -1234,7 +1216,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 \end{figure}
 \end{comment}
 
-\subsection{境界値分析部、記号実行部、ドメイン分析部で定義クラス群を入力とするように修正}
+\subsection{境界値分析部と記号実行部とドメイン分析部で定義クラス群を入力とするように修正}
 既存のBWDMでは、境界値分析部、記号実行部、ドメイン分析部に入力するオブジェクトの型が\TCExplicitFunctionDefinition{}型であった。
 したがって、拡張するBWDMでは、\ref{sec:create_definition}節で作成した定義クラス群を、境界値分析部、記号実行部、ドメイン分析部に入力できるように、それぞれの部を修正する。
 
