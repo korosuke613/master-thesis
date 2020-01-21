@@ -472,9 +472,7 @@ outポイントは、“Out1”〜“Out3”の3つであり、それぞれの�
 
 % 既存
 \chapter{既存の\tool{}}\label{cha:Exist}
-\todo{ぜんぜんBWDMの説明になっていないので、もっと既存のBWDMにできることを説明する。}
-
-本章では、既存の\tool{} (\toolFullName{})について説明する。
+本章では、既存のBWDM(Boundary Value/Vienna Develop Method)について説明する。
 
 \section{機能}
 既存のBWDM(Boundary Value/Vienna Develop Method)は、立山氏が開発した、VDM++仕様を対象としたテストケース生成ツールである。
@@ -592,15 +590,15 @@ No.4 : 100 b 12 -> "aは100以上かつcは12以上"
 \end{lstlisting}
 \end{figure}
 
-VDM++仕様ファイルの例をコード\ref{fig:input_sample}に、
+3つの引数(a, b, c)を入力とするVDM++仕様ファイルの例をコード\ref{fig:input_sample}に、
 そのファイルから生成したテストケースの例をコード\ref{fig:testcase_sample}に、それぞれ示す。
 また、テストケースの出力フォーマットを、コード\ref{fig:bwdm_format}に示す。
 コード\ref{fig:testcase_sample}において、“各引数の境界値”には、引数a、b、cそれぞれの境界値の集合を出力している。
 そして、“境界値分析によるテストケース”には、各引数の境界値の総組合せのテストスイートを出力している。
 また、”記号実行によるテストケース”には、関数のすべての実行フローを網羅できるテストスイートを出力している。
 
-\section{問題}\label{sec:bwdm_problem}
-既存のBWDMには問題がある。問題点を、以下で説明する。
+\section{問題点}\label{sec:bwdm_problem}
+既存のBWDMには問題点がある。問題点を、以下で説明する。
 
 \subsection{組合せ爆発に関する問題点}\label{sec:problem_pairwise}
 境界値分析によるテストケース生成において、生成するテストケース数は、因子が取り得るそれぞれの値の数(水準)を掛け合わせることにより決定する。
@@ -640,15 +638,15 @@ VDM++仕様ファイルの例をコード\ref{fig:input_sample}に、
 
 \begin{enumerate}
   \item \TCExplicitFunctionDefinition{}型の変数\tcFunctionDefinition{}を宣言する。
-  \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}へ進む。
+  \item\label{enu:checkAstIsNull} 構文解析処理で生成した抽象構文木の集合が空であるか確認する。空でない場合、\ref{enu:ast_not_null}.へ進む。
         空である場合、変数\tcFunctionDefinition{}を構文木解析処理の出力とし、処理を終了する。
   \item\label{enu:ast_not_null} 抽象構文木の集合の先頭を取り出し、変数\astDefinition{}に格納する。
   \item\label{enu:ast_kind} \astDefinition{}\ttt{.kind()}を実行し、定義の種類を取得する。
-  \item \ref{enu:ast_kind}で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
-        "explicit function"である場合、\ref{enu:ast_dainyu}へ進む。
-        "explicit function"でない場合、\ref{enu:checkAstIsNull}へ進む。
+  \item \ref{enu:ast_kind}.で取得した定義の種類(表\ref{tab:vdmj_definition_name})が"explicit function"であるか確認する。
+        "explicit function"である場合、\ref{enu:ast_dainyu}.へ進む。
+        "explicit function"でない場合、\ref{enu:checkAstIsNull}.へ進む。
   \item\label{enu:ast_dainyu} 変数\astDefinition{}を\TCExplicitFunctionDefinition{}に型変換し、変数\tcFunctionDefinition{}に代入する。
-  \item \ref{enu:checkAstIsNull}に進む。
+        その後、\ref{enu:checkAstIsNull}.に進む。
 \end{enumerate}
 
 このように、抽象構文木解析処理では、受け取った定義の集合から、関数定義のみを抽出する。
@@ -753,7 +751,7 @@ end 判定
 \subsection{操作のテストケースを生成できない問題点}\label{sec:probrem_operation}
 既存の\tool{}には、操作のテストケースを生成できないという問題点がある。
 操作を含むVDM++仕様を、コード\ref{fig:multiple_definition}に示す。
-このVDM++仕様には「西暦設定」操作、「うるう年判定」操作が定義されている。
+このVDM++仕様には、「西暦設定」操作と「うるう年判定」操作が定義されている。
 また、インスタンス変数「current\_year」を定義している。
 既存のBWDMは、インスタンス変数定義ブロック、および、操作定義ブロック内の定義を解析しない。
 したがって、「うるう年判定」操作のテストケース生成を行わない。
@@ -834,7 +832,9 @@ end 判定
 
 本章では、\tool{}の拡張について説明する。
 既存のBWDMには5つの問題点がある(\ref{sec:bwdm_problem}節参照)。
-これらの問題を解決するために、本研究では、大きく分けて3つの拡張を行う。
+これらの問題点を解決するために、本研究では、大きく分けて以下の3つの拡張を行う。
+また、拡張するBWDMは、名称を\tool{}(\toolFullName{})に変更する。
+
 本研究で行う拡張とそれぞれが対応する問題を、表\ref{tab:problem_compare}に示す。
 また、本研究で拡張するBWDMの構造を、図\ref{fig:extendedBwdmStructure}に示す。
 
@@ -874,7 +874,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
   \item クラス\ttt{Pict}\\
         Microsoft社が開発したC++で記述されたPICTライブラリである。
   \item クラス\ttt{LibPict}\\
-        JNAを用いてJavaで記述したPICTライブラリのインタフェースである。
+        JNA(Java Native Access)\cite{jna}を用いてJavaで記述したPICTライブラリのインタフェースである。
         メソッド名はすべて、PICTライブラリの持つ関数名と同じである。\\
         主に使用するPICTの関数を、以下に示す。
         \begin{description}
@@ -904,15 +904,14 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
         \begin{description}
           \item[\ttt{level}] 水準
           \item[\ttt{named\_level}] 因子の取り得る値の集合
-          \item[\ttt{n}] 最低限組合せるペア数(デフォルトで2)
+          \item[\ttt{n}] 最低限組合せるペア数(デフォルトは2)
           \item[\ttt{weights}] 因子の取り得る値の重みの集合
           \item[\ttt{name}] 因子の名前
         \end{description}
         メンバ変数\ttt{n}の値を変えることによって、その因子については、n個の組合せを網羅する入力データを作成できる。
 \end{itemize}
 
-本節で拡張するBWDMの処理の流れを、図\ref{fig:extendedBwdmStructure}に示す。
-図中の「A」の文字の部分が拡張した処理である。
+図\ref{fig:extendedBwdmStructure}の「A」の文字の箇所が、本節で拡張した処理である。
 境界値分析部ではまず、テストケースの入力データとして、VDM++仕様内の引数ごとにおける、不等式、剰余式などに合わせた境界値、および、型の最小値、最大値の境界値を、それぞれ抽出する。
 既存のBWDMでは、引数ごとに生成した境界値のすべての組合せを生成し、境界値テストの入力データとしていた。
 
@@ -921,6 +920,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 
 境界値分析後の境界値データを受けとったpict4javaの入力データ生成アルゴリズムを、以下に示す。
 また、このアルゴリズムを用いたpict4javaの処理の流れを、図\ref{fig:pict4java}に示す。
+図中の赤文字は、アルゴリズムの項目と対応している。
 
 \begin{figure}[tp]
   \centering
@@ -946,8 +946,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 
 \section{ドメイン分析テストの適用による複数変数を含む条件式を含む関数のテストケース生成}\label{sec:extendDomain}
 
-本研究で拡張するBWDMの処理の流れを、図\ref{fig:extendedBwdmStructure}に示す。
-図中の「B」の文字の部分が拡張した処理である。
+図\ref{fig:extendedBwdmStructure}の「B」の文字の箇所が、本節で拡張した処理である。
 既存のBWDMでは、入力したVDM++仕様を構文解析し、その結果を、境界値分析部と記号実行部に渡し、テストケースにおける入力データを生成する。
 
 拡張するBWDMには、境界値分析部、記号実行部に加えて、ドメイン分析部を追加する。
@@ -1103,8 +1102,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 置き換えたファイルをテストスイートとして出力する。
 
 \section{複数の定義への対応}\label{sec:extendMultiple}
-本節で拡張したBWDMの処理の流れを、図\ref{fig:extendedBwdmStructure}に示す。
-図中の「C」の文字の部分が拡張した処理である。
+図\ref{fig:extendedBwdmStructure}の「C」の文字の箇所が、本節で拡張した処理である。
 既存のBWDMでは、入力したVDM++仕様を構文解析部に入力し、字句解析、構文解析、抽象構文木解析を行い、最後に定義された定義の抽象構文木を抽出する。
 
 拡張するBWDMには、\ref{sec:probrem_value}節と\ref{sec:probrem_operation}節で述べた、関数定義以外の定義に対応していないという問題を解決するために、抽象クラス\ttt{Definition}、クラス\ttt{FunctionDefinition}、クラス\ttt{OperationDefinition}を新規に作成し、追加する。
