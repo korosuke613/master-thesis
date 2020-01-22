@@ -1310,7 +1310,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption={因子が3、水準が(6, 6, 6)の関数を持つVDM++仕様},label=fig:pict4javaSampleVdm]
+  \begin{lstlisting}[caption={因子が3で境界値生成後の水準が(6, 6, 6)の関数を持つVDM++仕様},label=fig:pict4javaSampleVdm]
 class SampleClass
 functions
 
@@ -1332,7 +1332,7 @@ end SampleClass
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=(コード\ref{fig:pict4javaSampleVdm})の適用結果,label=fig:pict4javaTekiyourei]
+  \begin{lstlisting}[caption={拡張したBWDMに因子が3で境界値生成後の水準が(6, 6, 6)の関数を持つ仕様(コード\ref{fig:pict4javaSampleVdm})を適用した際の出力},label=fig:pict4javaTekiyourei]
 
 関数名 : sampleFunction
 引数の型 : a:int b:nat c:nat 
@@ -1407,7 +1407,7 @@ No.40 : -2147483649 4294967295 0 -> Undefined Action
 \section{複数変数を含む条件式を用いた仕様}
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=(遊園地チケット割引機能(コード\ref{fig:vdm_park})のテストケースの一部,label=fig:park_testcase]
+  \begin{lstlisting}[caption={拡張したBWDMに遊園地チケット割引機能(コード\ref{fig:vdm_park})を適用した際の出力の一部},label=fig:park_testcase]
 ドメインテストによるテストケース
 - "割引価格となる"
 -- Onポイント
@@ -1465,7 +1465,7 @@ outポイントは、関係する3つの条件式に着目し、着目条件式�
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=拡張したBWDMにコード\ref{fig:func_multiple}を適用した際の出力,label=fig:extended_func_multiple_result]
+  \begin{lstlisting}[caption=拡張したBWDMに定数を含む関数を含む仕様(コード\ref{fig:value_definition})を適用した際の出力,label=fig:extended_func_multiple_result]
 関数名 : うるう年判定
 引数の型 : 年:int 
 戻り値の型 : seq of (char)
@@ -1532,7 +1532,7 @@ No.2 : 21 -> "成人"
 
 \section{定数を含む関数を含む仕様}
 拡張したBWDMに、定数を含む関数を含む仕様(コード\ref{fig:value_definition})を入力として適用した結果を、コード\ref{fig:extended_value_definition_result}に示す。
-コード\ref{fig:extended_value_definition_result}では、12行目にて「$数 mod 2 = 0$」となっており、evenを2に正しく変換できていることが確認できる。
+コード\ref{fig:extended_value_definition_result}では、12行目にて「$数 mod \: 2 = 0$」となっており、evenを2に正しく変換できていることが確認できる。
 また、13行目も同様に確認できる。
 また、入力と出力の組合せが正しいことから、テストケース生成が適切にできていることが確認できた。
 
@@ -1540,7 +1540,7 @@ No.2 : 21 -> "成人"
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=拡張したBWDMに、定数を含む関数を含む仕様(コード\ref{fig:func_multiple})を適用した際の出力,label=fig:extended_value_definition_result]
+  \begin{lstlisting}[caption=拡張したBWDMに定数を含む関数を含む仕様(コード\ref{fig:value_definition})を適用した際の出力,label=fig:extended_value_definition_result]
 
 関数名 : 偶数判定
 引数の型 : 数:int 
@@ -1580,7 +1580,7 @@ No.2 : 1 -> "奇数"
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition})を適用した際の出力,label=fig:extended_multiple_definition]
+  \begin{lstlisting}[caption=拡張したBWDMに操作定義を含む仕様(コード\ref{fig:multiple_definition})を適用した際の出力,label=fig:extended_multiple_definition]
 
 関数名 : うるう年判定
 引数の型 : current_year:nat 
