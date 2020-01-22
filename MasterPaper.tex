@@ -223,12 +223,12 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 
 この問題を解決するための1つの方法として、
 形式手法(Formal Methods)\cite{programSpecification}を用いた上流工程でのソフトウェア設計が挙げられる。
-また、形式仕様記述言語の一つにVDM++(Vienna Development Method)がある\cite{vdm_manual}。
+また、形式仕様記述言語の1つにVDM++(Vienna Development Method)がある\cite{vdm_manual}。
 近年、形式仕様記述言語を用いた仕様記述が重要視されてきている\cite{seminarFormalMethod}。
 
 一方で、作成したソフトウェアにはテストが必要であるが、人手によるテストケースの設計には手間と時間がかかる。
 そのため、VDM++仕様を対象としたテストケース自動生成を目的としたツールBWDM(Boundary Value/Vienna Develop Method)
-を立山らが開発した\cite{tachiyama8, tachiyama6}。
+を、立山らが開発した\cite{tachiyama8, tachiyama6}。
 
 既存のBWDMは、VDM++仕様を入力として、境界値分析と記号実行を行い、テストケースを自動生成する。
 自動生成したテストケースによって、境界値テストと、if-then-else式の構造認識に基づいたテストを実施できる。
@@ -243,8 +243,8 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
   \item\label{problem:5} 操作のテストケースを生成できない
 \end{enumerate}
 
-そこで、本研究では、既存のBWDMの有用性の向上を目的として、BWDMの拡張を行う\cite{hirakoba1, hirakoba2, hirakoba3, hirakoba4, hirakoba5}。
-具体的には、上記5つの問題点を解決する。
+そこで、本研究では、BWDMの有用性の向上を目的として、BWDMの拡張を行う\cite{hirakoba1, hirakoba2, hirakoba3, hirakoba4, hirakoba5}。
+具体的には、既存のBWDMがもつ、上記5つの問題点を解決する。
 また、拡張後のBWDMの名称を、\tool{}(\toolFullName{})に変更する。
 
 まず、本研究では、BWDMが組合せ爆発を起こす可能性(問題\ref{problem:1})の排除を目的として、BWDMによるテストケース生成にペアワイズ法を適用し、BWDMを拡張する。
@@ -255,14 +255,14 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 そして、2つの因子のみの組合せをテストする手法のことをペアワイズ法と呼ぶ。
 ペアワイズ法を適用するに当たって、Microsoft社が開発したPICT(Pairwise Independent Combinatorial Testing tool)\cite{pict}を利用する。
 PICTはCLI(Command Line Interface)ツールであるが、API(PICTライブラリと呼称する)も提供しており、C++から利用できる。
-しかし、既存のBWDMはJavaで記述していることから、PICTライブラリを呼び出すことができない。
+しかし、既存のBWDMはJavaで記述しており、PICTライブラリを呼び出すことができない。
 そこで、PICTとBWDMを接続するためのインタフェースとして、pict4javaを開発する。
 そして、既存のBWDMにpict4javaを埋め込むことで、BWDMを拡張する。
 
 次に、本研究では、既存のBWDMにおける、複数の変数を含む条件式を持つ仕様に対してテストケース生成ができないという問題(問題\ref{problem:2})の解決を目的として、BWDMによるテストケース生成にドメイン分析テストのためのテストケース生成手法を適用し、BWDMを拡張する。
 ドメイン分析テストとは、境界値分析において、複数の変数を含む条件式を持つ関数をテストする方法である\cite{izon}\cite{istqb}。
-ここで、本研究における、複数の変数を含む条件式とは、片方の辺にのみ複数の変数が含まれ、もう片方の辺は定数のみの条件式を指す。
-また、両辺に変数を含む条件式を持つ仕様は、本研究の対象としない。
+ここで、本研究における、複数の変数を含む条件式とは、片方の辺にのみ複数の変数が含まれ、もう片方の辺は定数のみの条件式を指すこととする。
+すなわち、両辺に変数を含む条件式を持つ仕様は、本研究の対象としない。
 
 加えて、本研究では、既存のBWDMにおける、
 1つの関数しかテストケースを生成できないという問題(問題\ref{problem:3})、
@@ -278,7 +278,7 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 
 第\ref{cha:Extended}章では、拡張した\tool{}について説明する。
 
-第\ref{cha:Indication}章では、適用例を用いて拡張した\tool{}が正しく動作することを検証する。
+第\ref{cha:Indication}章では、適用例を用いて、拡張した\tool{}が正しく動作することを検証する。
 
 第\ref{cha:Evaluation}章では、拡張した\tool{}について考察する。
 
@@ -938,7 +938,7 @@ pict4javaは、PICTとBWDMを接続するためのインタフェースである
 \subsection{pict4javaの概要}\label{sec:create_pict4java}
 PICTは、CLI(Command Line Interface)ツールである。
 API(PICTライブラリと呼称する)も提供しており、C++からのみ利用できる。
-既存のBWDMはJavaで記述していることから、PICTライブラリを呼び出すことができない。
+既存のBWDMはJavaで記述しており、PICTライブラリを呼び出すことができない。
 そのため、BWDMの拡張の準備として、pict4javaを開発する。
 pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び出すことのできるPICTライブラリである。
 
