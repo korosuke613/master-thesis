@@ -1310,7 +1310,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption={因子が3で境界値生成後の水準が(6, 6, 6)の関数を持つVDM++仕様},label=fig:pict4javaSampleVdm]
+  \begin{lstlisting}[caption={因子が3で水準が(6, 6, 6)の関数を持つVDM++仕様},label=fig:pict4javaSampleVdm]
 class SampleClass
 functions
 
@@ -1332,7 +1332,7 @@ end SampleClass
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption={拡張したBWDMに因子が3で境界値生成後の水準が(6, 6, 6)の関数を持つ仕様(コード\ref{fig:pict4javaSampleVdm})を適用した際の出力},label=fig:pict4javaTekiyourei]
+  \begin{lstlisting}[caption={拡張したBWDMに因子が3で水準が(6, 6, 6)の関数を持つ仕様(コード\ref{fig:pict4javaSampleVdm})を適用した際の出力},label=fig:pict4javaTekiyourei]
 
 関数名 : sampleFunction
 引数の型 : a:int b:nat c:nat 
@@ -1396,7 +1396,7 @@ No.40 : -2147483649 4294967295 0 -> Undefined Action
 \end{figure}
 
 \ref{sec:extendPairwise}節で拡張したBWDMが正しく動作することを検証するため、拡張したBWDMに因子と水準の組合せ数が大きいVDM++仕様を適用した。
-適用例として用いる、因子が3、境界値生成後の水準が(6, 6, 6)の関数のVDM++仕様を、コード\ref{fig:pict4javaSampleVdm}に示す。
+適用例として用いる、因子が3、水準が(6, 6, 6)の関数のVDM++仕様を、コード\ref{fig:pict4javaSampleVdm}に示す。
 適用結果を、コード\ref{fig:pict4javaTekiyourei}に示す。
 
 この例の場合、既存のBWDMでは$6 \times 6 \times 6 = 216個$のテストケースを生成する。
@@ -1457,7 +1457,7 @@ outポイントは、関係する3つの条件式に着目し、着目条件式�
 したがって、拡張したBWDMは、既存のBWDMの問題点である、条件式内に複数の変数があるVDM++仕様を解析できること、かつ、ドメインテストによるテストケース生成が適切にできることを確認できた。
 
 
-\section{複数の関数を含む仕様}
+\section{複数の関数を含む仕様}\label{sec:tekiyou_multi_func}
 拡張したBWDMに、複数の関数を含む仕様(コード\ref{fig:func_multiple}参照)を入力として適用した結果を、コード\ref{fig:extended_func_multiple_result}に示す。
 コード\ref{fig:extended_func_multiple_result}では、「成人判定」関数(37行目以降)だけでなく、「うるう年判定」関数(1-35行目)についてもテストケース生成が適切にできていることが確認できる。
 
@@ -1530,7 +1530,7 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{figure}
 
-\section{定数を含む関数を含む仕様}
+\section{定数を含む関数を含む仕様}\label{sec:tekiyou_value}
 拡張したBWDMに、定数を含む関数を含む仕様(コード\ref{fig:value_definition})を入力として適用した結果を、コード\ref{fig:extended_value_definition_result}に示す。
 コード\ref{fig:extended_value_definition_result}では、12行目にて「$数 mod \: 2 = 0$」となっており、evenを2に正しく変換できていることが確認できる。
 また、13行目も同様に確認できる。
@@ -1571,7 +1571,7 @@ No.2 : 1 -> "奇数"
 \end{lstlisting}
 \end{figure}
 
-\section{操作定義を含む仕様}
+\section{操作定義を含む仕様}\label{sec:tekiyou_operation}
 拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition}参照)を入力として適用した結果を、コード\ref{fig:extended_multiple_definition}に示す。
 コード\ref{fig:extended_multiple_definition}では、インスタンス変数「current\_year」を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
 また、入力と出力の組合せが正しいことから、適切なテストケース生成ができていることが確認できた。
@@ -1623,14 +1623,14 @@ No.4 : 1 -> "平年"
 
 % 考察
 \chapter{考察}\label{cha:Evaluation}
-本章では、拡張したBWDMを考察する。
+本章では、拡張したBWDMの有用性について考察し、関連研究と、拡張したBWDMの問題点について述べる。
 
-\section{評価}
-\subsection{膨大な数のテストケース生成を抑える}
+\section{拡張したBWDMの有用性について}
+\subsection{水準の積が膨大となるテストケース生成の比較検証}
 
 \begin{table}[tp]
   \begin{center}
-    \caption{因子が7で水準が(6, 8, 6, 8, 8, 6, 6)の関数を持つVDM++仕様の生成結果の比較}
+    \caption{因子が7で水準が(6, 8, 6, 8, 8, 6, 6)の関数を持つVDM++仕様のテストケース生成結果の比較}
     \label{tab:pict4java_result}
     \begin{tabular}{c|c|c}
                    & 生成テストケース数 & 実行時間(秒) \\
@@ -1679,7 +1679,7 @@ end ProblemClass
 \end{figure}
 
 本研究で拡張したBWDMが、既存のBWDMに比べて、テストケース総数を削減できることを確認する。
-膨大な数のテストケースを生成するために、因子が7で境界値生成後の水準がそれぞれ(6, 8, 6, 8, 8, 6, 6)の関数を持つVDM++仕様を、既存のBWDMと拡張後のBWDMにそれぞれ適用する。
+膨大な数のテストケースを生成するために、因子が7で水準が(6, 8, 6, 8, 8, 6, 6)の関数を持つVDM++仕様を、既存のBWDMと拡張後のBWDMにそれぞれ適用する。
 生成結果の比較を、表\ref{tab:pict4java_result}に示す。
 また、適用したVDM++仕様を、コード\ref{fig:pict4javaIndication}に示す。
 実行環境は、macOS 10.13.6(CPU: Intel Core i5 2.3GHz, RAM: 16GB)である。
@@ -1694,11 +1694,11 @@ end ProblemClass
   B: 拡張したBWDMによって生成したテストケース総数\\
 \end{center}
 
-表\ref{tab:pict4java_result}および式(\ref{equ:sakugennritu})より、生成テストケース数を(663552-78)/663552×100=99.98(\%)削減できた。
-既存のBWDMでは、膨大な数のテストケースを生成したが、拡張後のBWDMでは、実用的な数のテストケースを生成した。
+表\ref{tab:pict4java_result}および式(\ref{equ:sakugennritu})より、生成テストケース数を$(663552-78)/663552 \times 100=99.98(\%)$削減できた。
+既存のBWDMでは、膨大な数のテストケースを生成したのに対して、拡張後のBWDMでは、実用的な数のテストケースを生成した。
 
 したがって、拡張後のBWDMは、境界値分析結果から生成するテストケース数が組合せ爆発を起こす可能性を排除できたと言える。
-また、表2から、テストケース生成時間についても99.98(\%)短縮できた。
+また、表\ref{tab:pict4java_result}から、テストケース生成時間についても86.85\%短縮できた。
 以上から、拡張後のBWDMは実用性が高いと言える。
 
 \subsection{人手によるドメイン分析テストのためのテストケース作成との比較検証}\label{sec:domain_exam}
@@ -1776,7 +1776,15 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 \end {tabular}
 \end{table}
 
-\subsection{関連研究}
+
+\subsection{複数定義対応に関する評価}
+拡張したBWDMでは、複数の関数のテストケースを生成できるようになり(\ref{sec:tekiyou_multi_func}参照)、また、定数定義ブロックで定義した定数を、関数定義や操作定義内でを参照できるようになった(\ref{sec:tekiyou_value}参照)。
+加えて、インスタンス変数を含む操作定義のテストケースを生成できるようになった(\ref{sec:tekiyou_operation}参照)。
+これにより、BWDMの対応範囲が広がり、より多くのVDM++仕様のテストケース生成が可能となった。
+したがって、拡張したBWDMの有用性が向上したと考える。
+
+
+\section{関連研究}
 \begin{comment}
 \begin{figure}[t]
   \begin{center}
@@ -1794,18 +1802,12 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
 %この設計モデルの例を、\figref{fig:model_park}に示す。これは、\figref{fig:vdm_park}の仕様から設計モデルを作成した例である。
 設計モデルは\cite{sekkeiModel}で定義されている。
 
-設計モデルは仕様書を元に、人手で記述する必要があるため、設計モデルの作成に時間と手間がかかってしまうという問題がある。
+設計モデルは、仕様書を元に人手で記述する必要があるため、設計モデルの作成に時間と手間がかかってしまうという問題がある。
 これに対して、拡張したBWDMは、VDM++仕様を元に、自動でテストケースを生成できるため、設計モデルを作成する必要がないという利点がある。
 しかし、仕様書が自然言語のみで記述されている場合、VDM++仕様を記述しなければ、拡張したBWDMを使うことができない。
 そのため、自然言語で記述された仕様書からドメイン分析テストのためのテストケースを作成する場合、設計モデルを記述するか、VDM++仕様を記述するかで対応が分かれることとなる。
 なお、設計モデルの記述とVDM++仕様の記述に必要な要素がほぼ同じなため、記述量はほとんど変わらないと考える。
 設計モデルは丹野らの手法でしか利用できないが、VDM++仕様を用いた場合は、BWDM以外にも、VDMTools\cite{vdmtools}やOverture IDE\cite{overture}などの支援ツールが揃っており、仕様の検証や記述を行いやすいという利点がある。
-
-
-\subsection{複数定義対応に関する評価}
-拡張したBWDMでは、インスタンス変数を含む操作定義のテストケースを生成できるようになり、また、関数定義、操作定義内で定数定義ブロックで定義した定数を参照できるようになった。
-これにより、BWDMの対応範囲が広がり、より多くのVDM++仕様のテストケース生成が可能となった。
-したがって、拡張したBWDMの有用性が向上したと考える。
 
 \section{拡張した\tool{}の問題点}
 以下に、今回拡張したBWDMの問題点を示す。
