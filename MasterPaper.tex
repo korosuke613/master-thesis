@@ -256,8 +256,8 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 ペアワイズ法を適用するに当たって、Microsoft社が開発したPICT(Pairwise Independent Combinatorial Testing tool)\cite{pict}を利用する。
 PICTはCLI(Command Line Interface)ツールであるが、API(PICTライブラリと呼称する)も提供しており、C++から利用できる。
 しかし、既存のBWDMはJavaで記述していることから、PICTライブラリを呼び出すことができない。
-そこで、PICTとBWDMを接続するためのインタフェースとして、PICTラッパーを開発する。
-そして、既存のBWDMにPICTラッパーを埋め込むことで、BWDMを拡張する。
+そこで、PICTとBWDMを接続するためのインタフェースとして、pict4javaを開発する。
+そして、既存のBWDMにpict4javaを埋め込むことで、BWDMを拡張する。
 
 次に、本研究では、既存のBWDMにおける、複数の変数を含む条件式を持つ仕様に対してテストケース生成ができないという問題(問題\ref{problem:2})の解決を目的として、BWDMによるテストケース生成にドメイン分析テストのためのテストケース生成手法を適用し、BWDMを拡張する。
 ドメイン分析テストとは、境界値分析において、複数の変数を含む条件式を持つ関数をテストする方法である\cite{izon}\cite{istqb}。
@@ -296,7 +296,7 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 1970年代にウィーンのIBM研究所で考案され、1990年代前半にかけて開発された。
 1996年には形式仕様記述言語VDM-SLがISO標準となっている\cite{iso96}。
 VDM++は、VDM-SLにオブジェクト指向拡張を施した形式仕様記述言語である。
-本研究で拡張するBWDMはこのVDM++を用いる。
+本研究で拡張するBWDMはこのVDM++で記述された仕様のテストケースを生成する。
 また、本研究では、Overture Projectが発行しているVDM-10 Language Manualで定義されているVDM++を対象とする\cite{vdm_manual}。
 
 VDMには、VDMTools\cite{vdmtools}やOverture IDE\cite{overture}などの支援ツールが揃っており、
@@ -392,17 +392,17 @@ VDMを用いた開発を支援するIDEであるOverture Tool\cite{overture}の�
     \caption{性別と年齢を入力として出力が決定される関数の因子と水準}
     \label{tab:factor_level}
     \begin{tabular}{c|c|c}
-      因子                    & 水準     & 因子の取り得る値 \\
+      因子                  & 水準               & 因子の取り得る値 \\
       \hline
       \hline
-                              &          & 男性             \\  \cline{3-3}
-      性別                    & 3        & 女性             \\ \cline{3-3}
-                              &          & その他           \\ \hline
-      \multirow{2}{*}{年齢} & \multirow{2}{*}{2} & 20歳未満  \\ \cline{3-3}
-       & & 20歳以上                                              \\ \hline
-                              &          & 日本             \\  \cline{3-3}
-       国籍                    & 3        & アメリカ             \\ \cline{3-3}
-                               &          & その他           \\ \hline 
+                            &                    & 男性             \\  \cline{3-3}
+      性別                  & 3                  & 女性             \\ \cline{3-3}
+                            &                    & その他           \\ \hline
+      \multirow{2}{*}{年齢} & \multirow{2}{*}{2} & 20歳未満         \\ \cline{3-3}
+                            &                    & 20歳以上         \\ \hline
+                            &                    & 日本             \\  \cline{3-3}
+      国籍                  & 3                  & アメリカ         \\ \cline{3-3}
+                            &                    & その他           \\ \hline
     \end{tabular}
   \end{center}
 \end{table}
@@ -419,18 +419,18 @@ VDMを用いた開発を支援するIDEであるOverture Tool\cite{overture}の�
     \caption{性別と年齢と国籍を入力として出力が決定される関数のペアワイズ法を用いた場合の組合せの例}
     \label{tab:example_pairwise}
     \begin{tabular}{c|c|c}
-      性別                    & 年齢     & 国籍 \\
+      性別   & 年齢     & 国籍     \\
       \hline
       \hline
-      女性 & 20歳以上	& 日本 \\ \hline
-      その他	& 20歳未満	 & 日本 \\ \hline
-      女性 & 20歳未満	 & その他 \\ \hline
-      その他	 & 20歳以上	 & その他 \\ \hline
-      男性	 & 20歳以上	 & アメリカ \\ \hline
-      女性	 & 20歳未満 & 	アメリカ \\ \hline
-      その他	 & 20歳未満 & 	アメリカ \\ \hline
-      男性	 & 20歳未満 & 	日本 \\ \hline
-      男性	 & 20歳以上	 & その他 \\
+      女性   & 20歳以上 & 日本     \\ \hline
+      その他 & 20歳未満 & 日本     \\ \hline
+      女性   & 20歳未満 & その他   \\ \hline
+      その他 & 20歳以上 & その他   \\ \hline
+      男性   & 20歳以上 & アメリカ \\ \hline
+      女性   & 20歳未満 & アメリカ \\ \hline
+      その他 & 20歳未満 & アメリカ \\ \hline
+      男性   & 20歳未満 & 日本     \\ \hline
+      男性   & 20歳以上 & その他   \\
     \end{tabular}
   \end{center}
 \end{table}
@@ -494,7 +494,7 @@ $condition$は、$exp \: operator\{=, <, >, <=, >=\} \: int$の形式でなけ�
 
 \subsection{ドメイン分析テストの例}
 \begin{figure}[tp]
-\begin{lstlisting}[caption=ドメインテストが必要となる仕様(遊園地チケット割引機能),label=fig:vdm_park, language=]
+  \begin{lstlisting}[caption=ドメインテストが必要となる仕様(遊園地チケット割引機能),label=fig:vdm_park, language=]
 class 遊園地チケット
 
 functions
@@ -765,7 +765,7 @@ end 判定
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=コード\ref{fig:func_multiple}のVDM++仕様を既存のBWDMに適用した際の出力,label=fig:func_multiple_result]
+  \begin{lstlisting}[caption=複数の関数を含むVDM++仕様(コード\ref{fig:func_multiple})を既存のBWDMに適用した際の出力,label=fig:func_multiple_result]
 関数名 : 成人判定
 引数の型 : 年齢:nat 
 戻り値の型 : seq of (char)
@@ -804,7 +804,7 @@ No.2 : 21 -> "成人"
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=定数を含む関数を含むVDM++仕様,label=fig:value_definition]
+  \begin{lstlisting}[caption=定数定義ブロック内の定義を含む関数を含むVDM++仕様,label=fig:value_definition]
 class 判定
 
 values
@@ -889,10 +889,16 @@ end 判定
       \begin{tabular}{c}
         複数変数を含む条件式に関する問題点 \\(\ref{sec:problem_double_var}節参照)
       \end{tabular}                \\ \hline
+                                 &
+      \begin{tabular}{c}
+        1つの関数しか \\テストケースを生成できない問題点  \\(\ref{sec:probrem_only_function}節参照)
+      \end{tabular}                \\ \cline{2-2}
       複数の定義への対応         &
       \begin{tabular}{c}
-        1つの関数しか                         \\テストケースを生成できない問題点                       \\(\ref{sec:probrem_only_function}節参照) \\ \hline
-        定数定義ブロック内の定義を含む関数の   \\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節参照) \\ \hline
+        定数定義ブロック内の定義を含む関数の \\テストケースを生成できない問題点 \\(\ref{sec:probrem_value}節参照)
+      \end{tabular}                \\ \cline{2-2}
+                                 &
+      \begin{tabular}{c}
         操作のテストケースを生成できない問題点 \\(\ref{sec:probrem_operation}節参照)
       \end{tabular}
     \end{tabular}
@@ -1575,7 +1581,7 @@ No.2 : 1 -> "奇数"
 
 \section{操作定義を含む仕様}\label{sec:tekiyou_operation}
 拡張したBWDMに、操作定義を含む仕様(コード\ref{fig:multiple_definition}参照)を入力として適用した結果を、コード\ref{fig:extended_multiple_definition}に示す。
-コード\ref{fig:extended_multiple_definition}では、インスタンス変数「current\_year」を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
+コード\ref{fig:extended_multiple_definition}では、インスタン��変数「current\_year」を「うるう年判定」操作の引数としてテストケース生成できていることが確認できる。
 また、入力と出力の組合せが正しいことから、適切なテストケース生成ができていることが確認できた。
 
 したがって、拡張したBWDMは、既存のBWDMの問題点である、操作のテストケース生成ができないという問題点を解決し、操作のテストケース生成ができることを確認できた。
@@ -1842,9 +1848,9 @@ VDM++に対する慣れなどの影響は無視できるものと思われる。
         この問題は、インスタンス変数定義ブロック内で定義した不変条件に対応することで解決可能と考える。
         具体的には、不変条件を元に生成した境界値を入力とし、不変条件を満たすかどうかの真偽値を期待出力とするテストケースを生成することで、インスタンス変数を操作する操作定義のテストケースを生成できると考える。
 
-  %\item 事前条件と事後条件に考慮したテストケースの生成ができない\\
-  %      拡張したBWDMは、事前条件(\ttt{pre})と事後条件(\ttt{post})に対応していないため、事前条件と事後条件に考慮したテストケースの生成ができない。
-  %      この問題は、事前条件
+        %\item 事前条件と事後条件に考慮したテストケースの生成ができない\\
+        %      拡張したBWDMは、事前条件(\ttt{pre})と事後条件(\ttt{post})に対応していないため、事前条件と事後条件に考慮したテストケースの生成ができない。
+        %      この問題は、事前条件
   \item 他の関数または操作を呼び出す関数定義と操作定義のテストケースを生成できない\\
         拡張したBWDMでは、他の関数または操作を利用する関数定義と操作定義のテストケースを生成できない。
         この問題は、抽象構文木解析処理において解析した関数、および、操作をJavaコードに変換し、スタックを構築して関数呼び出しの仕組みを作ることで解決可能と考える。
@@ -1907,7 +1913,7 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
   \item 関数定義と操作定義内で利用できる構文の対応範囲拡大\\
         拡張したBWDMは、if条件式境界値の生成をVDM++仕様の関数定義内のif-then-else式のみから行っており、それ以外の構文には対応していない。
         この問題は、対応していない構文の情報抽出方法と、境界値分析手法の提案を行うことで解決可能と考える。
-  
+
   \item インスタンス変数を操作する操作定義のテストケースの生成への対応\\
         拡張したBWDMは、インスタンス変数を操作する操作定義のテストケース生成ができない。
         この問題は、インスタンス変数定義ブロック内で定義した不変条件に対応することで解決可能と考える。
