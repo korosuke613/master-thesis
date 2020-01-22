@@ -1201,7 +1201,7 @@ offポイントの場合、着目変数の出力を行う。出力には、\ttt{
 \begin{figure}[tp]
   \centering
   \includegraphics[keepaspectratio, width=160mm]{figs/Definition_class_diagram}
-  \caption{Definitionクラス関係のクラス図}
+  \caption{定義クラス群とそれに関連するクラスのクラス図}
   \label{fig:definition_class}
 \end{figure}
 
@@ -1473,7 +1473,7 @@ outポイントは、関係する3つの条件式に着目し、着目条件式�
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=拡張したBWDMに定数を含む関数を含む仕様(コード\ref{fig:value_definition})を適用した際の出力,label=fig:extended_func_multiple_result]
+  \begin{lstlisting}[caption=拡張したBWDMに複数の関数を含む仕様(コード\ref{fig:func_multiple})を適用した際の出力,label=fig:extended_func_multiple_result]
 関数名 : うるう年判定
 引数の型 : 年:int 
 戻り値の型 : seq of (char)
@@ -1538,17 +1538,17 @@ No.2 : 21 -> "成人"
 \end{lstlisting}
 \end{figure}
 
-\section{定数を含む関数を含む仕様}\label{sec:tekiyou_value}
-拡張したBWDMに、定数を含む関数を含む仕様(コード\ref{fig:value_definition})を入力として適用した結果を、コード\ref{fig:extended_value_definition_result}に示す。
+\section{定数定義ブロック内の定義を含む関数を含む仕様}\label{sec:tekiyou_value}
+拡張したBWDMに、定数定義ブロック内の定義を含む関数を含む仕様(コード\ref{fig:value_definition})を入力として適用した結果を、コード\ref{fig:extended_value_definition_result}に示す。
 コード\ref{fig:extended_value_definition_result}では、12行目にて「$数 mod \: 2 = 0$」となっており、evenを2に正しく変換できていることが確認できる。
 また、13行目も同様に確認できる。
 また、入力と出力の組合せが正しいことから、テストケース生成が適切にできていることが確認できた。
 
-したがって、拡張したBWDMは、既存のBWDMの問題点である、定数を含む関数を含む仕様のテストケース生成ができないという問題点を解決し、定数を含む関数を含む仕様のテストケース生成ができることを確認できた。
+したがって、拡張したBWDMは、既存のBWDMの問題点である、定数定義ブロック内の定義を含む関数を含む仕様のテストケース生成ができないという問題点を解決し、定数定義ブロック内の定義を含む関数を含む仕様のテストケース生成ができることを確認できた。
 
 \lstset{language=}
 \begin{figure}[tp]
-  \begin{lstlisting}[caption=拡張したBWDMに定数を含む関数を含む仕様(コード\ref{fig:value_definition})を適用した際の出力,label=fig:extended_value_definition_result]
+  \begin{lstlisting}[caption=拡張したBWDMに定数定義ブロック内の定義を含む関数を含む仕様(コード\ref{fig:value_definition})を適用した際の出力,label=fig:extended_value_definition_result]
 
 関数名 : 偶数判定
 引数の型 : 数:int 
