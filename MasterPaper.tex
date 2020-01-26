@@ -242,7 +242,7 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
   \item\label{problem:5} 操作のテストケースを生成できない
 \end{enumerate}
 
-そこで、本研究では、BWDMの有用性の向上を目的として、BWDMの拡張を行う\cite{hirakoba1, hirakoba2, hirakoba3, hirakoba4, hirakoba5}。
+そこで、本研究では、BWDMの有用性の向上を目的として、BWDMの拡張を行う\cite{hirakoba1, hirakoba2, hirakoba3, hirakoba4, hirakoba5,bwdm}。
 具体的には、既存のBWDMが持つ、上記5つの問題点を解決する。
 また、拡張後のBWDMの名称を、\tool{}(\toolFullName{})に変更する。
 
@@ -255,7 +255,7 @@ BWDMにおける構文解析部の抽象構文木解析処理を修正し、BWDM
 ペアワイズ法を適用するに当たって、Microsoft社が開発したPICT(Pairwise Independent Combinatorial Testing tool)\cite{pict}を利用する。
 PICTはCLI(Command Line Interface)ツールであるが、API(PICTライブラリと呼称する)も提供しており、C++から利用できる。
 しかし、既存のBWDMはJavaで記述しており、PICTライブラリを呼び出すことができない。
-そこで、PICTとBWDMを接続するためのインタフェースとして、pict4javaを開発する。
+そこで、PICTとBWDMを接続するためのインタフェースとして、pict4javaを開発する\cite{pict4java}。
 そして、既存のBWDMにpict4javaを埋め込むことで、BWDMを拡張する。
 
 次に、本研究では、既存のBWDMにおける、複数の変数を含む条件式を持つ仕様に対してテストケース生成ができないという問題(問題\ref{problem:2})の解決を目的として、BWDMによるテストケース生成にドメイン分析テストのためのテストケース生成手法を適用し、BWDMを拡張する。
@@ -916,7 +916,7 @@ end 判定
 本章では、\tool{}の拡張について説明する。
 既存のBWDMには5つの問題点がある(\ref{sec:bwdm_problem}節参照)。
 これらの問題点を解決するために、本研究では、3つの拡張を行う。
-また、拡張後のBWDMは、名称を\tool{}(\toolFullName{})に変更する。
+また、拡張後のBWDMは、名称を\tool{}(\toolFullName{})に変更する\cite{bwdm}。
 
 本研究で行う3つの拡張を、以下に示す。
 \begin{itemize}
@@ -931,7 +931,7 @@ end 判定
 以降、各拡張について説明する。
 
 \section{ペアワイズ法の適用によるテストケース数削減}\label{sec:extendPairwise}
-本研究では、pict4javaを開発する\cite{hirakoba3}。
+本研究では、pict4javaを開発する\cite{hirakoba1,hirakoba2,hirakoba3,hirakoba5,pict4java}。
 pict4javaは、PICTとBWDMを接続するためのインタフェースである。
 そして、既存のBWDMにpict4javaを組込むことで、BWDMを拡張する。
 詳細を、以下に示す。
@@ -1039,7 +1039,7 @@ pict4javaは、JNA(Java Native Access)\cite{jna}を利用し、Javaから呼び�
 図\ref{fig:extendedBwdmStructure}の「B」の文字の箇所が、本節で拡張した処理である。
 既存のBWDMでは、入力したVDM++仕様を構文解析し、その結果を、境界値分析部と記号実行部に渡し、テストケースにおける入力データを生成する。
 
-拡張するBWDMには、境界値分析部、記号実行部に加えて、ドメイン分析部を追加する。
+拡張するBWDMには、境界値分析部、記号実行部に加えて、ドメイン分析部を追加する\cite{hirakoba4}。
 ドメイン分析部では、\ref{sec:define}節で記述した、inポイント、outポイント、onポイント、offポイントを生成する。
 また、複数の変数が条件式に含まれるVDM++仕様の解析に対応できるように、構文解析部を一部修正する。
 さらに、ドメインテストに必要な、正常系判定値と着目条件式、着目変数の情報をテストケースに含めるために、テストケース生成部において、ドメインテストによるテストケースを出力する際、既存の出力に加えて、正常系判定値と着目条件式、着目変数の情報も出力するよう処理を追加する。
