@@ -1,6 +1,10 @@
-# master-thesis-template
+# VDM++仕様を対象としたテストケース自動生成ツールBWDMにおけるペアワイズ法とドメイン分析テストの適用のための機能拡張
 
 俺の修論です。
+
+- [修論本体](https://github.com/korosuke613/master-thesis/blob/master/2020_01_27_v2_T1803035_%E5%B9%B3%E6%9C%A8%E5%A0%B4%E9%A2%A8%E5%A4%AA_%E4%BF%AE%E8%AB%96.pdf)
+- [発表スライド](https://www.slideshare.net/FutaHirakoba/vdmbwdm)
+
 
 ## build
 
